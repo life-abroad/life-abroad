@@ -1,0 +1,8 @@
+-r requirements.txt
+
+# dev-only
+pytest
+httpx
+mypy
+black
+ruff

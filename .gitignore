@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.sqlite3
+.env
+.env.*
+.venv/
+venv/
+
+# macOS
+.DS_Store
+
+# Docker
+*.log
+docker-compose.override.yml
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+
+# Test & coverage
+.coverage
+htmlcov/
+pytest_cache/
+.pytest_cache/
+
+# Build artifacts
+dist/
+build/

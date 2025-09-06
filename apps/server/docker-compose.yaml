@@ -1,0 +1,9 @@
+services:
+  server:
+    build: ./
+    container_name: life-abroad_server
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./src:/src
+    restart: unless-stopped
