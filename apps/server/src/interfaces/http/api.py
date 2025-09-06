@@ -10,7 +10,7 @@ async def home():
     <html>
       <head><meta charset="utf-8"><title>Life Abroad</title></head>
       <body>
-        <h1>It works 🎉</h1>
+        <h1>It works </h1>
         <p>FastAPI single-page app running in Docker.</p>
       </body>
     </html>
