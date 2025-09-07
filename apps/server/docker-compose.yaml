@@ -1,4 +1,16 @@
 services:
+  db:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_USER: lifeabroad
+      POSTGRES_PASSWORD: supersecret
+      POSTGRES_DB: lifeabroad_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
   server:
     build: ./
     container_name: life-abroad_server
@@ -7,3 +19,10 @@ services:
     volumes:
       - ./src:/src
     restart: unless-stopped
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://lifeabroad:supersecret@db:5432/lifeabroad_db
+    depends_on:
+      - db
+
+volumes:
+  db_data:
