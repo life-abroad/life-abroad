@@ -3,9 +3,11 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 from src.domain.models.post import Post
 from src.domain.models.audience import Audience
 from src.domain.models.user import User
+from src.domain.models.media_item import MediaItem
 from src.infrastructure.repositories.post_repository import PostRepository
 from src.infrastructure.repositories.audience_repository import AudienceRepository
 from src.infrastructure.repositories.user_repository import UserRepository
+from src.infrastructure.repositories.media_item_repository import MediaItemRepository
 from src.domain.errors.custom_errors import PostNotFoundError, AudienceNotFoundError, UserNotFoundError
 
 class PostService:
@@ -13,6 +15,7 @@ class PostService:
         self.repository = PostRepository()
         self.audience_repository = AudienceRepository()
         self.user_repository = UserRepository()
+        self.media_item_repository = MediaItemRepository()
 
     async def get_posts(self, session: AsyncSession) -> Sequence[Post]:
         return await self.repository.get_posts(session)
@@ -82,11 +85,15 @@ class PostService:
         
         return await self.repository.get_posts_by_user(user_id, session)
 
-    async def get_post_with_user_and_audiences(self, post_id: int, session: AsyncSession) -> tuple[Post | None, User | None, Sequence[Audience]]:
+    async def get_post_with_user_and_audiences(self, post_id: int, session: AsyncSession) -> tuple[Post, User, Sequence[Audience], Sequence[MediaItem]]:
         post = await self.repository.get_post_by_id(post_id, session)
         if not post:
-            return None, None, []
+            raise PostNotFoundError(post_id)
         
         user = await self.repository.get_user_for_post(post_id, session)
+        if not user:
+            raise PostNotFoundError(post_id)  # If no user found, the post is in an invalid state
+        
         audiences = await self.repository.get_audiences_for_post(post_id, session)
-        return post, user, audiences
+        media_items = await self.media_item_repository.get_media_items_by_post_id(post_id, session)
+        return post, user, audiences, media_items

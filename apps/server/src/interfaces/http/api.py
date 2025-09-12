@@ -6,6 +6,7 @@ from src.infrastructure.database import engine
 from .posts import router as posts_router
 from .users import router as users_router
 from .audiences import router as audiences_router
+from .media_items import router as media_items_router
 
 # Import all models to ensure they're included in metadata
 from src.domain.models.post import Post
@@ -25,6 +26,7 @@ app = FastAPI(lifespan=lifespan)
 app.include_router(posts_router)
 app.include_router(users_router)
 app.include_router(audiences_router)
+app.include_router(media_items_router)
 
 @app.get("/", response_class=HTMLResponse)
 async def home():

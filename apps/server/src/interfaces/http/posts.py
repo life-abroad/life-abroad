@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from src.domain.models.post import Post
 from src.domain.models.audience import Audience
 from src.domain.models.user import User
+from src.domain.models.media_item import MediaItem
 from src.domain.services.post_service import PostService
 from src.domain.errors.custom_errors import PostNotFoundError, AudienceNotFoundError, UserNotFoundError
 from src.infrastructure.database import get_session
@@ -23,6 +24,7 @@ class PostWithUserAndAudiences(BaseModel):
     created_at: str
     user: User
     audiences: List[Audience]
+    media_items: List[MediaItem]
 
 # Create request models
 class PostCreateRequest(BaseModel):
@@ -47,16 +49,18 @@ async def get_posts(user_id: int | None = None, session: AsyncSession = Depends(
 
 @router.get("/{post_id}", response_model=PostWithUserAndAudiences)
 async def get_post(post_id: int, session: AsyncSession = Depends(get_session)):
-    post, user, audiences = await post_service.get_post_with_user_and_audiences(post_id, session)
-    if not post or not user:
-        raise HTTPException(status_code=404, detail="Post not found")
-    return PostWithUserAndAudiences(
-        id=post.id or 0, 
-        description=post.description,
-        created_at=str(post.created_at),
-        user=user,
-        audiences=list(audiences)
-    )
+    try:
+        post, user, audiences, media_items = await post_service.get_post_with_user_and_audiences(post_id, session)
+        return PostWithUserAndAudiences(
+            id=post.id or 0, 
+            description=post.description,
+            created_at=str(post.created_at),
+            user=user,
+            audiences=list(audiences),
+            media_items=list(media_items)
+        )
+    except PostNotFoundError as e:
+        raise HTTPException(status_code=404, detail=str(e))
 
 @router.post("/", response_model=Post, status_code=status.HTTP_201_CREATED)
 async def create_post(post: PostCreateRequest, session: AsyncSession = Depends(get_session)):
