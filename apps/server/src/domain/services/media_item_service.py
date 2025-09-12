@@ -3,12 +3,14 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 from src.domain.models.media_item import MediaItem, MediaType
 from src.infrastructure.repositories.media_item_repository import MediaItemRepository
 from src.infrastructure.repositories.post_repository import PostRepository
+from src.infrastructure.storage.media_storage_service import MediaStorageService
 from src.domain.errors.custom_errors import MediaItemNotFoundError, PostNotFoundError
 
 class MediaItemService:
     def __init__(self):
         self.media_item_repository = MediaItemRepository()
         self.post_repository = PostRepository()
+        self.media_storage_service = MediaStorageService()
 
     async def create_media_item(self, post_id: int, path: str, media_type: MediaType, order: int, session: AsyncSession) -> MediaItem:
         # Validate that the post exists
@@ -45,9 +47,18 @@ class MediaItemService:
         return await self.media_item_repository.update_media_item(media_item, session)
 
     async def delete_media_item(self, media_item_id: int, session: AsyncSession) -> None:
+        # Get the media item first to access the file path
+        media_item = await self.media_item_repository.get_media_item_by_id(media_item_id, session)
+        if not media_item:
+            raise MediaItemNotFoundError(media_item_id)
+        
+        # Delete from database first
         deleted = await self.media_item_repository.delete_media_item(media_item_id, session)
         if not deleted:
             raise MediaItemNotFoundError(media_item_id)
+        
+        # Delete the actual file from storage
+        self.media_storage_service.delete_file(media_item.path)
 
     async def delete_media_items_by_post_id(self, post_id: int, session: AsyncSession) -> None:
         await self.media_item_repository.delete_media_items_by_post_id(post_id, session)

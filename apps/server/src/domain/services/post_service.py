@@ -92,7 +92,7 @@ class PostService:
         
         user = await self.repository.get_user_for_post(post_id, session)
         if not user:
-            raise PostNotFoundError(post_id)  # If no user found, the post is in an invalid state
+            raise PostNotFoundError(post_id)
         
         audiences = await self.repository.get_audiences_for_post(post_id, session)
         media_items = await self.media_item_repository.get_media_items_by_post_id(post_id, session)
