@@ -52,3 +52,10 @@ async def update_audience(audience_id: int, audience: AudienceUpdateRequest, ses
         raise HTTPException(status_code=404, detail=str(e))
     except UserNotFoundError as e:
         raise HTTPException(status_code=404, detail=str(e))
+
+@router.delete("/{audience_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_audience(audience_id: int, session: AsyncSession = Depends(get_session)):
+    try:
+        await audience_service.delete_audience(audience_id, session)
+    except AudienceNotFoundError as e:
+        raise HTTPException(status_code=404, detail=str(e))

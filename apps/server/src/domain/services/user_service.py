@@ -2,6 +2,7 @@ from typing import Sequence
 from sqlmodel.ext.asyncio.session import AsyncSession
 from src.domain.models.user import User
 from src.infrastructure.repositories.user_repository import UserRepository
+from src.domain.errors.custom_errors import UserNotFoundError
 
 class UserService:
     def __init__(self):
@@ -16,3 +17,8 @@ class UserService:
 
     async def get_user_by_id(self, user_id: int, session: AsyncSession) -> User | None:
         return await self.user_repository.get_user_by_id(user_id, session)
+
+    async def delete_user(self, user_id: int, session: AsyncSession) -> None:
+        deleted = await self.user_repository.delete_user(user_id, session)
+        if not deleted:
+            raise UserNotFoundError(user_id)

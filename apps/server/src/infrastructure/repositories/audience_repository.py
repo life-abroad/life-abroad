@@ -60,3 +60,20 @@ class AudienceRepository:
             link = AudienceUserLink(audience_id=audience_id, user_id=user_id)
             session.add(link)
         await session.commit()
+
+    async def delete_audience(self, audience_id: int, session: AsyncSession) -> bool:
+        audience = await session.get(Audience, audience_id)
+        if not audience:
+            return False
+        
+        # Remove all user links first
+        existing_links = await session.exec(
+            select(AudienceUserLink).where(AudienceUserLink.audience_id == audience_id)
+        )
+        for link in existing_links:
+            await session.delete(link)
+        
+        # Delete the audience
+        await session.delete(audience)
+        await session.commit()
+        return True

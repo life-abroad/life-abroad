@@ -60,3 +60,8 @@ class AudienceService:
 
     async def get_audience_by_id(self, audience_id: int, session: AsyncSession) -> Audience | None:
         return await self.audience_repository.get_audience_by_id(audience_id, session)
+
+    async def delete_audience(self, audience_id: int, session: AsyncSession) -> None:
+        deleted = await self.audience_repository.delete_audience(audience_id, session)
+        if not deleted:
+            raise AudienceNotFoundError(audience_id)

@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from src.domain.models.user import User
 from src.domain.services.user_service import UserService
 from src.infrastructure.database import get_session
+from src.domain.errors.custom_errors import UserNotFoundError
 from typing import Sequence
 
 router = APIRouter(prefix="/users", tags=["users"])
@@ -30,3 +31,10 @@ async def get_user(user_id: int, session: AsyncSession = Depends(get_session)):
 @router.post("/", response_model=User, status_code=status.HTTP_201_CREATED)
 async def create_user(user: UserCreateRequest, session: AsyncSession = Depends(get_session)):
     return await user_service.create_user(user.name, user.phone_number, user.email, session)
+
+@router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_user(user_id: int, session: AsyncSession = Depends(get_session)):
+    try:
+        await user_service.delete_user(user_id, session)
+    except UserNotFoundError as e:
+        raise HTTPException(status_code=404, detail=str(e))
