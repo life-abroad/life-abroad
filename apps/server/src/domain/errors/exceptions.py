@@ -1,2 +1,0 @@
-class PostNotFoundError(Exception):
-    pass
