@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from src.domain.models.audience import Audience
 from src.domain.models.user import User
 from src.domain.services.audience_service import AudienceService
+from src.domain.errors.audience_errors import AudienceNotFoundError, UserNotFoundError
 from src.infrastructure.database import get_session
 from typing import Sequence, List
 
@@ -38,11 +39,16 @@ async def get_audience(audience_id: int, session: AsyncSession = Depends(get_ses
 
 @router.post("/", response_model=Audience, status_code=status.HTTP_201_CREATED)
 async def create_audience(audience: AudienceCreateRequest, session: AsyncSession = Depends(get_session)):
-    return await audience_service.create_audience(audience.name, audience.user_ids, session)
+    try:
+        return await audience_service.create_audience(audience.name, audience.user_ids, session)
+    except UserNotFoundError as e:
+        raise HTTPException(status_code=404, detail=str(e))
 
 @router.put("/{audience_id}", response_model=Audience)
 async def update_audience(audience_id: int, audience: AudienceUpdateRequest, session: AsyncSession = Depends(get_session)):
     try:
         return await audience_service.update_audience(audience_id, audience.name, audience.user_ids, session)
-    except ValueError as e:
+    except AudienceNotFoundError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except UserNotFoundError as e:
         raise HTTPException(status_code=404, detail=str(e))
