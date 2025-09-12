@@ -2,14 +2,17 @@ from typing import Sequence, List
 from sqlmodel.ext.asyncio.session import AsyncSession
 from src.domain.models.post import Post
 from src.domain.models.audience import Audience
+from src.domain.models.user import User
 from src.infrastructure.repositories.post_repository import PostRepository
 from src.infrastructure.repositories.audience_repository import AudienceRepository
-from src.domain.errors.custom_errors import PostNotFoundError, AudienceNotFoundError
+from src.infrastructure.repositories.user_repository import UserRepository
+from src.domain.errors.custom_errors import PostNotFoundError, AudienceNotFoundError, UserNotFoundError
 
 class PostService:
     def __init__(self):
         self.repository = PostRepository()
         self.audience_repository = AudienceRepository()
+        self.user_repository = UserRepository()
 
     async def get_posts(self, session: AsyncSession) -> Sequence[Post]:
         return await self.repository.get_posts(session)
@@ -24,7 +27,12 @@ class PostService:
         audiences = await self.repository.get_audiences_for_post(post_id, session)
         return post, audiences
 
-    async def create_post(self, description: str, session: AsyncSession, audience_ids: List[int] | None = None) -> Post:
+    async def create_post(self, description: str, user_id: int, session: AsyncSession, audience_ids: List[int] | None = None) -> Post:
+        # Validate user exists
+        user = await self.user_repository.get_user_by_id(user_id, session)
+        if not user:
+            raise UserNotFoundError(user_id)
+        
         # Validate audiences exist
         if audience_ids:
             for audience_id in audience_ids:
@@ -32,7 +40,7 @@ class PostService:
                 if not audience:
                     raise AudienceNotFoundError(audience_id)
         
-        post = await self.repository.create_post(description, session)
+        post = await self.repository.create_post(description, user_id, session)
         
         # Assign audiences if provided
         if audience_ids and post.id is not None:
@@ -65,3 +73,20 @@ class PostService:
         deleted = await self.repository.delete_post(post_id, session)
         if not deleted:
             raise PostNotFoundError(post_id)
+
+    async def get_posts_by_user(self, user_id: int, session: AsyncSession) -> Sequence[Post]:
+        # Validate user exists
+        user = await self.user_repository.get_user_by_id(user_id, session)
+        if not user:
+            raise UserNotFoundError(user_id)
+        
+        return await self.repository.get_posts_by_user(user_id, session)
+
+    async def get_post_with_user_and_audiences(self, post_id: int, session: AsyncSession) -> tuple[Post | None, User | None, Sequence[Audience]]:
+        post = await self.repository.get_post_by_id(post_id, session)
+        if not post:
+            return None, None, []
+        
+        user = await self.repository.get_user_for_post(post_id, session)
+        audiences = await self.repository.get_audiences_for_post(post_id, session)
+        return post, user, audiences

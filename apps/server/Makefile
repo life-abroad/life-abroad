@@ -9,3 +9,6 @@ run:
 
 stop: 
 	docker compose down
+
+reset:
+	docker compose down -v
