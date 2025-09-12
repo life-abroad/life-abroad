@@ -12,3 +12,6 @@ stop:
 
 reset:
 	docker compose down -v
+
+freeze:
+	pip freeze > requirements.txt
