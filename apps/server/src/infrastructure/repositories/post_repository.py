@@ -2,6 +2,7 @@ from typing import Sequence, List
 from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlmodel import select
 from src.domain.models.post import Post
+from src.domain.models.audience import Audience
 from src.domain.models.links.post_audience_link import PostAudienceLink
 
 class PostRepository:
@@ -11,6 +12,14 @@ class PostRepository:
 
     async def get_post_by_id(self, post_id: int, session: AsyncSession) -> Post | None:
         return await session.get(Post, post_id)
+
+    async def get_audiences_for_post(self, post_id: int, session: AsyncSession) -> Sequence[Audience]:
+        result = await session.exec(
+            select(Audience)
+            .join(PostAudienceLink)
+            .where(PostAudienceLink.post_id == post_id)
+        )
+        return result.all()
 
     async def create_post(self, description: str, session: AsyncSession) -> Post:
         db_post = Post(description=description)

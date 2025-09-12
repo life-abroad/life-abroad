@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from src.domain.models.audience import Audience
 from src.domain.models.user import User
 from src.domain.services.audience_service import AudienceService
-from src.domain.errors.audience_errors import AudienceNotFoundError, UserNotFoundError
+from src.domain.errors.custom_errors import AudienceNotFoundError, UserNotFoundError
 from src.infrastructure.database import get_session
 from typing import Sequence, List
 

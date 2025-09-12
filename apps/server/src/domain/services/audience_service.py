@@ -4,7 +4,7 @@ from src.domain.models.audience import Audience
 from src.domain.models.user import User
 from src.infrastructure.repositories.audience_repository import AudienceRepository
 from src.infrastructure.repositories.user_repository import UserRepository
-from src.domain.errors.audience_errors import AudienceNotFoundError, UserNotFoundError
+from src.domain.errors.custom_errors import AudienceNotFoundError, UserNotFoundError
 
 class AudienceService:
     def __init__(self):
