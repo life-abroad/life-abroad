@@ -1,4 +1,4 @@
-from typing import Sequence, List
+from typing import Sequence
 from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlmodel import select
 from src.domain.models.media_item import MediaItem
@@ -34,9 +34,10 @@ class MediaItemRepository:
         return False
 
     async def delete_media_items_by_post_id(self, post_id: int, session: AsyncSession) -> None:
-        media_items = await session.exec(
+        result = await session.exec(
             select(MediaItem).where(MediaItem.post_id == post_id)
         )
+        media_items = result.all()
         for media_item in media_items:
             await session.delete(media_item)
         await session.commit()

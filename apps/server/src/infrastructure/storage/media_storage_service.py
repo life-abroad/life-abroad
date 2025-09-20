@@ -1,6 +1,6 @@
 import os
 import uuid
-from typing import BinaryIO
+from typing import BinaryIO, Any
 from minio import Minio
 from minio.error import S3Error
 import logging
@@ -15,7 +15,7 @@ class MediaStorageService:
         self.access_key = get_env_var("MINIO_ACCESS_KEY")
         self.secret_key = get_env_var("MINIO_SECRET_KEY")
         self.bucket_name = get_env_var("MINIO_BUCKET_NAME")
-        self.secure = (get_env_var("MINIO_SECURE") or "false").lower() == "true"
+        self.secure = (get_env_var("MINIO_SECURE") or "false").lower() == "true"        
         
         # Initialize MinIO client
         self.client = Minio(
@@ -39,17 +39,7 @@ class MediaStorageService:
             raise
     
     def upload_file(self, file_data: BinaryIO, file_name: str, content_type: str) -> str:
-        """
-        Upload a file to MinIO and return the file path
-        
-        Args:
-            file_data: Binary file data
-            file_name: Original filename
-            content_type: MIME type of the file
-            
-        Returns:
-            str: The path/key of the uploaded file in storage
-        """
+        """Upload a file to MinIO and return the file path"""
         try:
             # Generate unique filename to avoid conflicts
             file_extension = file_name.split('.')[-1] if '.' in file_name else ''
@@ -72,39 +62,26 @@ class MediaStorageService:
             logger.error(f"Error uploading file: {e}")
             raise
     
-    def get_file_url(self, file_path: str) -> str:
-        """
-        Get a presigned URL for accessing a file
-        
-        Args:
-            file_path: The path/key of the file in storage
-            
-        Returns:
-            str: Presigned URL for accessing the file
-        """
+    def get_file_stream(self, file_path: str) -> tuple[Any, str, int]:
+        """Get a file stream for direct serving"""
         try:
-            from datetime import timedelta
-            # Generate presigned URL (valid for 7 days)
-            url = self.client.presigned_get_object(
-                bucket_name=self.bucket_name,
-                object_name=file_path,
-                expires=timedelta(days=7)  # 7 days
-            )
-            return url
+            # Get file info
+            stat = self.client.stat_object(self.bucket_name, file_path)
+            content_type = stat.content_type or "application/octet-stream"
+            content_length = stat.size or 0
+            
+            # Get file stream
+            response = self.client.get_object(self.bucket_name, file_path)
+            
+            logger.info(f"Streaming file {file_path} ({content_type}, {content_length} bytes)")
+            return response, content_type, content_length
+            
         except S3Error as e:
-            logger.error(f"Error generating presigned URL: {e}")
+            logger.error(f"Error streaming file: {e}")
             raise
     
     def delete_file(self, file_path: str) -> bool:
-        """
-        Delete a file from storage
-        
-        Args:
-            file_path: The path/key of the file in storage
-            
-        Returns:
-            bool: True if successful
-        """
+        """Delete a file from storage"""
         try:
             self.client.remove_object(
                 bucket_name=self.bucket_name,
@@ -117,15 +94,7 @@ class MediaStorageService:
             return False
     
     def file_exists(self, file_path: str) -> bool:
-        """
-        Check if a file exists in storage
-        
-        Args:
-            file_path: The path/key of the file in storage
-            
-        Returns:
-            bool: True if file exists
-        """
+        """Check if a file exists in storage"""
         try:
             self.client.stat_object(
                 bucket_name=self.bucket_name,

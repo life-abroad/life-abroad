@@ -6,6 +6,7 @@ from src.domain.models.audience import Audience
 from src.domain.models.user import User
 from src.domain.models.media_item import MediaItem
 from src.domain.services.post_service import PostService
+from src.domain.services.notifications.notification_service import NotificationService
 from src.domain.errors.custom_errors import PostNotFoundError, AudienceNotFoundError, UserNotFoundError
 from src.infrastructure.database import get_session
 from typing import Sequence, List
@@ -37,6 +38,7 @@ class PostUpdateRequest(BaseModel):
     audience_ids: List[int] | None = None
 
 post_service = PostService()
+notification_service = NotificationService()
 
 @router.get("/", response_model=Sequence[Post])
 async def get_posts(user_id: int | None = None, session: AsyncSession = Depends(get_session)):
@@ -65,7 +67,16 @@ async def get_post(post_id: int, session: AsyncSession = Depends(get_session)):
 @router.post("/", response_model=Post, status_code=status.HTTP_201_CREATED)
 async def create_post(post: PostCreateRequest, session: AsyncSession = Depends(get_session)):
     try:
-        return await post_service.create_post(post.description, post.user_id, session, post.audience_ids)
+        created_post = await post_service.create_post(post.description, post.user_id, session, post.audience_ids)
+        
+        # Send notifications through domain service
+        if post.audience_ids:
+            await notification_service.notify_audiences_of_new_post(
+                created_post.id or 0, 
+                post.audience_ids, 
+                session
+            )
+        return created_post
     except UserNotFoundError as e:
         raise HTTPException(status_code=404, detail=str(e))
     except AudienceNotFoundError as e:

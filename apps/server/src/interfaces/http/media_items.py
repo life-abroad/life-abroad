@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, status, HTTPException, UploadFile, File, Form
+from fastapi.responses import StreamingResponse
 from sqlmodel.ext.asyncio.session import AsyncSession
 from pydantic import BaseModel
 from sqlalchemy.exc import IntegrityError
@@ -141,21 +142,30 @@ async def upload_media_file(
         logger.error(f"Error uploading file: {e}")
         raise HTTPException(status_code=500, detail="Failed to upload file")
 
-@router.get("/{media_item_id}/url")
-async def get_media_file_url(media_item_id: int, session: AsyncSession = Depends(get_session)):
+@router.get("/{media_item_id}/stream")
+async def get_media_file_stream(media_item_id: int, session: AsyncSession = Depends(get_session)):
     """
-    Get a presigned URL for accessing a media file
+    Stream a media file directly
     """
     try:
         media_item = await media_item_service.get_media_item_by_id(media_item_id, session)
         if not media_item:
             raise HTTPException(status_code=404, detail="Media item not found")
         
-        # Generate presigned URL
-        url = media_storage_service.get_file_url(media_item.path)
+        # Get file stream from domain service
+        file_stream, content_type, content_length = media_item_service.get_media_item_stream(media_item.path)
         
-        return {"url": url}
+        logger.info(f"Streaming media item {media_item_id}: {content_type}, {content_length} bytes")
+        
+        return StreamingResponse(
+            file_stream,
+            media_type=content_type,
+            headers={
+                "Content-Length": str(content_length),
+                "Cache-Control": "public, max-age=3600"  # Cache for 1 hour
+            }
+        )
         
     except Exception as e:
-        logger.error(f"Error generating file URL: {e}")
-        raise HTTPException(status_code=500, detail="Failed to generate file URL")
+        logger.error(f"Error streaming file: {e}")
+        raise HTTPException(status_code=500, detail="Failed to stream file")
