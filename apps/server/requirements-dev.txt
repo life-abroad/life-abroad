@@ -2,7 +2,9 @@
 
 # dev-only
 pytest
+pytest-asyncio
 httpx
 mypy
 black
 ruff
+aiosqlite

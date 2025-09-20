@@ -9,3 +9,9 @@ run:
 
 stop: 
 	docker compose down
+
+reset:
+	docker compose down -v
+
+freeze:
+	pip freeze > requirements.txt
