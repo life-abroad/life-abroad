@@ -76,8 +76,7 @@ services:
       - server
 
   cloudflared:
-    image: cloudflare/cloudflared:latest
-    platform: linux/arm64
+    image: crazymax/cloudflared:latest
     restart: unless-stopped
     command: tunnel --config /etc/cloudflared/config.yaml run
     environment:
