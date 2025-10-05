@@ -1,0 +1,85 @@
+name: Deploy to Raspberry Pi
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+
+jobs:
+  deploy:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
+    runs-on: self-hosted
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Create .env.prod file
+        run: |
+          cat > apps/server/.env.prod << 'EOL'
+          # Database Configuration
+          POSTGRES_USER=${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB=${{ secrets.POSTGRES_DB }}
+          
+          # MinIO Configuration
+          MINIO_ROOT_USER=${{ secrets.MINIO_ROOT_USER }}
+          MINIO_ROOT_PASSWORD=${{ secrets.MINIO_ROOT_PASSWORD }}
+          MINIO_ACCESS_KEY=${{ secrets.MINIO_ACCESS_KEY }}
+          MINIO_SECRET_KEY=${{ secrets.MINIO_SECRET_KEY }}
+          MINIO_BUCKET_NAME=${{ secrets.MINIO_BUCKET_NAME }}
+          MINIO_SECURE=${{ secrets.MINIO_SECURE }}
+          MINIO_EXTERNAL_ENDPOINT=${{ secrets.MINIO_EXTERNAL_ENDPOINT }}
+          MINIO_HEALTHCHECK_URL=${{ secrets.MINIO_HEALTHCHECK_URL }}
+          MINIO_ENDPOINT=${{ secrets.MINIO_ENDPOINT }}
+          
+          # Application Configuration
+          JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}
+          FRONTEND_URL=${{ secrets.FRONTEND_URL }}
+          
+          # External Services
+          VONAGE_API_KEY=${{ secrets.VONAGE_API_KEY }}
+          VONAGE_API_SECRET=${{ secrets.VONAGE_API_SECRET }}
+          SMS_FROM_NUMBER=${{ secrets.SMS_FROM_NUMBER }}
+          
+          # Frontend Configuration
+          VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL }}
+          VITE_ALLOWED_HOSTS=${{ secrets.VITE_ALLOWED_HOSTS }}
+          
+          # Cloudflare Configuration
+          CLOUDFLARE_TUNNEL_TOKEN=${{ secrets.CLOUDFLARE_TUNNEL_TOKEN }}
+          EOL
+      
+      - name: Deploy application
+        run: |
+          echo "Starting deployment on Raspberry Pi..."
+          
+          # Navigate to server directory
+          cd apps/server
+          
+          # Stop existing containers if running
+          docker compose -f docker-compose.prod.yaml down || true
+          
+          # Pull latest images (optional, for pre-built images)
+          docker compose -f docker-compose.prod.yaml pull || true
+          
+          # Build and start containers with new code
+          docker compose -f docker-compose.prod.yaml up -d --build
+          
+          # Show running containers
+          docker ps
+          
+          echo "Deployment completed successfully!"
+      
+      - name: Notify deployment status
+        if: always()
+        run: |
+          if [ "${{ job.status }}" == "success" ]; then
+            echo "Deployment successful!"
+          else
+            echo "Deployment failed!"
+          fi
