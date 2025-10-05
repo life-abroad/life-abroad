@@ -17,8 +17,7 @@ services:
       retries: 5
 
   minio:
-    image: minio/minio:latest
-    platform: linux/arm64
+    image: pixelchrome/minio-arm:latest
     restart: always
     expose:
       - "9000"
