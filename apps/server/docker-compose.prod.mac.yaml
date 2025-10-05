@@ -1,7 +1,6 @@
 services:
   db:
     image: postgres:16
-    platform: linux/arm/v7
     restart: always
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
@@ -19,7 +18,6 @@ services:
 
   minio:
     image: minio/minio:latest
-    platform: linux/arm/v7
     restart: always
     expose:
       - "9000"
@@ -78,8 +76,7 @@ services:
       - server
 
   cloudflared:
-    image: cloudflare/cloudflared:2024.6.1
-    platform: linux/arm/v7
+    image: cloudflare/cloudflared:latest
     restart: unless-stopped
     command: tunnel --config /etc/cloudflared/config.yaml run
     environment:

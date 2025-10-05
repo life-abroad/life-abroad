@@ -61,14 +61,17 @@ jobs:
           # Navigate to server directory
           cd apps/server
           
+          # Verify .env.prod file was created
+          echo "Environment file contents:"
+          ls -la .env.prod
+          echo "First few lines of .env.prod:"
+          head -5 .env.prod
+          
           # Stop existing containers if running
-          docker compose -f docker-compose.prod.yaml down || true
+          docker compose -f docker-compose.prod.yaml --env-file .env.prod down || true
           
-          # Pull latest images (optional, for pre-built images)
-          docker compose -f docker-compose.prod.yaml pull || true
-          
-          # Build and start containers with new code
-          docker compose -f docker-compose.prod.yaml up -d --build
+          # Build and start containers with new code and explicit env file
+          docker compose -f docker-compose.prod.yaml --env-file .env.prod up -d --build
           
           # Show running containers
           docker ps
