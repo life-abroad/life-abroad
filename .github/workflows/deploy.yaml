@@ -3,15 +3,9 @@ name: Deploy to Raspberry Pi
 on:
   push:
     branches: [ main ]
-  pull_request:
-    types:
-      - closed
-    branches:
-      - main
 
 jobs:
   deploy:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
     runs-on: self-hosted
     
     steps:
