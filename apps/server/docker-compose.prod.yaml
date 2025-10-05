@@ -18,6 +18,7 @@ services:
 
   minio:
     image: minio/minio:latest
+    platform: linux/arm64
     restart: always
     expose:
       - "9000"
@@ -76,7 +77,8 @@ services:
       - server
 
   cloudflared:
-    image: cloudflare/cloudflared:2024.6.1
+    image: cloudflare/cloudflared:latest
+    platform: linux/arm64
     restart: unless-stopped
     command: tunnel --config /etc/cloudflared/config.yaml run
     environment:
