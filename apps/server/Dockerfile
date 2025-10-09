@@ -11,6 +11,9 @@ RUN apt-get update && apt-get install -y \
     libjpeg-dev \
     zlib1g-dev \
     libheif-dev \
+    libde265-dev \
+    libx265-dev \
+    pkg-config \
     && rm -rf /var/lib/apt/lists/*
 
 # minimal deps for a single-page FastAPI app
