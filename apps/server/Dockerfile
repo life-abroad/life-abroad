@@ -8,6 +8,9 @@ RUN apt-get update && apt-get install -y \
     g++ \
     make \
     libffi-dev \
+    libjpeg-dev \
+    zlib1g-dev \
+    libheif-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # minimal deps for a single-page FastAPI app
