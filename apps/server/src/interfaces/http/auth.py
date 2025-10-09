@@ -9,7 +9,9 @@ from src.infrastructure.auth.fastapi_users_config import (
 )
 from src.infrastructure.auth.schemas import UserRead, UserCreate, UserUpdate
 from src.domain.models.user import User
+from src.infrastructure.repositories.user_repository import UserRepository
 from pydantic import BaseModel
+from typing import Sequence
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 authorization_service = AuthorizationService()
@@ -49,6 +51,18 @@ router.include_router(
 async def get_current_user_profile(user: User = Depends(current_active_user)):
     """Get the profile of the currently authenticated user"""
     return user
+
+
+# List all users endpoint
+@router.get("/users", response_model=Sequence[UserRead])
+async def get_all_users(
+    user: User = Depends(current_active_user),
+    session: AsyncSession = Depends(get_session)
+):
+    """Get all users in the system (requires authentication)"""
+    user_repo = UserRepository()
+    users = await user_repo.get_all_users(session)
+    return users
 
 
 # Generate shareable link with view token for non-authenticated access
