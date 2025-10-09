@@ -33,6 +33,7 @@ jobs:
           
           # Application Configuration
           JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}
+          USER_MANAGER_SECRET=${{ secrets.USER_MANAGER_SECRET }}
           FRONTEND_URL=${{ secrets.FRONTEND_URL }}
           
           # External Services
