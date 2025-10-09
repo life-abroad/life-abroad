@@ -55,6 +55,7 @@ services:
       - VONAGE_API_KEY=${VONAGE_API_KEY}
       - VONAGE_API_SECRET=${VONAGE_API_SECRET}
       - SMS_FROM_NUMBER=${SMS_FROM_NUMBER}
+      - USER_MANAGER_SECRET=${USER_MANAGER_SECRET}
     depends_on:
       db:
         condition: service_healthy

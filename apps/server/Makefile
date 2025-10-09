@@ -29,3 +29,6 @@ reset:
 
 freeze:
 	pip freeze > requirements.txt
+
+drop:
+	docker volume rm server_db_data

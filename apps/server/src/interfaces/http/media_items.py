@@ -8,12 +8,18 @@ from src.domain.services.media_item_service import MediaItemService
 from src.domain.errors.custom_errors import MediaItemNotFoundError, PostNotFoundError
 from src.infrastructure.database import get_session
 from src.infrastructure.storage.media_storage_service import MediaStorageService
+from src.infrastructure.auth.dependencies import current_active_user
 from typing import Sequence, List
 import logging
 
 logger = logging.getLogger(__name__)
 
-router = APIRouter(prefix="/media-items", tags=["media-items"])
+# Protect ALL routes in this router with authentication
+router = APIRouter(
+    prefix="/media-items", 
+    tags=["media-items"],
+    dependencies=[Depends(current_active_user)]
+)
 
 # Request models
 class MediaItemCreateRequest(BaseModel):

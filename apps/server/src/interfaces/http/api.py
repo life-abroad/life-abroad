@@ -6,7 +6,6 @@ from sqlmodel import SQLModel
 from src.infrastructure.database import engine
 from src.utils.env import get_env_var
 from .posts import router as posts_router
-from .users import router as users_router
 from .audiences import router as audiences_router
 from .media_items import router as media_items_router
 from .auth import router as auth_router
@@ -44,11 +43,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(auth_router)
 app.include_router(posts_router)
-app.include_router(users_router)
 app.include_router(audiences_router)
 app.include_router(media_items_router)
-app.include_router(auth_router)
 app.include_router(frontend_router)
 
 @app.get("/", response_class=HTMLResponse)
