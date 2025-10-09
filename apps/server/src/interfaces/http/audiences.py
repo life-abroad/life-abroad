@@ -33,37 +33,73 @@ class AudienceUpdateRequest(BaseModel):
 audience_service = AudienceService()
 
 @router.get("/", response_model=Sequence[Audience])
-async def get_audiences(session: AsyncSession = Depends(get_session)):
-    """Get all audiences"""
-    return await audience_service.list_audiences(session)
+async def get_audiences(
+    current_user: User = Depends(current_active_user),
+    session: AsyncSession = Depends(get_session)
+):
+    """Get all audiences owned by the authenticated user"""
+    if not current_user.id:
+        raise HTTPException(status_code=500, detail="User ID not found")
+    try:
+        return await audience_service.get_audiences_by_user(current_user.id, session)
+    except UserNotFoundError as e:
+        raise HTTPException(status_code=404, detail=str(e))
 
 @router.get("/{audience_id}", response_model=AudienceWithUsers)
-async def get_audience(audience_id: int, session: AsyncSession = Depends(get_session)):
-    """Get a specific audience"""
+async def get_audience(
+    audience_id: int,
+    current_user: User = Depends(current_active_user),
+    session: AsyncSession = Depends(get_session)
+):
+    """Get a specific audience (only the owner can view)"""
+    if not current_user.id:
+        raise HTTPException(status_code=500, detail="User ID not found")
+    
     audience, users = await audience_service.get_audience_with_users(audience_id, session)
     if not audience:
         raise HTTPException(status_code=404, detail="Audience not found")
+    
+    # Check if current_user owns this audience
+    if audience.user_id != current_user.id:
+        raise HTTPException(status_code=403, detail="Not authorized to view this audience")
+    
     return AudienceWithUsers(id=audience.id or 0, name=audience.name, users=list(users))
 
 @router.post("/", response_model=Audience, status_code=status.HTTP_201_CREATED)
 async def create_audience(
-    audience: AudienceCreateRequest, 
+    audience: AudienceCreateRequest,
+    current_user: User = Depends(current_active_user),
     session: AsyncSession = Depends(get_session)
 ):
-    """Create a new audience"""
+    """Create a new audience for the authenticated user"""
+    if not current_user.id:
+        raise HTTPException(status_code=500, detail="User ID not found")
     try:
-        return await audience_service.create_audience(audience.name, audience.user_ids, session)
+        return await audience_service.create_audience(audience.name, current_user.id, audience.user_ids, session)
     except UserNotFoundError as e:
         raise HTTPException(status_code=404, detail=str(e))
 
 @router.put("/{audience_id}", response_model=Audience)
 async def update_audience(
     audience_id: int, 
-    audience: AudienceUpdateRequest, 
+    audience: AudienceUpdateRequest,
+    current_user: User = Depends(current_active_user),
     session: AsyncSession = Depends(get_session)
 ):
-    """Update an audience"""
+    """Update an audience (only the owner can update)"""
+    if not current_user.id:
+        raise HTTPException(status_code=500, detail="User ID not found")
+    
     try:
+        # Get the audience to check ownership
+        existing_audience = await audience_service.get_audience_by_id(audience_id, session)
+        if not existing_audience:
+            raise AudienceNotFoundError(audience_id)
+        
+        # Check if current_user owns this audience
+        if existing_audience.user_id != current_user.id:
+            raise HTTPException(status_code=403, detail="Not authorized to update this audience")
+        
         return await audience_service.update_audience(audience_id, audience.name, audience.user_ids, session)
     except AudienceNotFoundError as e:
         raise HTTPException(status_code=404, detail=str(e))
@@ -71,9 +107,25 @@ async def update_audience(
         raise HTTPException(status_code=404, detail=str(e))
 
 @router.delete("/{audience_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_audience(audience_id: int, session: AsyncSession = Depends(get_session)):
-    """Delete an audience"""
+async def delete_audience(
+    audience_id: int,
+    current_user: User = Depends(current_active_user),
+    session: AsyncSession = Depends(get_session)
+):
+    """Delete an audience (only the owner can delete)"""
+    if not current_user.id:
+        raise HTTPException(status_code=500, detail="User ID not found")
+    
     try:
+        # Get the audience to check ownership
+        existing_audience = await audience_service.get_audience_by_id(audience_id, session)
+        if not existing_audience:
+            raise AudienceNotFoundError(audience_id)
+        
+        # Check if current_user owns this audience
+        if existing_audience.user_id != current_user.id:
+            raise HTTPException(status_code=403, detail="Not authorized to delete this audience")
+        
         await audience_service.delete_audience(audience_id, session)
     except AudienceNotFoundError as e:
         raise HTTPException(status_code=404, detail=str(e))

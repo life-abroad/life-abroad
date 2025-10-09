@@ -16,6 +16,10 @@ class AudienceRepository:
         result = await session.exec(select(Audience))
         return result.all()
 
+    async def get_audiences_by_user(self, user_id: int, session: AsyncSession) -> Sequence[Audience]:
+        result = await session.exec(select(Audience).where(Audience.user_id == user_id))
+        return result.all()
+
     async def get_audience_by_id(self, audience_id: int, session: AsyncSession) -> Audience | None:
         return await session.get(Audience, audience_id)
 
