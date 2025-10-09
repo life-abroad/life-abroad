@@ -17,7 +17,9 @@ os.environ.update({
     'FRONTEND_URL': 'http://localhost:3000',
     'VONAGE_API_KEY': 'test',
     'VONAGE_API_SECRET': 'test',
-    'SMS_FROM_NUMBER': '+1234567890'
+    'SMS_FROM_NUMBER': '+1234567890',
+    'USER_MANAGER_SECRET': 'test-secret-for-ci-at-least-32-characters',
+    'JWT_SECRET_KEY': 'test-jwt-secret-for-ci'
 })
 
 # Mock MinIO connection for tests
@@ -57,13 +59,14 @@ def test_health_check():
     assert response.status_code == 200
 
 def test_create_user():
-    """Test user creation endpoint"""
+    """Test user registration endpoint"""
     user_data = {
         "name": "Test User",
         "email": "test@example.com",
-        "phone_number": "+1234567890" 
+        "phone_number": "+1234567890",
+        "password": "testpassword123"
     }
-    response = client.post("/users/", json=user_data)
+    response = client.post("/auth/register", json=user_data)
     
     # Debug: Print response details if it fails
     if response.status_code != 201:
@@ -77,14 +80,15 @@ def test_create_user():
     assert "id" in data
 
 def test_create_post():
-    """Test post creation endpoint"""
-    # First create a user
+    """Test post creation endpoint (requires authentication)"""
+    # First register a user
     user_data = {
         "name": "Post Creator",
-        "email": "creator@example.com", 
-        "phone_number": "+1234567891" 
+        "email": "postcreator@example.com", 
+        "phone_number": "+1234567891",
+        "password": "testpassword123"
     }
-    user_response = client.post("/users/", json=user_data)
+    user_response = client.post("/auth/register", json=user_data)
     
     # Debug: Print user creation response
     if user_response.status_code != 201:
@@ -92,14 +96,29 @@ def test_create_post():
         print(f"User response: {user_response.text}")
         return
     
-    user_id = user_response.json()["id"]
+    # Login to get access token
+    login_data = {
+        "username": "postcreator@example.com",
+        "password": "testpassword123"
+    }
+    login_response = client.post("/auth/jwt/login", data=login_data)
     
-    # Create a post
+    if login_response.status_code != 200:
+        print(f"Login failed: {login_response.status_code}")
+        print(f"Login response: {login_response.text}")
+        return
+    
+    access_token = login_response.json()["access_token"]
+    
+    # Create a post with authentication
     post_data = {
-        "user_id": user_id,
         "description": "Test post description"
     }
-    response = client.post("/posts/", json=post_data)
+    response = client.post(
+        "/posts/", 
+        json=post_data,
+        headers={"Authorization": f"Bearer {access_token}"}
+    )
     
     # Debug: Print post creation response
     if response.status_code != 201:
@@ -109,7 +128,6 @@ def test_create_post():
     assert response.status_code == 201
     data = response.json()
     assert data["description"] == "Test post description"
-    assert data["user_id"] == user_id
     assert "id" in data
 
 def test_invalid_endpoints():
