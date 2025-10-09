@@ -11,14 +11,19 @@ class AudienceService:
         self.audience_repository = AudienceRepository()
         self.user_repository = UserRepository()
 
-    async def create_audience(self, name: str, user_ids: List[int], session: AsyncSession) -> Audience:
+    async def create_audience(self, name: str, owner_id: int, user_ids: List[int], session: AsyncSession) -> Audience:
+        # Validate owner exists
+        owner = await self.user_repository.get_user_by_id(owner_id, session)
+        if not owner:
+            raise UserNotFoundError(owner_id)
+        
         # Validate all users exist
         for user_id in user_ids:
             user = await self.user_repository.get_user_by_id(user_id, session)
             if not user:
                 raise UserNotFoundError(user_id)
         
-        audience = Audience(name=name)
+        audience = Audience(name=name, user_id=owner_id)
         created_audience = await self.audience_repository.create_audience(audience, session)
         
         # Link users to audience
@@ -57,6 +62,13 @@ class AudienceService:
 
     async def list_audiences(self, session: AsyncSession) -> Sequence[Audience]:
         return await self.audience_repository.get_all_audiences(session)
+
+    async def get_audiences_by_user(self, user_id: int, session: AsyncSession) -> Sequence[Audience]:
+        # Validate user exists
+        user = await self.user_repository.get_user_by_id(user_id, session)
+        if not user:
+            raise UserNotFoundError(user_id)
+        return await self.audience_repository.get_audiences_by_user(user_id, session)
 
     async def get_audience_by_id(self, audience_id: int, session: AsyncSession) -> Audience | None:
         return await self.audience_repository.get_audience_by_id(audience_id, session)
