@@ -23,3 +23,6 @@ jobs:
       - name: Run tests
         run: |
           PYTHONPATH=apps/server pytest -q apps/server/tests
+        env:
+          USER_MANAGER_SECRET: test-secret-for-ci-at-least-32-characters
+          JWT_SECRET_KEY: test-jwt-secret-for-ci
