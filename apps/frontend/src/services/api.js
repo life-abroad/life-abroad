@@ -5,6 +5,154 @@ if (!API_BASE_URL) {
 }
 
 class ApiService {
+  // Token management
+  getAuthToken() {
+    return localStorage.getItem('auth_token');
+  }
+
+  setAuthToken(token) {
+    localStorage.setItem('auth_token', token);
+  }
+
+  clearAuthToken() {
+    localStorage.removeItem('auth_token');
+  }
+
+  isAuthenticated() {
+    return !!this.getAuthToken();
+  }
+
+  // Authentication methods
+  async register(email, password, name, phoneNumber) {
+    const response = await fetch(`${API_BASE_URL}/auth/register`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email,
+        password,
+        name,
+        phone_number: phoneNumber,
+      }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.detail || 'Registration failed');
+    }
+
+    return await response.json();
+  }
+
+  async login(email, password) {
+    const response = await fetch(`${API_BASE_URL}/auth/jwt/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams({
+        username: email,
+        password: password,
+      }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.detail || 'Login failed');
+    }
+
+    const data = await response.json();
+    this.setAuthToken(data.access_token);
+    return data;
+  }
+
+  async logout() {
+    const token = this.getAuthToken();
+    if (token) {
+      try {
+        await fetch(`${API_BASE_URL}/auth/jwt/logout`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+      } catch (error) {
+        console.error('Logout request failed:', error);
+      }
+    }
+    this.clearAuthToken();
+  }
+
+  // Authenticated API requests
+  async fetchPosts() {
+    const token = this.getAuthToken();
+    const response = await fetch(`${API_BASE_URL}/posts/`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch posts: ${response.status}`);
+    }
+
+    return await response.json();
+  }
+
+  async fetchAudiences() {
+    const token = this.getAuthToken();
+    const response = await fetch(`${API_BASE_URL}/audiences/`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch audiences: ${response.status}`);
+    }
+
+    return await response.json();
+  }
+
+  async getCurrentUser() {
+    const token = this.getAuthToken();
+    const response = await fetch(`${API_BASE_URL}/auth/me`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch user: ${response.status}`);
+    }
+
+    return await response.json();
+  }
+
+  async fetchUsers() {
+    const token = this.getAuthToken();
+    const response = await fetch(`${API_BASE_URL}/auth/users/`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch users: ${response.status}`);
+    }
+
+    return await response.json();
+  }
+
   async fetchWithToken(token, postId = null) {
     let url = `${API_BASE_URL}/frontend/view?token=${token}`;
     if (postId) {
