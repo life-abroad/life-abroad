@@ -5,9 +5,11 @@ from src.domain.models.user import User
 from src.domain.services.user_service import UserService
 from src.infrastructure.database import get_session
 from src.domain.errors.custom_errors import UserNotFoundError
+from src.infrastructure.auth.dependencies import current_active_user, optional_current_user
 from typing import Sequence
 
-router = APIRouter(prefix="/users", tags=["users"])
+# Legacy user management endpoints - consider deprecating in favor of FastAPI Users routes
+router = APIRouter(prefix="/legacy/users", tags=["users-legacy"])
 
 # Create request models
 class UserCreateRequest(BaseModel):

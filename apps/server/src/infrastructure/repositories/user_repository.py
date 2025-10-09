@@ -30,3 +30,8 @@ class UserRepository:
         await session.delete(user)
         await session.commit()
         return True
+    
+    async def get_user_by_email(self, email: str, session: AsyncSession) -> User | None:
+        """Get a user by their email address"""
+        result = await session.exec(select(User).where(User.email == email))
+        return result.first()
