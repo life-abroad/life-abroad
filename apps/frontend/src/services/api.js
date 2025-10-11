@@ -136,9 +136,9 @@ class ApiService {
     return await response.json();
   }
 
-  async fetchUsers() {
+  async fetchContacts() {
     const token = this.getAuthToken();
-    const response = await fetch(`${API_BASE_URL}/auth/users/`, {
+    const response = await fetch(`${API_BASE_URL}/contacts/`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -147,7 +147,146 @@ class ApiService {
     });
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch users: ${response.status}`);
+      throw new Error(`Failed to fetch contacts: ${response.status}`);
+    }
+
+    return await response.json();
+  }
+
+  async createContact(name, phoneNumber, email = null, profilePictureId = null) {
+    const token = this.getAuthToken();
+    const response = await fetch(`${API_BASE_URL}/contacts/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        name,
+        phone_number: phoneNumber,
+        email,
+        profile_picture_id: profilePictureId,
+      }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.detail || 'Failed to create contact');
+    }
+
+    return await response.json();
+  }
+
+  async updateContact(contactId, name, phoneNumber, email = null, profilePictureId = null) {
+    const token = this.getAuthToken();
+    const response = await fetch(`${API_BASE_URL}/contacts/${contactId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        name,
+        phone_number: phoneNumber,
+        email,
+        profile_picture_id: profilePictureId,
+      }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.detail || 'Failed to update contact');
+    }
+
+    return await response.json();
+  }
+
+  async deleteContact(contactId) {
+    const token = this.getAuthToken();
+    const response = await fetch(`${API_BASE_URL}/contacts/${contactId}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.detail || 'Failed to delete contact');
+    }
+  }
+
+  async createAudience(name, contactIds) {
+    const token = this.getAuthToken();
+    const response = await fetch(`${API_BASE_URL}/audiences/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        name,
+        contact_ids: contactIds,
+      }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.detail || 'Failed to create audience');
+    }
+
+    return await response.json();
+  }
+
+  async updateAudience(audienceId, name, contactIds) {
+    const token = this.getAuthToken();
+    const response = await fetch(`${API_BASE_URL}/audiences/${audienceId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        name,
+        contact_ids: contactIds,
+      }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.detail || 'Failed to update audience');
+    }
+
+    return await response.json();
+  }
+
+  async deleteAudience(audienceId) {
+    const token = this.getAuthToken();
+    const response = await fetch(`${API_BASE_URL}/audiences/${audienceId}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.detail || 'Failed to delete audience');
+    }
+  }
+
+  async getAudience(audienceId) {
+    const token = this.getAuthToken();
+    const response = await fetch(`${API_BASE_URL}/audiences/${audienceId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch audience: ${response.status}`);
     }
 
     return await response.json();

@@ -1,6 +1,7 @@
 from src.infrastructure.auth.jwt_provider import JwtProvider
 from src.domain.services.post_service import PostService
 from src.infrastructure.repositories.audience_repository import AudienceRepository
+from src.infrastructure.repositories.contact_repository import ContactRepository
 from src.utils.env import get_env_var
 
 class AuthorizationService:
@@ -10,25 +11,30 @@ class AuthorizationService:
         self.jwt_provider = JwtProvider()
         self.post_service = PostService()
         self.audience_repository = AudienceRepository()
+        self.contact_repository = ContactRepository()
     
-    async def generate_user_link(self, user_id: int, post_id: int, session) -> dict:
-        """Generate an authenticated link for a user (validates they can access the specific post)"""
-        # Verify user has permission to view this post
+    async def generate_contact_link(self, contact_id: int, post_id: int, session) -> dict:
+        """Generate an authenticated link for a contact (validates they can access the specific post)"""
+        # Verify contact has permission to view this post
+        contact = await self.contact_repository.get_contact_by_id(contact_id, session)
+        if not contact:
+            raise ValueError(f"Contact with id {contact_id} not found")
+        
         post, _, audiences, _ = await self.post_service.get_post_with_user_and_audiences(post_id, session)
         
-        user_in_audience = False
+        contact_in_audience = False
         for audience in audiences:
             if audience.id is not None:
-                users = await self.audience_repository.get_users_in_audience(audience.id, session)
-                if any(user.id == user_id for user in users):
-                    user_in_audience = True
+                contacts = await self.audience_repository.get_contacts_in_audience(audience.id, session)
+                if any(c.id == contact_id for c in contacts):
+                    contact_in_audience = True
                     break
         
-        if not user_in_audience:
-            raise PermissionError("User is not authorized to view this post")
+        if not contact_in_audience:
+            raise PermissionError("Contact is not authorized to view this post")
         
-        # Generate a user token (not post-specific)
-        token = self.jwt_provider.create_user_view_token(user_id)
+        # Generate a contact token (not post-specific)
+        token = self.jwt_provider.create_user_view_token(contact.user_id)
         frontend_url = f"{get_env_var('FRONTEND_URL')}?token={token}"
         
         return {"token": token, "url": frontend_url}
@@ -37,15 +43,19 @@ class AuthorizationService:
         """Verify a JWT token and return its payload"""
         return self.jwt_provider.verify_token(token)
     
-    async def can_user_access_post(self, user_id: int, post_id: int, session) -> bool:
-        """Check if a user can access a specific post through audience membership"""
+    async def can_contact_access_post(self, contact_id: int, post_id: int, session) -> bool:
+        """Check if a contact can access a specific post through audience membership"""
         try:
+            contact = await self.contact_repository.get_contact_by_id(contact_id, session)
+            if not contact:
+                return False
+            
             post, _, audiences, _ = await self.post_service.get_post_with_user_and_audiences(post_id, session)
             
             for audience in audiences:
                 if audience.id is not None:
-                    users = await self.audience_repository.get_users_in_audience(audience.id, session)
-                    if any(user.id == user_id for user in users):
+                    contacts = await self.audience_repository.get_contacts_in_audience(audience.id, session)
+                    if any(c.id == contact_id for c in contacts):
                         return True
             return False
         except Exception:

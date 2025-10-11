@@ -82,12 +82,14 @@
 }
 
 .posts-list,
+.contacts-list,
 .audiences-list {
   display: grid;
   gap: 16px;
 }
 
 .post-card,
+.contact-card,
 .audience-card {
   background: #f8f9fa;
   border-radius: 8px;
@@ -96,13 +98,19 @@
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
+.contact-card {
+  border-left-color: #28a745;
+}
+
 .post-card:hover,
+.contact-card:hover,
 .audience-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .post-header,
+.contact-header,
 .audience-header {
   display: flex;
   justify-content: space-between;
@@ -111,6 +119,7 @@
 }
 
 .post-header h3,
+.contact-header h3,
 .audience-header h3 {
   margin: 0;
   color: #333;
@@ -118,6 +127,7 @@
 }
 
 .post-date,
+.contact-phone,
 .audience-id {
   color: #999;
   font-size: 12px;
@@ -128,6 +138,12 @@
   margin: 0;
   color: #555;
   line-height: 1.6;
+}
+
+.contact-email {
+  margin: 8px 0 0 0;
+  color: #666;
+  font-size: 14px;
 }
 
 .users-list {
@@ -192,8 +208,13 @@
 }
 
 .empty-state p {
-  margin: 0;
+  margin: 0 0 8px 0;
   font-size: 16px;
+}
+
+.empty-state .hint {
+  font-size: 14px;
+  color: #aaa;
 }
 
 .loading,
