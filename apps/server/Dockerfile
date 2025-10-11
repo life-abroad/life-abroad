@@ -14,11 +14,7 @@ RUN set -eux; \
             make \
             libffi-dev \
             libjpeg-dev \
-            zlib1g-dev \
-            libheif-dev \
-            libde265-dev \
-            libx265-dev \
-            pkg-config; \
+            zlib1g-dev; \
         rm -rf /var/lib/apt/lists/*; \
     fi
 
