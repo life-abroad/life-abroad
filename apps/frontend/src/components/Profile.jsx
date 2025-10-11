@@ -6,6 +6,7 @@ function Profile({ onLogout }) {
   const [user, setUser] = useState(null);
   const [posts, setPosts] = useState([]);
   const [audiences, setAudiences] = useState([]);
+  const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [activeTab, setActiveTab] = useState('posts');
@@ -17,15 +18,17 @@ function Profile({ onLogout }) {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const [userData, postsData, audiencesData] = await Promise.all([
+      const [userData, postsData, audiencesData, contactsData] = await Promise.all([
         ApiService.getCurrentUser(),
         ApiService.fetchPosts(),
         ApiService.fetchAudiences(),
+        ApiService.fetchContacts(),
       ]);
       
       setUser(userData);
       setPosts(postsData);
       setAudiences(audiencesData);
+      setContacts(contactsData);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -80,6 +83,12 @@ function Profile({ onLogout }) {
           My Posts ({posts.length})
         </button>
         <button
+          className={`tab ${activeTab === 'contacts' ? 'active' : ''}`}
+          onClick={() => setActiveTab('contacts')}
+        >
+          My Contacts ({contacts.length})
+        </button>
+        <button
           className={`tab ${activeTab === 'audiences' ? 'active' : ''}`}
           onClick={() => setActiveTab('audiences')}
         >
@@ -88,7 +97,7 @@ function Profile({ onLogout }) {
       </div>
 
       <div className="tab-content">
-        {activeTab === 'posts' ? (
+        {activeTab === 'posts' && (
           <div className="posts-list">
             {posts.length === 0 ? (
               <div className="empty-state">
@@ -108,11 +117,37 @@ function Profile({ onLogout }) {
               ))
             )}
           </div>
-        ) : (
+        )}
+
+        {activeTab === 'contacts' && (
+          <div className="contacts-list">
+            {contacts.length === 0 ? (
+              <div className="empty-state">
+                <p>You haven't added any contacts yet.</p>
+                <p className="hint">Add contacts to organize them into audiences!</p>
+              </div>
+            ) : (
+              contacts.map((contact) => (
+                <div key={contact.id} className="contact-card">
+                  <div className="contact-header">
+                    <h3>{contact.name}</h3>
+                    <span className="contact-phone">{contact.phone_number}</span>
+                  </div>
+                  {contact.email && (
+                    <p className="contact-email">{contact.email}</p>
+                  )}
+                </div>
+              ))
+            )}
+          </div>
+        )}
+
+        {activeTab === 'audiences' && (
           <div className="audiences-list">
             {audiences.length === 0 ? (
               <div className="empty-state">
                 <p>You haven't created any audiences yet.</p>
+                <p className="hint">Create audiences to share posts with groups of contacts!</p>
               </div>
             ) : (
               audiences.map((audience) => (

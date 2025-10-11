@@ -1,20 +1,26 @@
-FROM python:3.12-slim
+FROM python:3.12-slim-bookworm
 
 WORKDIR /app
 
-# Install build dependencies for compiling Python packages
-RUN apt-get update && apt-get install -y \
-    gcc \
-    g++ \
-    make \
-    libffi-dev \
-    libjpeg-dev \
-    zlib1g-dev \
-    libheif-dev \
-    libde265-dev \
-    libx265-dev \
-    pkg-config \
-    && rm -rf /var/lib/apt/lists/*
+# Optional OS-level deps (enabled via build-arg for Raspberry Pi/production)
+ARG WITH_IMAGE_DEPS=0
+RUN set -eux; \
+    if [ "$WITH_IMAGE_DEPS" = "1" ]; then \
+        rm -rf /var/lib/apt/lists/*; \
+        apt-get update -o Acquire::Retries=3 -y; \
+        DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+            gcc \
+            g++ \
+            make \
+            libffi-dev \
+            libjpeg-dev \
+            zlib1g-dev \
+            libheif-dev \
+            libde265-dev \
+            libx265-dev \
+            pkg-config; \
+        rm -rf /var/lib/apt/lists/*; \
+    fi
 
 # minimal deps for a single-page FastAPI app
 COPY requirements.txt .

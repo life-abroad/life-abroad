@@ -2,8 +2,8 @@ from typing import Sequence, List
 from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlmodel import select
 from src.domain.models.audience import Audience
-from src.domain.models.user import User
-from src.domain.models.links.audience_user_link import AudienceUserLink
+from src.domain.models.contact import Contact
+from src.domain.models.links.audience_contact_link import AudienceContactLink
 
 class AudienceRepository:
     async def create_audience(self, audience: Audience, session: AsyncSession) -> Audience:
@@ -23,11 +23,11 @@ class AudienceRepository:
     async def get_audience_by_id(self, audience_id: int, session: AsyncSession) -> Audience | None:
         return await session.get(Audience, audience_id)
 
-    async def get_users_in_audience(self, audience_id: int, session: AsyncSession) -> Sequence[User]:
+    async def get_contacts_in_audience(self, audience_id: int, session: AsyncSession) -> Sequence[Contact]:
         result = await session.exec(
-            select(User)
-            .join(AudienceUserLink)
-            .where(AudienceUserLink.audience_id == audience_id)
+            select(Contact)
+            .join(AudienceContactLink)
+            .where(AudienceContactLink.audience_id == audience_id)
         )
         return result.all()
 
@@ -37,31 +37,31 @@ class AudienceRepository:
         await session.refresh(audience)
         return audience
 
-    async def add_users_to_audience(self, audience_id: int, user_ids: List[int], session: AsyncSession) -> None:
-        for user_id in user_ids:
+    async def add_contacts_to_audience(self, audience_id: int, contact_ids: List[int], session: AsyncSession) -> None:
+        for contact_id in contact_ids:
             # Check if link already exists
             exists = await session.exec(
-                select(AudienceUserLink).where(
-                    AudienceUserLink.audience_id == audience_id,
-                    AudienceUserLink.user_id == user_id
+                select(AudienceContactLink).where(
+                    AudienceContactLink.audience_id == audience_id,
+                    AudienceContactLink.contact_id == contact_id
                 )
             )
             if not exists.first():
-                link = AudienceUserLink(audience_id=audience_id, user_id=user_id)
+                link = AudienceContactLink(audience_id=audience_id, contact_id=contact_id)
                 session.add(link)
         await session.commit()
 
-    async def replace_users_in_audience(self, audience_id: int, user_ids: List[int], session: AsyncSession) -> None:
+    async def replace_contacts_in_audience(self, audience_id: int, contact_ids: List[int], session: AsyncSession) -> None:
         # Remove existing links
         existing = await session.exec(
-            select(AudienceUserLink).where(AudienceUserLink.audience_id == audience_id)
+            select(AudienceContactLink).where(AudienceContactLink.audience_id == audience_id)
         )
         for link in existing:
             await session.delete(link)
         
         # Add new links
-        for user_id in user_ids:
-            link = AudienceUserLink(audience_id=audience_id, user_id=user_id)
+        for contact_id in contact_ids:
+            link = AudienceContactLink(audience_id=audience_id, contact_id=contact_id)
             session.add(link)
         await session.commit()
 
@@ -70,9 +70,9 @@ class AudienceRepository:
         if not audience:
             return False
         
-        # Remove all user links first
+        # Remove all contact links first
         existing_links = await session.exec(
-            select(AudienceUserLink).where(AudienceUserLink.audience_id == audience_id)
+            select(AudienceContactLink).where(AudienceContactLink.audience_id == audience_id)
         )
         for link in existing_links:
             await session.delete(link)

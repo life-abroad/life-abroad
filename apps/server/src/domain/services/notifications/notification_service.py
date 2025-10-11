@@ -14,7 +14,7 @@ class NotificationService:
         self.post_repository = PostRepository()
     
     async def notify_audiences_of_new_post(self, post_id: int, audience_ids: list[int], session) -> None:
-        """Send notifications to all users in the specified audiences about a new post"""
+        """Send notifications to all contacts in the specified audiences about a new post"""
         if not audience_ids:
             return
         
@@ -23,20 +23,21 @@ class NotificationService:
         sender_name = post_creator.name if post_creator else "Someone"
             
         for audience_id in audience_ids:
-            users = await self.audience_repository.get_users_in_audience(audience_id, session)
-            for user in users:
+            contacts = await self.audience_repository.get_contacts_in_audience(audience_id, session)
+            for contact in contacts:
                 try:
-                    # Generate authenticated link for this user with the specific post
-                    token = self.jwt_provider.create_user_view_token(user.id or 0)
+                    # Generate authenticated link for this contact with the specific post
+                    # Note: We use the contact's user_id (the owner) for the token
+                    token = self.jwt_provider.create_user_view_token(contact.user_id)
                     view_url = f"{get_env_var('FRONTEND_URL')}?token={token}&post_id={post_id}"
                     
                     # Send SMS notification
                     await self.sms_provider.send_post_notification(
-                        user.phone_number, 
-                        user.name,
+                        contact.phone_number, 
+                        contact.name,
                         sender_name,
                         view_url
                     )
                 except Exception as e:
                     # Log error but don't fail the notification process
-                    print(f"Failed to send SMS to {user.phone_number}: {e}")
+                    print(f"Failed to send SMS to {contact.phone_number}: {e}")

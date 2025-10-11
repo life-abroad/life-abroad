@@ -7,6 +7,7 @@ from src.infrastructure.database import engine
 from src.utils.env import get_env_var
 from .posts import router as posts_router
 from .audiences import router as audiences_router
+from .contacts import router as contacts_router
 from .media_items import router as media_items_router
 from .auth import router as auth_router
 from .frontend import router as frontend_router
@@ -15,8 +16,9 @@ from .frontend import router as frontend_router
 from src.domain.models.post import Post
 from src.domain.models.user import User
 from src.domain.models.audience import Audience
+from src.domain.models.contact import Contact
 from src.domain.models.media_item import MediaItem
-from src.domain.models.links.audience_user_link import AudienceUserLink
+from src.domain.models.links.audience_contact_link import AudienceContactLink
 from src.domain.models.links.post_audience_link import PostAudienceLink
 
 @asynccontextmanager
@@ -46,6 +48,7 @@ app.add_middleware(
 app.include_router(auth_router)
 app.include_router(posts_router)
 app.include_router(audiences_router)
+app.include_router(contacts_router)
 app.include_router(media_items_router)
 app.include_router(frontend_router)
 

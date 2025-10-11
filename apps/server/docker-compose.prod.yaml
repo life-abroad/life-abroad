@@ -35,7 +35,10 @@ services:
       retries: 3
 
   server:
-    build: ./
+    build:
+      context: ./
+      args:
+        WITH_IMAGE_DEPS: "1"
     container_name: life-abroad_server
     expose:
       - "8000"

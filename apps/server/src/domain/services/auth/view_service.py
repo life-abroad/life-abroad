@@ -1,18 +1,20 @@
 from src.domain.services.post_service import PostService
 from src.domain.services.auth.authorization_service import AuthorizationService
 from src.infrastructure.repositories.audience_repository import AudienceRepository
-from src.domain.models.links.audience_user_link import AudienceUserLink
+from src.infrastructure.repositories.contact_repository import ContactRepository
+from src.domain.models.links.audience_contact_link import AudienceContactLink
 from src.domain.models.links.post_audience_link import PostAudienceLink
 from sqlmodel import select
 from typing import List
 
 class ViewService:
-    """Domain service for handling view operations and user access"""
+    """Domain service for handling view operations and contact access"""
     
     def __init__(self):
         self.post_service = PostService()
         self.authorization_service = AuthorizationService()
         self.audience_repository = AudienceRepository()
+        self.contact_repository = ContactRepository()
     
     async def get_view_data_for_token(self, token: str, post_id: int | None, session) -> dict:
         """Get view data based on a JWT token and optional post_id from URL"""
@@ -23,8 +25,14 @@ class ViewService:
         user_id = int(payload["sub"])
         
         if post_id:
-            # User wants to view a specific post - check access and return it
-            can_access = await self.authorization_service.can_user_access_post(user_id, post_id, session)
+            # User wants to view a specific post - check if any of their contacts can access it
+            contacts = await self.contact_repository.get_contacts_by_user(user_id, session)
+            can_access = False
+            for contact in contacts:
+                if contact.id and await self.authorization_service.can_contact_access_post(contact.id, post_id, session):
+                    can_access = True
+                    break
+            
             if not can_access:
                 raise PermissionError("User is not authorized to view this post")
             return await self._get_single_post_view(post_id, session)
@@ -56,19 +64,30 @@ class ViewService:
         return {"posts": accessible_posts}
     
     async def _get_user_accessible_posts(self, user_id: int, session) -> List[dict]:
-        """Get all posts that a user can access through their audience memberships"""
-        # Get all audiences the user is part of
-        user_audience_links = await session.exec(
-            select(AudienceUserLink).where(AudienceUserLink.user_id == user_id)
-        )
-        audience_ids = [link.audience_id for link in user_audience_links.all()]
+        """Get all posts that a user's contacts can access through audience memberships"""
+        # Get all contacts belonging to this user
+        contacts = await self.contact_repository.get_contacts_by_user(user_id, session)
+        if not contacts:
+            return []
         
-        if not audience_ids:
+        contact_ids = [c.id for c in contacts if c.id is not None]
+        if not contact_ids:
+            return []
+        
+        # Get all audiences these contacts are part of
+        all_audience_ids = set()
+        for contact_id in contact_ids:
+            contact_audience_links = await session.exec(
+                select(AudienceContactLink).where(AudienceContactLink.contact_id == contact_id)
+            )
+            all_audience_ids.update(link.audience_id for link in contact_audience_links.all())
+        
+        if not all_audience_ids:
             return []
         
         # Get all posts that are shared with these audiences
         all_post_links = []
-        for audience_id in audience_ids:
+        for audience_id in all_audience_ids:
             post_audience_links = await session.exec(
                 select(PostAudienceLink)
                 .where(PostAudienceLink.audience_id == audience_id)
