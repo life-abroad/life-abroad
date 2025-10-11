@@ -65,6 +65,9 @@ jobs:
           # Stop existing containers if running
           docker compose -f docker-compose.prod.yaml --env-file .env.prod down || true
           
+          # Remove old images to force fresh build
+          docker compose -f docker-compose.prod.yaml --env-file .env.prod build --no-cache frontend
+          
           # Build and start containers with new code and explicit env file
           docker compose -f docker-compose.prod.yaml --env-file .env.prod up -d --build
           
