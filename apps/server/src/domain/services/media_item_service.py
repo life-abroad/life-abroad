@@ -66,7 +66,21 @@ class MediaItemService:
         self.media_storage_service.delete_file(media_item.path)
 
     async def delete_media_items_by_post_id(self, post_id: int, session: AsyncSession) -> None:
+        """Delete all media items for a post from database only (not storage)"""
         await self.media_item_repository.delete_media_items_by_post_id(post_id, session)
+    
+    async def delete_post_media_with_files(self, post_id: int, user_id: int, session: AsyncSession) -> int:
+        """
+        Delete all media items for a post from both database and storage.
+        Returns count of files deleted from storage.
+        """
+        # Delete from database first
+        await self.media_item_repository.delete_media_items_by_post_id(post_id, session)
+        
+        # Delete all files from storage for this post
+        deleted_count = self.media_storage_service.delete_post_media(user_id, post_id)
+        
+        return deleted_count
 
     def get_media_item_stream(self, file_path: str) -> tuple[Any, str, int]:
         """Get a media item stream for serving"""

@@ -104,6 +104,11 @@ async def upload_media_file(
     Upload a media file and create a media item record
     """
     try:
+        # Get the post to retrieve user_id for structured storage
+        post = await post_service.get_post_by_id(post_id, session)
+        if not post:
+            raise HTTPException(status_code=404, detail=f"Post with id {post_id} not found")
+        
         # Validate file type
         if not file.content_type:
             raise HTTPException(status_code=400, detail="File content type is required")
@@ -127,11 +132,13 @@ async def upload_media_file(
         # Reset file pointer
         await file.seek(0)
         
-        # Upload file to MinIO
+        # Upload file to MinIO with structured path
         file_path = media_storage_service.upload_file(
             file_data=file.file,
             file_name=file.filename or "unknown",
-            content_type=file.content_type
+            content_type=file.content_type,
+            user_id=post.user_id,
+            post_id=post_id
         )
         
         # Create media item record
