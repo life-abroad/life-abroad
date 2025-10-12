@@ -1,4 +1,5 @@
 import React from 'react';
+import './PostsList.css';
 
 function PostsList({ posts }) {
   const handlePostClick = (postId) => {

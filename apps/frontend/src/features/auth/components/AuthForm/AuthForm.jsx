@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ApiService from '../services/api';
+import { authAPI } from '../../../../api';
 import './AuthForm.css';
 
 function AuthForm({ onLoginSuccess }) {
@@ -18,12 +18,12 @@ function AuthForm({ onLoginSuccess }) {
 
     try {
       if (isLogin) {
-        await ApiService.login(email, password);
+        await authAPI.login(email, password);
         onLoginSuccess();
       } else {
-        await ApiService.register(email, password, name, phoneNumber);
+        await authAPI.register(email, password, name, phoneNumber);
         // After registration, automatically log in
-        await ApiService.login(email, password);
+        await authAPI.login(email, password);
         onLoginSuccess();
       }
     } catch (err) {

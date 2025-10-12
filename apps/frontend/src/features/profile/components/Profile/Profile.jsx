@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import ApiService from '../services/api';
+import { authAPI, postsAPI, audiencesAPI, contactsAPI } from '../../../../api';
 import './Profile.css';
 
 function Profile({ onLogout }) {
@@ -19,10 +19,10 @@ function Profile({ onLogout }) {
     try {
       setLoading(true);
       const [userData, postsData, audiencesData, contactsData] = await Promise.all([
-        ApiService.getCurrentUser(),
-        ApiService.fetchPosts(),
-        ApiService.fetchAudiences(),
-        ApiService.fetchContacts(),
+        authAPI.getCurrentUser(),
+        postsAPI.fetchPosts(),
+        audiencesAPI.fetchAudiences(),
+        contactsAPI.fetchContacts(),
       ]);
       
       setUser(userData);
@@ -37,7 +37,7 @@ function Profile({ onLogout }) {
   };
 
   const handleLogout = async () => {
-    await ApiService.logout();
+    await authAPI.logout();
     onLogout();
   };
 
@@ -105,14 +105,14 @@ function Profile({ onLogout }) {
               </div>
             ) : (
               posts.map((post) => (
-                <div key={post.id} className="post-card">
-                  <div className="post-header">
+                <div key={post.id} className="profile-post-card">
+                  <div className="profile-post-header">
                     <h3>Post #{post.id}</h3>
-                    <span className="post-date">
+                    <span className="profile-post-date">
                       {new Date(post.created_at).toLocaleDateString()}
                     </span>
                   </div>
-                  <p className="post-description">{post.description}</p>
+                  <p className="profile-post-description">{post.description}</p>
                 </div>
               ))
             )}
@@ -128,13 +128,13 @@ function Profile({ onLogout }) {
               </div>
             ) : (
               contacts.map((contact) => (
-                <div key={contact.id} className="contact-card">
-                  <div className="contact-header">
+                <div key={contact.id} className="profile-contact-card">
+                  <div className="profile-contact-header">
                     <h3>{contact.name}</h3>
-                    <span className="contact-phone">{contact.phone_number}</span>
+                    <span className="profile-contact-phone">{contact.phone_number}</span>
                   </div>
                   {contact.email && (
-                    <p className="contact-email">{contact.email}</p>
+                    <p className="profile-contact-email">{contact.email}</p>
                   )}
                 </div>
               ))
@@ -151,10 +151,10 @@ function Profile({ onLogout }) {
               </div>
             ) : (
               audiences.map((audience) => (
-                <div key={audience.id} className="audience-card">
-                  <div className="audience-header">
+                <div key={audience.id} className="profile-audience-card">
+                  <div className="profile-audience-header">
                     <h3>{audience.name}</h3>
-                    <span className="audience-id">ID: {audience.id}</span>
+                    <span className="profile-audience-id">ID: {audience.id}</span>
                   </div>
                 </div>
               ))

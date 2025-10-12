@@ -1,4 +1,5 @@
 import React from 'react';
+import './PostView.css';
 
 function PostView({ post }) {
   const handleViewAllPosts = () => {
@@ -10,7 +11,7 @@ function PostView({ post }) {
 
   return (
     <div className="post-view">
-      <div className="post-header">
+      <div className="post-view-header">
         <button 
           className="view-all-button"
           onClick={handleViewAllPosts}

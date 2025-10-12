@@ -12,8 +12,8 @@
   margin-bottom: 30px;
   padding: 20px;
   background: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
 }
 
 .user-info h1 {
@@ -29,11 +29,11 @@
 }
 
 .logout-button {
-  background: #dc3545;
+  background: var(--color-logout);
   color: white;
   border: none;
   padding: 10px 20px;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
@@ -41,7 +41,7 @@
 }
 
 .logout-button:hover {
-  background: #c82333;
+  background: var(--color-logout-hover);
 }
 
 .tabs {
@@ -69,15 +69,15 @@
 }
 
 .tab.active {
-  color: #667eea;
-  border-bottom-color: #667eea;
+  color: var(--color-auth-gradient-start);
+  border-bottom-color: var(--color-auth-gradient-start);
 }
 
 .tab-content {
   background: white;
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   padding: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-md);
   min-height: 400px;
 }
 
@@ -88,117 +88,62 @@
   gap: 16px;
 }
 
-.post-card,
-.contact-card,
-.audience-card {
+.profile-post-card,
+.profile-contact-card,
+.profile-audience-card {
   background: #f8f9fa;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   padding: 20px;
-  border-left: 4px solid #667eea;
+  border-left: 4px solid var(--color-primary);
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.contact-card {
+.profile-contact-card {
   border-left-color: #28a745;
 }
 
-.post-card:hover,
-.contact-card:hover,
-.audience-card:hover {
+.profile-post-card:hover,
+.profile-contact-card:hover,
+.profile-audience-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.post-header,
-.contact-header,
-.audience-header {
+.profile-post-header,
+.profile-contact-header,
+.profile-audience-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 12px;
 }
 
-.post-header h3,
-.contact-header h3,
-.audience-header h3 {
+.profile-post-header h3,
+.profile-contact-header h3,
+.profile-audience-header h3 {
   margin: 0;
   color: #333;
   font-size: 18px;
 }
 
-.post-date,
-.contact-phone,
-.audience-id {
+.profile-post-date,
+.profile-contact-phone,
+.profile-audience-id {
   color: #999;
   font-size: 12px;
   font-weight: 500;
 }
 
-.post-description {
+.profile-post-description {
   margin: 0;
   color: #555;
   line-height: 1.6;
 }
 
-.contact-email {
+.profile-contact-email {
   margin: 8px 0 0 0;
   color: #666;
   font-size: 14px;
-}
-
-.users-list {
-  display: grid;
-  gap: 16px;
-}
-
-.user-card {
-  background: #f8f9fa;
-  border-radius: 8px;
-  padding: 20px;
-  border-left: 4px solid #28a745;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.user-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.user-card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
-.user-card-header h3 {
-  margin: 0;
-  color: #333;
-  font-size: 18px;
-}
-
-.user-id {
-  color: #999;
-  font-size: 12px;
-  font-weight: 500;
-}
-
-.user-details {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.user-card-email {
-  margin: 0;
-  color: #555;
-  font-size: 14px;
-}
-
-.user-phone {
-  margin: 0;
-  color: #777;
-  font-size: 13px;
 }
 
 .empty-state {
@@ -224,7 +169,7 @@
 }
 
 .error h2 {
-  color: #dc3545;
+  color: var(--color-logout);
   margin-bottom: 12px;
 }
 
