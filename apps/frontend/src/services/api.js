@@ -311,12 +311,12 @@ class ApiService {
 
     const data = await response.json();
     
-    // Add direct URLs to media items
+    // Add direct URLs to media items with token appended for authentication
     if (data.post_id) {
       // Single post - add URLs to media items
       data.media_items = data.media_items?.map(item => ({
         ...item,
-        url: `${API_BASE_URL}/media-items/${item.id}/stream`
+        url: `${API_BASE_URL}/media-items/${item.id}/stream?token=${token}`
       })) || [];
     } else if (data.posts) {
       // Multiple posts - add URLs to media items for each post
@@ -324,7 +324,7 @@ class ApiService {
         ...post,
         media_items: post.media_items?.map(item => ({
           ...item,
-          url: `${API_BASE_URL}/media-items/${item.id}/stream`
+          url: `${API_BASE_URL}/media-items/${item.id}/stream?token=${token}`
         })) || []
       }));
     }

@@ -1,24 +1,26 @@
-from fastapi import APIRouter, Depends, status, HTTPException, UploadFile, File, Form
+from fastapi import APIRouter, Depends, status, HTTPException, UploadFile, File, Form, Query
 from fastapi.responses import StreamingResponse
 from sqlmodel.ext.asyncio.session import AsyncSession
 from pydantic import BaseModel
 from sqlalchemy.exc import IntegrityError
 from src.domain.models.media_item import MediaItem, MediaType
+from src.domain.models.user import User
 from src.domain.services.media_item_service import MediaItemService
+from src.domain.services.post_service import PostService
+from src.domain.services.auth.authorization_service import AuthorizationService
 from src.domain.errors.custom_errors import MediaItemNotFoundError, PostNotFoundError
 from src.infrastructure.database import get_session
 from src.infrastructure.storage.media_storage_service import MediaStorageService
-from src.infrastructure.auth.dependencies import current_active_user
-from typing import Sequence, List
+from src.infrastructure.auth.dependencies import current_active_user, optional_current_user, get_user_from_view_token
+from typing import Sequence, List, Optional
 import logging
 
 logger = logging.getLogger(__name__)
 
-# Protect ALL routes in this router with authentication
+# Media items router - authentication handled per endpoint
 router = APIRouter(
     prefix="/media-items", 
-    tags=["media-items"],
-    dependencies=[Depends(current_active_user)]
+    tags=["media-items"]
 )
 
 # Request models
@@ -35,8 +37,10 @@ class MediaItemUpdateRequest(BaseModel):
 
 media_item_service = MediaItemService()
 media_storage_service = MediaStorageService()
+post_service = PostService()
+authorization_service = AuthorizationService()
 
-@router.get("/", response_model=Sequence[MediaItem])
+@router.get("/", response_model=Sequence[MediaItem], dependencies=[Depends(current_active_user)])
 async def get_media_items(post_id: int | None = None, session: AsyncSession = Depends(get_session)):
     if post_id:
         try:
@@ -45,14 +49,14 @@ async def get_media_items(post_id: int | None = None, session: AsyncSession = De
             raise HTTPException(status_code=404, detail=str(e))
     raise HTTPException(status_code=400, detail="post_id query parameter is required")
 
-@router.get("/{media_item_id}", response_model=MediaItem)
+@router.get("/{media_item_id}", response_model=MediaItem, dependencies=[Depends(current_active_user)])
 async def get_media_item(media_item_id: int, session: AsyncSession = Depends(get_session)):
     media_item = await media_item_service.get_media_item_by_id(media_item_id, session)
     if not media_item:
         raise HTTPException(status_code=404, detail="Media item not found")
     return media_item
 
-@router.post("/", response_model=MediaItem, status_code=status.HTTP_201_CREATED)
+@router.post("/", response_model=MediaItem, status_code=status.HTTP_201_CREATED, dependencies=[Depends(current_active_user)])
 async def create_media_item(media_item: MediaItemCreateRequest, session: AsyncSession = Depends(get_session)):
     try:
         return await media_item_service.create_media_item(
@@ -69,7 +73,7 @@ async def create_media_item(media_item: MediaItemCreateRequest, session: AsyncSe
     except Exception as e:
         raise HTTPException(status_code=500, detail="An unexpected error occurred while creating the media item.")
 
-@router.put("/{media_item_id}", response_model=MediaItem)
+@router.put("/{media_item_id}", response_model=MediaItem, dependencies=[Depends(current_active_user)])
 async def update_media_item(media_item_id: int, media_item: MediaItemUpdateRequest, session: AsyncSession = Depends(get_session)):
     try:
         return await media_item_service.update_media_item(
@@ -82,14 +86,14 @@ async def update_media_item(media_item_id: int, media_item: MediaItemUpdateReque
     except MediaItemNotFoundError as e:
         raise HTTPException(status_code=404, detail=str(e))
 
-@router.delete("/{media_item_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{media_item_id}", status_code=status.HTTP_204_NO_CONTENT, dependencies=[Depends(current_active_user)])
 async def delete_media_item(media_item_id: int, session: AsyncSession = Depends(get_session)):
     try:
         await media_item_service.delete_media_item(media_item_id, session)
     except MediaItemNotFoundError as e:
         raise HTTPException(status_code=404, detail=str(e))
 
-@router.post("/upload", response_model=MediaItem, status_code=status.HTTP_201_CREATED)
+@router.post("/upload", response_model=MediaItem, status_code=status.HTTP_201_CREATED, dependencies=[Depends(current_active_user)])
 async def upload_media_file(
     post_id: int = Form(...),
     order: int = Form(0),
@@ -149,19 +153,64 @@ async def upload_media_file(
         raise HTTPException(status_code=500, detail="Failed to upload file")
 
 @router.get("/{media_item_id}/stream")
-async def get_media_file_stream(media_item_id: int, session: AsyncSession = Depends(get_session)):
+async def get_media_file_stream(
+    media_item_id: int,
+    token: Optional[str] = Query(None),
+    session: AsyncSession = Depends(get_session),
+    auth_user: Optional[User] = Depends(optional_current_user),
+    view_token_user: Optional[User] = Depends(get_user_from_view_token)
+):
     """
-    Stream a media file directly
+    Stream a media file directly.
+    Supports both authenticated users (via JWT) and view token access (via query param or header).
     """
     try:
+        # Check authentication - accept either regular auth or view token
+        user = auth_user or view_token_user
+        payload = None
+        
+        # If no user from dependencies, check query string token
+        if not user and token:
+            payload = authorization_service.verify_token(token)
+            if payload and payload.get("type") == "view":
+                user_id = payload.get("sub")
+                if user_id:
+                    from src.infrastructure.repositories.user_repository import UserRepository
+                    user_repo = UserRepository()
+                    user = await user_repo.get_user_by_id(int(user_id), session)
+        
+        if not user:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Authentication required to access media"
+            )
+        
+        # Get media item
         media_item = await media_item_service.get_media_item_by_id(media_item_id, session)
         if not media_item:
             raise HTTPException(status_code=404, detail="Media item not found")
         
+        # Verify user has access to the post containing this media item
+        post = await post_service.get_post_by_id(media_item.post_id, session)
+        if not post:
+            raise HTTPException(status_code=404, detail="Post not found")
+        
+        # Authorization: Either user owns the post or is accessing via valid view token
+        # View tokens are already validated for post access at the /frontend/view endpoint
+        # So if they have a valid view token, we trust they have access
+        is_owner = post.user_id == user.id
+        has_view_token = view_token_user is not None or (payload is not None and payload.get("type") == "view")
+        
+        if not (is_owner or has_view_token):
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="You do not have permission to access this media"
+            )
+        
         # Get file stream from domain service
         file_stream, content_type, content_length = media_item_service.get_media_item_stream(media_item.path)
         
-        logger.info(f"Streaming media item {media_item_id}: {content_type}, {content_length} bytes")
+        logger.info(f"Streaming media item {media_item_id}: {content_type}, {content_length} bytes (user: {user.id})")
         
         return StreamingResponse(
             file_stream,
