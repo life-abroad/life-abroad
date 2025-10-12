@@ -38,25 +38,49 @@ class MediaStorageService:
             logger.error(f"Error creating bucket: {e}")
             raise
     
-    def upload_file(self, file_data: BinaryIO, file_name: str, content_type: str) -> str:
-        """Upload a file to MinIO and return the file path"""
+    def _generate_structured_path(self, user_id: int, post_id: int, file_name: str) -> str:
+        """Generate a structured path for media files: users/{user_id}/posts/{post_id}/{uuid}.{ext}"""
+        file_extension = file_name.split('.')[-1] if '.' in file_name else ''
+        unique_id = uuid.uuid4()
+        
+        if file_extension:
+            filename = f"{unique_id}.{file_extension}"
+        else:
+            filename = str(unique_id)
+        
+        # Create structured path
+        structured_path = f"users/{user_id}/posts/{post_id}/{filename}"
+        return structured_path
+    
+    def upload_file(self, file_data: BinaryIO, file_name: str, content_type: str, 
+                    user_id: int | None = None, post_id: int | None = None) -> str:
+        """
+        Upload a file to MinIO and return the file path.
+        If user_id and post_id are provided, files are organized in a structured hierarchy:
+        users/{user_id}/posts/{post_id}/{uuid}.{ext}
+        Otherwise, files are stored in the root with just {uuid}.{ext}
+        """
         try:
-            # Generate unique filename to avoid conflicts
-            file_extension = file_name.split('.')[-1] if '.' in file_name else ''
-            unique_filename = f"{uuid.uuid4()}.{file_extension}" if file_extension else str(uuid.uuid4())
+            # Generate filename based on whether we have structure info
+            if user_id is not None and post_id is not None:
+                object_name = self._generate_structured_path(user_id, post_id, file_name)
+            else:
+                # Fallback to flat structure for backwards compatibility
+                file_extension = file_name.split('.')[-1] if '.' in file_name else ''
+                object_name = f"{uuid.uuid4()}.{file_extension}" if file_extension else str(uuid.uuid4())
             
             # Upload file
             self.client.put_object(
                 bucket_name=self.bucket_name,
-                object_name=unique_filename,
+                object_name=object_name,
                 data=file_data,
                 content_type=content_type,
                 length=-1,  # Unknown length, MinIO will figure it out
                 part_size=10*1024*1024  # 10MB parts
             )
             
-            logger.info(f"Uploaded file: {unique_filename}")
-            return unique_filename
+            logger.info(f"Uploaded file: {object_name}")
+            return object_name
             
         except S3Error as e:
             logger.error(f"Error uploading file: {e}")
@@ -103,3 +127,63 @@ class MediaStorageService:
             return True
         except S3Error:
             return False
+    
+    def delete_post_media(self, user_id: int, post_id: int) -> int:
+        """Delete all media files for a specific post. Returns count of deleted files."""
+        try:
+            prefix = f"users/{user_id}/posts/{post_id}/"
+            objects = self.client.list_objects(
+                bucket_name=self.bucket_name,
+                prefix=prefix,
+                recursive=True
+            )
+            
+            deleted_count = 0
+            for obj in objects:
+                if obj.object_name:
+                    try:
+                        self.client.remove_object(
+                            bucket_name=self.bucket_name,
+                            object_name=obj.object_name
+                        )
+                        deleted_count += 1
+                        logger.info(f"Deleted file: {obj.object_name}")
+                    except S3Error as e:
+                        logger.error(f"Error deleting {obj.object_name}: {e}")
+            
+            logger.info(f"Deleted {deleted_count} files for post {post_id}")
+            return deleted_count
+            
+        except S3Error as e:
+            logger.error(f"Error listing files for deletion: {e}")
+            return 0
+    
+    def delete_user_media(self, user_id: int) -> int:
+        """Delete all media files for a specific user. Returns count of deleted files."""
+        try:
+            prefix = f"users/{user_id}/"
+            objects = self.client.list_objects(
+                bucket_name=self.bucket_name,
+                prefix=prefix,
+                recursive=True
+            )
+            
+            deleted_count = 0
+            for obj in objects:
+                if obj.object_name:
+                    try:
+                        self.client.remove_object(
+                            bucket_name=self.bucket_name,
+                            object_name=obj.object_name
+                        )
+                        deleted_count += 1
+                        logger.info(f"Deleted file: {obj.object_name}")
+                    except S3Error as e:
+                        logger.error(f"Error deleting {obj.object_name}: {e}")
+            
+            logger.info(f"Deleted {deleted_count} files for user {user_id}")
+            return deleted_count
+            
+        except S3Error as e:
+            logger.error(f"Error listing files for deletion: {e}")
+            return 0
