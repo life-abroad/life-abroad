@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import PostView from './components/PostView';
-import PostsList from './components/PostsList';
-import ScreenTemplate from './components/ScreenTemplate';
-import AuthForm from './components/AuthForm';
-import Profile from './components/Profile';
-import ApiService from './services/api';
-import './App.css';
+import PostView from './features/posts/components/PostView';
+import PostsList from './features/posts/components/PostsList';
+import ScreenTemplate from './components/layout/ScreenTemplate';
+import AuthForm from './features/auth/components/AuthForm';
+import Profile from './features/profile/components/Profile';
+import { authAPI, postsAPI } from './api';
+import './styles/index.css';
 
 function App() {
   const [data, setData] = useState(null);
@@ -25,7 +25,7 @@ function App() {
       fetchTokenData(viewToken, postId);
     } 
     // Check if user is authenticated for profile view
-    else if (ApiService.isAuthenticated()) {
+    else if (authAPI.isAuthenticated()) {
       setIsAuthenticated(true);
       setViewMode('profile');
       setLoading(false);
@@ -39,7 +39,7 @@ function App() {
 
   const fetchTokenData = async (token, postId) => {
     try {
-      const result = await ApiService.fetchWithToken(token, postId);
+      const result = await postsAPI.fetchWithToken(token, postId);
       setData(result);
     } catch (err) {
       setError('Failed to load content: ' + err.message);

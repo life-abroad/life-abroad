@@ -1,4 +1,5 @@
 import React from 'react';
+import './ScreenTemplate.css';
 
 function ScreenTemplate({ children, title = "Life Abroad" }) {
   return (
