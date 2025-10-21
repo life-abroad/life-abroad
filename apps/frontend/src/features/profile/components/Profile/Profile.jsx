@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { authAPI, postsAPI, audiencesAPI, contactsAPI } from '../../../../api';
+import { authAPI, postsAPI, audiencesAPI, contactsAPI, mediaItemsAPI } from '../../../../api';
 import ContactForm from '../ContactForm/ContactForm';
 import ContactCard from '../ContactCard/ContactCard';
 import AudienceForm from '../AudienceForm/AudienceForm';
 import AudienceCard from '../AudienceCard/AudienceCard';
+import PostForm from '../PostForm/PostForm';
+import PostCard from '../PostCard/PostCard';
 import './Profile.css';
 
 function Profile({ onLogout }) {
@@ -18,6 +20,8 @@ function Profile({ onLogout }) {
   const [editingContact, setEditingContact] = useState(null);
   const [showAudienceForm, setShowAudienceForm] = useState(false);
   const [editingAudience, setEditingAudience] = useState(null);
+  const [showPostForm, setShowPostForm] = useState(false);
+  const [editingPost, setEditingPost] = useState(null);
   const [actionError, setActionError] = useState('');
 
   useEffect(() => {
@@ -179,6 +183,96 @@ function Profile({ onLogout }) {
     setActionError('');
   };
 
+  const handleCreatePost = async (formData) => {
+    try {
+      setActionError('');
+      
+      // Step 1: Create the post
+      const newPost = await postsAPI.createPost(formData.description, formData.audienceIds);
+      
+      // Step 2: Upload all images for the post
+      if (formData.images && formData.images.length > 0) {
+        await Promise.all(
+          formData.images.map((image, index) =>
+            mediaItemsAPI.uploadMediaItem(newPost.id, image, index)
+          )
+        );
+      }
+      
+      await fetchData();
+      setShowPostForm(false);
+    } catch (err) {
+      setActionError(err.message);
+    }
+  };
+
+  const handleUpdatePost = async (formData) => {
+    if (!editingPost) return;
+    try {
+      setActionError('');
+      await postsAPI.updatePost(
+        editingPost.id,
+        formData.description,
+        formData.audienceIds
+      );
+      await fetchData();
+      setEditingPost(null);
+      setShowPostForm(false);
+    } catch (err) {
+      setActionError(err.message);
+    }
+  };
+
+  const handleDeletePost = async (postId) => {
+    if (!window.confirm('Are you sure you want to delete this post? All images will be deleted.')) {
+      return;
+    }
+    try {
+      setActionError('');
+      
+      // Step 1: Get all media items for the post
+      const mediaItems = await mediaItemsAPI.getMediaItemsByPost(postId);
+      
+      // Step 2: Delete all media items
+      if (mediaItems && mediaItems.length > 0) {
+        await Promise.all(
+          mediaItems.map(item => mediaItemsAPI.deleteMediaItem(item.id))
+        );
+      }
+      
+      // Step 3: Delete the post
+      await postsAPI.deletePost(postId);
+      
+      await fetchData();
+    } catch (err) {
+      setActionError(err.message);
+    }
+  };
+
+  const handleEditPost = async (post) => {
+    try {
+      setActionError('');
+      // Fetch full post details with audiences
+      const fullPost = await postsAPI.getPost(post.id);
+      setEditingPost(fullPost);
+      setShowPostForm(true);
+    } catch (err) {
+      setActionError(err.message);
+    }
+  };
+
+  const handleCancelPostForm = () => {
+    setShowPostForm(false);
+    setEditingPost(null);
+    setActionError('');
+  };
+
+  const handleAddPost = () => {
+    setEditingPost(null);
+    setShowPostForm(true);
+    setActionError('');
+  };
+
   if (loading) {
     return (
       <div className="profile-container">
@@ -236,24 +330,50 @@ function Profile({ onLogout }) {
 
       <div className="tab-content">
         {activeTab === 'posts' && (
-          <div className="posts-list">
-            {posts.length === 0 ? (
-              <div className="empty-state">
-                <p>You haven't created any posts yet.</p>
+          <div className="posts-section">
+            <div className="posts-header">
+              <h2>My Posts</h2>
+              {!showPostForm && (
+                <button onClick={handleAddPost} className="btn-add">
+                  Create Post
+                </button>
+              )}
+            </div>
+
+            {actionError && (
+              <div className="action-error">
+                {actionError}
               </div>
-            ) : (
-              posts.map((post) => (
-                <div key={post.id} className="profile-post-card">
-                  <div className="profile-post-header">
-                    <h3>Post #{post.id}</h3>
-                    <span className="profile-post-date">
-                      {new Date(post.created_at).toLocaleDateString()}
-                    </span>
-                  </div>
-                  <p className="profile-post-description">{post.description}</p>
-                </div>
-              ))
             )}
+
+            {showPostForm && (
+              <div className="post-form-container">
+                <h3>{editingPost ? 'Edit Post' : 'New Post'}</h3>
+                <PostForm
+                  post={editingPost}
+                  audiences={audiences}
+                  onSubmit={editingPost ? handleUpdatePost : handleCreatePost}
+                  onCancel={handleCancelPostForm}
+                />
+              </div>
+            )}
+
+            <div className="posts-list">
+              {posts.length === 0 ? (
+                <div className="empty-state">
+                  <p>You haven't created any posts yet.</p>
+                </div>
+              ) : (
+                posts.map((post) => (
+                  <PostCard
+                    key={post.id}
+                    post={post}
+                    onEdit={handleEditPost}
+                    onDelete={handleDeletePost}
+                  />
+                ))
+              )}
+            </div>
           </div>
         )}
 
