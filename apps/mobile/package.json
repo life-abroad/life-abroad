@@ -11,7 +11,8 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "expo": "^54.0.0",
+    "expo": "54.0.16",
+    "expo-blur": "~15.0.7",
     "expo-status-bar": "~3.0.8",
     "nativewind": "latest",
     "react": "19.1.0",
