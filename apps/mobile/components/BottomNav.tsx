@@ -17,6 +17,23 @@ export default function BottomNav() {
       {/* Frosted glass blur */}
       <BlurView intensity={100} tint="dark" className="absolute inset-0" />
 
+      {/* Blue frosted overlay */}
+      <View className="absolute inset-0 bg-black/15" />
+
+      {/* Light dispersion - multiple gradient layers */}
+      <LinearGradient
+        colors={[
+          'rgba(255, 255, 255, 0.1)',
+          'rgba(200, 220, 255, 0.1)',
+          'rgba(255, 255, 255, 0)',
+          'rgba(180, 200, 255, 0.10)',
+          'rgba(255, 255, 255, 0.15)',
+        ]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        className="absolute inset-0"
+      />
+
       {/* Light refraction gradient */}
 
       {/* Top edge highlight */}
