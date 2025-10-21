@@ -26,7 +26,7 @@ export default function App() {
   }
 
   return (
-    <View className="flex-1 bg-background-secondary">
+    <View className="flex-1 bg-background">
       <View className="flex-1">
         <HomePage />
       </View>

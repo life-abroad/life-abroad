@@ -16,7 +16,7 @@ export const FeedPost: React.FC<Post> = ({
   comment,
   reactions,
 }) => (
-  <View className="mb-1">
+  <View className="mb-1 bg-background-secondary">
     <View className="h-16 flex-row items-center px-1 py-0.5">
       <Image source={{ uri: userAvatar }} className="h-11 w-11 rounded-full border border-white" />
       <View className="ml-2 flex-1 flex-row items-center justify-between">
@@ -78,19 +78,19 @@ export const FeedPost: React.FC<Post> = ({
       ))}
     </View>
 
-    <View className="flex-col items-center gap-0.5 py-1">
-      <View className="h-16 flex-row items-start justify-between self-stretch">
+    <View className="flex-col items-center gap-0.5 pb-4 pt-1">
+      <View className="h-14 flex-row items-start justify-between self-stretch">
         <View className="w-46 flex-row items-center gap-2.5 rounded-lg px-2 py-0.5">
           <HeartIcon />
           <ChatBubbleIcon size={30} />
           <ShareIcon />
         </View>
-        <View className="h-16 w-52 flex-row items-center justify-end gap-1 pr-2">
+        <View className="h-14 w-52 flex-row items-center justify-end gap-1 pr-2">
           {reactions.map((reaction, index) => (
             <View key={index} className="relative h-12 w-14">
               <Image
                 source={{ uri: reaction }}
-                className="absolute left-0 top-0 h-12 w-12 rounded-full"
+                className="absolute left-0 top-0 h-10 w-10 rounded-full"
               />
               <Image
                 source={{
@@ -103,7 +103,7 @@ export const FeedPost: React.FC<Post> = ({
         </View>
       </View>
       <View className="w-full px-2">
-        <Text className="text-xl font-normal ">{comment}</Text>
+        <Text className="text-md font-normal ">{comment}</Text>
       </View>
     </View>
   </View>
