@@ -2,12 +2,12 @@
 // It is safe to delete this file as it does not affect the functionality of your application.
 {
   "cesVersion": "2.20.1",
-  "projectName": "my-expo-app",
+  "projectName": "circle-app",
   "packages": [
     {
       "name": "nativewind",
-      "type": "styling"
-    }
+      "type": "styling",
+    },
   ],
   "flags": {
     "noGit": false,
@@ -16,16 +16,16 @@
     "importAlias": true,
     "packageManager": "yarn",
     "eas": false,
-    "publish": false
+    "publish": false,
   },
   "packageManager": {
     "type": "yarn",
-    "version": "1.22.22"
+    "version": "1.22.22",
   },
   "os": {
     "type": "Linux",
     "platform": "linux",
     "arch": "x64",
-    "kernelVersion": "6.14.0-33-generic"
-  }
+    "kernelVersion": "6.14.0-33-generic",
+  },
 }

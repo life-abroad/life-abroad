@@ -14,7 +14,7 @@ export const FeedPost: React.FC<Post> = ({
   comment,
   reactions,
 }) => (
-  <View className="mb-1 bg-white/10">
+  <View className="mb-1">
     <View className="h-16 flex-row items-center px-1 py-0.5">
       <Image source={{ uri: userAvatar }} className="h-11 w-11 rounded-full border border-white" />
       <View className="ml-2 flex-1 flex-row items-center justify-between">
