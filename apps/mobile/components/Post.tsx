@@ -35,7 +35,7 @@ export const FeedPost: React.FC<Post> = ({
       </View>
     </View>
 
-    <View className="bg-white">
+    <View className="flex-col gap-[1]">
       {images.map((image, index) => (
         <View key={index} className="relative">
           <Image
