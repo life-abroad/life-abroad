@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { authAPI, postsAPI, audiencesAPI, contactsAPI } from '../../../../api';
 import ContactForm from '../ContactForm/ContactForm';
 import ContactCard from '../ContactCard/ContactCard';
+import AudienceForm from '../AudienceForm/AudienceForm';
+import AudienceCard from '../AudienceCard/AudienceCard';
 import './Profile.css';
 
 function Profile({ onLogout }) {
@@ -14,6 +16,8 @@ function Profile({ onLogout }) {
   const [activeTab, setActiveTab] = useState('posts');
   const [showContactForm, setShowContactForm] = useState(false);
   const [editingContact, setEditingContact] = useState(null);
+  const [showAudienceForm, setShowAudienceForm] = useState(false);
+  const [editingAudience, setEditingAudience] = useState(null);
   const [actionError, setActionError] = useState('');
 
   useEffect(() => {
@@ -107,6 +111,71 @@ function Profile({ onLogout }) {
   const handleAddContact = () => {
     setEditingContact(null);
     setShowContactForm(true);
+    setActionError('');
+  };
+
+  const handleCreateAudience = async (formData) => {
+    try {
+      setActionError('');
+      await audiencesAPI.createAudience(formData.name, formData.contactIds);
+      await fetchData();
+      setShowAudienceForm(false);
+    } catch (err) {
+      setActionError(err.message);
+    }
+  };
+
+  const handleUpdateAudience = async (formData) => {
+    if (!editingAudience) return;
+    try {
+      setActionError('');
+      await audiencesAPI.updateAudience(
+        editingAudience.id,
+        formData.name,
+        formData.contactIds
+      );
+      await fetchData();
+      setEditingAudience(null);
+      setShowAudienceForm(false);
+    } catch (err) {
+      setActionError(err.message);
+    }
+  };
+
+  const handleDeleteAudience = async (audienceId) => {
+    if (!window.confirm('Are you sure you want to delete this audience?')) {
+      return;
+    }
+    try {
+      setActionError('');
+      await audiencesAPI.deleteAudience(audienceId);
+      await fetchData();
+    } catch (err) {
+      setActionError(err.message);
+    }
+  };
+
+  const handleEditAudience = async (audience) => {
+    try {
+      setActionError('');
+      // Fetch full audience details with contacts
+      const fullAudience = await audiencesAPI.getAudience(audience.id);
+      setEditingAudience(fullAudience);
+      setShowAudienceForm(true);
+    } catch (err) {
+      setActionError(err.message);
+    }
+  };
+
+  const handleCancelAudienceForm = () => {
+    setShowAudienceForm(false);
+    setEditingAudience(null);
+    setActionError('');
+  };
+
+  const handleAddAudience = () => {
+    setEditingAudience(null);
+    setShowAudienceForm(true);
     setActionError('');
   };
 
@@ -237,22 +306,51 @@ function Profile({ onLogout }) {
         )}
 
         {activeTab === 'audiences' && (
-          <div className="audiences-list">
-            {audiences.length === 0 ? (
-              <div className="empty-state">
-                <p>You haven't created any audiences yet.</p>
-                <p className="hint">Create audiences to share posts with groups of contacts!</p>
+          <div className="audiences-section">
+            <div className="audiences-header">
+              <h2>My Audiences</h2>
+              {!showAudienceForm && (
+                <button onClick={handleAddAudience} className="btn-add">
+                  Add Audience
+                </button>
+              )}
+            </div>
+
+            {actionError && (
+              <div className="action-error">
+                {actionError}
               </div>
-            ) : (
-              audiences.map((audience) => (
-                <div key={audience.id} className="profile-audience-card">
-                  <div className="profile-audience-header">
-                    <h3>{audience.name}</h3>
-                    <span className="profile-audience-id">ID: {audience.id}</span>
-                  </div>
-                </div>
-              ))
             )}
+
+            {showAudienceForm && (
+              <div className="audience-form-container">
+                <h3>{editingAudience ? 'Edit Audience' : 'New Audience'}</h3>
+                <AudienceForm
+                  audience={editingAudience}
+                  contacts={contacts}
+                  onSubmit={editingAudience ? handleUpdateAudience : handleCreateAudience}
+                  onCancel={handleCancelAudienceForm}
+                />
+              </div>
+            )}
+
+            <div className="audiences-list">
+              {audiences.length === 0 ? (
+                <div className="empty-state">
+                  <p>You haven't created any audiences yet.</p>
+                  <p className="hint">Create audiences to share posts with groups of contacts!</p>
+                </div>
+              ) : (
+                audiences.map((audience) => (
+                  <AudienceCard
+                    key={audience.id}
+                    audience={audience}
+                    onEdit={handleEditAudience}
+                    onDelete={handleDeleteAudience}
+                  />
+                ))
+              )}
+            </div>
           </div>
         )}
       </div>

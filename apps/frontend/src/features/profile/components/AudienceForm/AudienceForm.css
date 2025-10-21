@@ -1,0 +1,184 @@
+.audience-form {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: var(--radius-md);
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  color: #333;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.form-group input[type="text"] {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  transition: border-color 0.3s;
+}
+
+.form-group input[type="text"]:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.form-group input[type="text"].error {
+  border-color: var(--color-logout);
+}
+
+.contacts-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.selection-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-select-action {
+  background: none;
+  border: 1px solid #ddd;
+  padding: 4px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-select-action:hover {
+  background: #f0f0f0;
+  border-color: #bbb;
+}
+
+.contacts-selector {
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: var(--radius-sm);
+  padding: 10px;
+  background: white;
+}
+
+.contacts-selector.error {
+  border-color: var(--color-logout);
+}
+
+.contact-checkbox {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.contact-checkbox:hover {
+  background: #f8f9fa;
+}
+
+.contact-checkbox input[type="checkbox"] {
+  margin-right: 12px;
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+}
+
+.contact-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex: 1;
+}
+
+.contact-name {
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+}
+
+.contact-phone {
+  color: #999;
+  font-size: 12px;
+}
+
+.no-contacts-message {
+  padding: 20px;
+  text-align: center;
+  background: #fff9e6;
+  border: 1px solid #ffe066;
+  border-radius: var(--radius-sm);
+  color: #666;
+}
+
+.no-contacts-message p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.selected-count {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #666;
+  font-weight: 600;
+}
+
+.error-message {
+  display: block;
+  margin-top: 4px;
+  color: var(--color-logout);
+  font-size: 12px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.btn-cancel,
+.btn-submit {
+  padding: 10px 20px;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-cancel {
+  background: #e0e0e0;
+  color: #666;
+}
+
+.btn-cancel:hover {
+  background: #d0d0d0;
+}
+
+.btn-submit {
+  background: var(--color-primary);
+  color: white;
+}
+
+.btn-submit:hover:not(:disabled) {
+  background: var(--color-primary-dark);
+}
+
+.btn-submit:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}

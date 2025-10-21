@@ -71,11 +71,15 @@ class AudienceRepository:
             return False
         
         # Remove all contact links first
-        existing_links = await session.exec(
+        result = await session.exec(
             select(AudienceContactLink).where(AudienceContactLink.audience_id == audience_id)
         )
-        for link in existing_links:
+        links = result.all()
+        for link in links:
             await session.delete(link)
+        
+        # Flush to ensure links are deleted before deleting audience
+        await session.flush()
         
         # Delete the audience
         await session.delete(audience)

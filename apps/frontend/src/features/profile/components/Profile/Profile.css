@@ -100,6 +100,25 @@
   font-size: 22px;
 }
 
+.audiences-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.audiences-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.audiences-header h2 {
+  margin: 0;
+  color: #333;
+  font-size: 22px;
+}
+
 .btn-add {
   background: var(--color-primary);
   color: white;
@@ -116,14 +135,16 @@
   background: var(--color-primary-dark);
 }
 
-.contact-form-container {
+.contact-form-container,
+.audience-form-container {
   background: white;
   padding: 20px;
   border-radius: var(--radius-md);
   border: 2px solid #e0e0e0;
 }
 
-.contact-form-container h3 {
+.contact-form-container h3,
+.audience-form-container h3 {
   margin: 0 0 16px 0;
   color: #333;
   font-size: 18px;
