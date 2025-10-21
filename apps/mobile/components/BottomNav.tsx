@@ -14,15 +14,9 @@ export default function BottomNav() {
       <BlurView intensity={80} tint="dark" className="absolute inset-0" />
 
       <View className="h-full w-full flex-row items-center justify-center gap-9 px-2 pb-5">
-        <View className="items-center justify-center">
-          <ChatBubbleIcon size={36} />
-        </View>
-        <View className="items-center justify-center">
-          <CircleIconNav size={40} />
-        </View>
-        <View className="items-center justify-center">
-          <UserIcon size={40} />
-        </View>
+        <ChatBubbleIcon size={36} />
+        <CircleIconNav size={40} />
+        <UserIcon size={40} />
       </View>
     </View>
   );

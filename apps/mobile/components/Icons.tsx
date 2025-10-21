@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image as ImageRN } from 'react-native';
+import { Image as ImageRN, View } from 'react-native';
 import Svg, { Path, Defs, Pattern, Image, Use } from 'react-native-svg';
 const { ImageBackground } = require('react-native');
 
@@ -27,14 +27,16 @@ export const HeartIcon = ({ size, width, height }: IconProps) => {
 
 export const ChatBubbleIcon = ({ size }: { size: number }) => {
   return (
-    <ImageRN
-      source={require('../assets/chat-icon.png')}
-      resizeMode="contain"
-      style={(() => {
-        const s = ImageRN.resolveAssetSource(require('../assets/chat-icon.png'));
-        return { height: size, aspectRatio: s.width / s.height };
-      })()}
-    />
+    <View className="items-center justify-center">
+      <ImageRN
+        source={require('../assets/chat-icon.png')}
+        resizeMode="contain"
+        style={(() => {
+          const s = ImageRN.resolveAssetSource(require('../assets/chat-icon.png'));
+          return { height: size, aspectRatio: s.width / s.height };
+        })()}
+      />
+    </View>
   );
 };
 
@@ -67,37 +69,43 @@ export const LocationIcon = ({ size, width, height }: IconProps) => {
 
 export const CameraIcon = ({ size }: { size: number }) => {
   return (
-    <ImageRN
-      source={require('../assets/camera-icon.png')}
-      resizeMode="contain"
-      style={(() => {
-        const s = ImageRN.resolveAssetSource(require('../assets/camera-icon.png'));
-        return { height: size, aspectRatio: s.width / s.height };
-      })()}
-    />
+    <View className="items-center justify-center">
+      <ImageRN
+        source={require('../assets/camera-icon.png')}
+        resizeMode="contain"
+        style={(() => {
+          const s = ImageRN.resolveAssetSource(require('../assets/camera-icon.png'));
+          return { height: size, aspectRatio: s.width / s.height };
+        })()}
+      />
+    </View>
   );
 };
 
 export const UserIcon = ({ size }: { size: number }) => {
   return (
-    <ImageRN
-      source={require('../assets/user-icon.png')}
-      resizeMode="contain"
-      style={(() => {
-        const s = ImageRN.resolveAssetSource(require('../assets/user-icon.png'));
-        return { height: size, aspectRatio: s.width / s.height };
-      })()}
-    />
+    <View className="items-center justify-center">
+      <ImageRN
+        source={require('../assets/user-icon.png')}
+        resizeMode="contain"
+        style={(() => {
+          const s = ImageRN.resolveAssetSource(require('../assets/user-icon.png'));
+          return { height: size, aspectRatio: s.width / s.height };
+        })()}
+      />
+    </View>
   );
 };
 
 export const CircleIconNav = ({ size }: { size: number }) => {
   return (
-    <ImageRN
-      source={require('../assets/snow.png')}
-      resizeMode="cover"
-      style={{ height: size, width: size, borderRadius: size / 2, backgroundColor: 'white' }}
-    />
+    <View className="items-center justify-center">
+      <ImageRN
+        source={require('../assets/snow.png')}
+        resizeMode="cover"
+        style={{ height: size, width: size, borderRadius: size / 2, backgroundColor: 'white' }}
+      />
+    </View>
   );
 };
 
