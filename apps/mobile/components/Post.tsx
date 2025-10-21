@@ -78,25 +78,25 @@ export const FeedPost: React.FC<Post> = ({
       ))}
     </View>
 
-    <View className="flex-col items-center gap-0.5 pb-4 pt-1">
-      <View className="h-14 flex-row items-start justify-between self-stretch">
+    <View className="flex-col items-center gap-3 pb-4 pt-1">
+      <View className="h-10 flex-row items-start justify-between self-stretch py-2">
         <View className="w-46 flex-row items-center gap-2.5 rounded-lg px-2 py-0.5">
-          <HeartIcon />
-          <ChatBubbleIcon size={30} />
-          <ShareIcon />
+          <HeartIcon size={30} />
+          <ChatBubbleIcon size={23} />
+          <ShareIcon size={25} />
         </View>
-        <View className="h-14 w-52 flex-row items-center justify-end gap-1 pr-2">
+        <View className="h-10 w-52 flex-row items-center justify-end gap-5 pr-5">
           {reactions.map((reaction, index) => (
-            <View key={index} className="relative h-12 w-14">
+            <View key={index} className="relative h-10 w-10">
               <Image
                 source={{ uri: reaction }}
-                className="absolute left-0 top-0 h-10 w-10 rounded-full"
+                className="absolute -top-1 left-0 h-10 w-10 rounded-full"
               />
               <Image
                 source={{
                   uri: 'https://api.builder.io/api/v1/image/assets/TEMP/ca55d5715e5cdda061de1f1254914575bfdcc427?width=54',
                 }}
-                className="absolute left-7 top-5 h-7 w-7"
+                className="absolute left-7 top-3 z-10 h-7 w-7"
               />
             </View>
           ))}
