@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Image } from 'react-native';
 import { Post } from 'types/post';
 import { ChatBubbleIcon, LocationIcon, HeartIcon, ShareIcon } from 'components/Icons';
+import { Text } from 'components/Text';
 
 export const FeedPost: React.FC<Post> = ({
   userName,
@@ -18,22 +19,14 @@ export const FeedPost: React.FC<Post> = ({
     <View className="h-16 flex-row items-center px-1 py-0.5">
       <Image source={{ uri: userAvatar }} className="h-11 w-11 rounded-full border border-white" />
       <View className="ml-2 flex-1 flex-row items-center justify-between">
-        <View className="flex-1 px-1 py-2.5">
-          <Text className="text-lg font-normal text-white" style={{ fontFamily: 'System' }}>
-            {userName}
-          </Text>
-          <Text className="text-sm font-light text-white" style={{ fontFamily: 'System' }}>
-            {userHandle}
-          </Text>
+        <View className="flex-col px-1 ">
+          <Text className="text-md font-madimi font-semibold">{userName}</Text>
+          <Text className="text-sm font-light ">{userHandle}</Text>
         </View>
-        <View className="flex-row items-center justify-end gap-3 px-3 py-2">
+        <View className="flex-row items-center justify-end gap-3 px-3">
           <View>
-            <Text className="text-xl font-normal text-white" style={{ fontFamily: 'System' }}>
-              {location}
-            </Text>
-            <Text className="text-xs font-light text-white" style={{ fontFamily: 'System' }}>
-              {timestamp}
-            </Text>
+            <Text className="text-md text-right font-semibold ">{location}</Text>
+            <Text className="text-xs font-light ">{timestamp}</Text>
           </View>
           <View className="h-7 w-5">
             <LocationIcon />
@@ -53,9 +46,7 @@ export const FeedPost: React.FC<Post> = ({
           />
           {index === 0 && caption && (
             <View className="absolute bottom-2 left-2 px-0 py-2">
-              <Text className="text-sm text-white" style={{ fontFamily: 'System' }}>
-                {caption}
-              </Text>
+              <Text className="text-sm ">{caption}</Text>
             </View>
           )}
         </View>
@@ -66,7 +57,7 @@ export const FeedPost: React.FC<Post> = ({
       <View className="h-16 flex-row items-start justify-between self-stretch">
         <View className="w-46 flex-row items-center gap-2.5 rounded-lg px-2 py-0.5">
           <HeartIcon />
-          <ChatBubbleIcon />
+          <ChatBubbleIcon size={11} />
           <ShareIcon />
         </View>
         <View className="h-16 w-52 flex-row items-center justify-end gap-1 pr-2">
@@ -87,9 +78,7 @@ export const FeedPost: React.FC<Post> = ({
         </View>
       </View>
       <View className="w-full px-2">
-        <Text className="text-xl font-normal text-white" style={{ fontFamily: 'System' }}>
-          {comment}
-        </Text>
+        <Text className="text-xl font-normal ">{comment}</Text>
       </View>
     </View>
   </View>
