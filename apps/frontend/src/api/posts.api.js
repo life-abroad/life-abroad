@@ -11,6 +11,53 @@ export const postsAPI = {
     return await response.json();
   },
 
+  async getPost(postId) {
+    const response = await apiClient.get(`/posts/${postId}`);
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch post: ${response.status}`);
+    }
+
+    return await response.json();
+  },
+
+  async createPost(description, audienceIds = []) {
+    const response = await apiClient.post('/posts/', {
+      description,
+      audience_ids: audienceIds,
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.detail || 'Failed to create post');
+    }
+
+    return await response.json();
+  },
+
+  async updatePost(postId, description, audienceIds = []) {
+    const response = await apiClient.put(`/posts/${postId}`, {
+      description,
+      audience_ids: audienceIds,
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.detail || 'Failed to update post');
+    }
+
+    return await response.json();
+  },
+
+  async deletePost(postId) {
+    const response = await apiClient.delete(`/posts/${postId}`);
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.detail || 'Failed to delete post');
+    }
+  },
+
   async fetchWithToken(token, postId = null) {
     let url = `/frontend/view?token=${token}`;
     if (postId) {

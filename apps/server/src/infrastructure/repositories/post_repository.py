@@ -51,6 +51,19 @@ class PostRepository:
         post = await session.get(Post, post_id)
         if not post:
             return False
+        
+        # Remove all audience links first
+        result = await session.exec(
+            select(PostAudienceLink).where(PostAudienceLink.post_id == post_id)
+        )
+        links = result.all()
+        for link in links:
+            await session.delete(link)
+        
+        # Flush to ensure links are deleted before deleting post
+        await session.flush()
+        
+        # Delete the post
         await session.delete(post)
         await session.commit()
         return True
