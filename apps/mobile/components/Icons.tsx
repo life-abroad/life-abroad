@@ -97,14 +97,22 @@ export const UserIcon = ({ size }: { size: number }) => {
   );
 };
 
-export const CircleIconNav = ({ size }: { size: number }) => {
+export const CircleIconNav = ({ size, active }: { size: number; active: boolean }) => {
   return (
     <View className="items-center justify-center">
-      <ImageRN
-        source={require('../assets/snow.png')}
-        resizeMode="cover"
-        style={{ height: size, width: size, borderRadius: size / 2, backgroundColor: 'white' }}
-      />
+      {!active ? (
+        <ImageRN
+          source={require('../assets/snow.png')}
+          resizeMode="cover"
+          style={{ height: size, width: size, borderRadius: size / 2, backgroundColor: 'white' }}
+        />
+      ) : (
+        <ImageRN
+          source={require('../assets/circle-logo-active.png')}
+          resizeMode="cover"
+          style={{ height: size, width: size }}
+        />
+      )}
     </View>
   );
 };
