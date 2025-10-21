@@ -1228,6 +1228,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@expo-google-fonts/madimi-one@npm:^0.4.0":
+  version: 0.4.0
+  resolution: "@expo-google-fonts/madimi-one@npm:0.4.0"
+  checksum: 10c0/1bd2ddb8f5ef84f983a90d3715e43cc5f74190b0c9f95076fc198b8210f954f6b6aa98b77df2b852c5c42bf52f2a6a92dfbd98dddac1c97dd17873f0faee3e48
+  languageName: node
+  linkType: hard
+
 "@expo/cli@npm:54.0.12":
   version: 54.0.12
   resolution: "@expo/cli@npm:54.0.12"
@@ -1566,7 +1573,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@expo/prebuild-config@npm:^54.0.5":
+"@expo/prebuild-config@npm:^54.0.3, @expo/prebuild-config@npm:^54.0.5":
   version: 54.0.5
   resolution: "@expo/prebuild-config@npm:54.0.5"
   dependencies:
@@ -3448,12 +3455,14 @@ __metadata:
   resolution: "circle-app@workspace:."
   dependencies:
     "@babel/core": "npm:^7.20.0"
+    "@expo-google-fonts/madimi-one": "npm:^0.4.0"
     "@types/react": "npm:~19.1.10"
     eslint: "npm:^9.25.1"
     eslint-config-expo: "npm:~10.0.0"
     eslint-config-prettier: "npm:^10.1.2"
     expo: "npm:54.0.16"
     expo-blur: "npm:~15.0.7"
+    expo-splash-screen: "npm:^31.0.10"
     expo-status-bar: "npm:~3.0.8"
     nativewind: "npm:latest"
     prettier: "npm:^3.2.5"
@@ -4627,6 +4636,17 @@ __metadata:
   version: 1.0.2
   resolution: "expo-server@npm:1.0.2"
   checksum: 10c0/4caba89c27a1c3b5e7e02449065d2ab20db697c7acb6eb8adc8687a5f0574d576ea5b279829a2e44351bec9144280da670284aa6183ffe1c93e7b1255c2aa468
+  languageName: node
+  linkType: hard
+
+"expo-splash-screen@npm:^31.0.10":
+  version: 31.0.10
+  resolution: "expo-splash-screen@npm:31.0.10"
+  dependencies:
+    "@expo/prebuild-config": "npm:^54.0.3"
+  peerDependencies:
+    expo: "*"
+  checksum: 10c0/607b26a21be113d7f61a16c53eae09939927628ff3466c01ace96a7c53c696240ade6b92bedf7b5f2ab1feb66f572544dd8de61b64183631cda91d0f74e647ca
   languageName: node
   linkType: hard
 

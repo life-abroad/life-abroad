@@ -5,6 +5,9 @@ module.exports = {
   presets: [require('nativewind/preset')],
   theme: {
     extend: {
+      fontFamily: {
+        madimi: ['MadimiOne_400Regular'],
+      },
       colors: {
         background: '#020202',
         'background-secondary': '#191919',

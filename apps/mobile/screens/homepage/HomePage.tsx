@@ -17,16 +17,22 @@ export const HomePage = () => {
 
   return (
     <View className="flex-1">
-      <FlatList
-        data={posts}
-        keyExtractor={(_, index) => index.toString()}
-        renderItem={({ item }) => <FeedPost {...item} />}
-        onScroll={(event) => {
-          scrollY.setValue(event.nativeEvent.contentOffset.y);
-        }}
-        scrollEventThrottle={16}
-        className="flex-1 pt-[140]"
-      />
+      {posts && posts.length > 0 ? (
+        <FlatList
+          data={posts}
+          keyExtractor={(_, index) => index.toString()}
+          renderItem={({ item }) => <FeedPost {...item} />}
+          onScroll={(event) => {
+            scrollY.setValue(event.nativeEvent.contentOffset.y);
+          }}
+          scrollEventThrottle={16}
+          className="flex-1 pt-[138]"
+        />
+      ) : (
+        <View className="flex-1 items-center justify-center">
+          <Text>No posts available</Text>
+        </View>
+      )}
 
       {/* Stories - Floating Header */}
       <Animated.View
@@ -52,7 +58,9 @@ export const HomePage = () => {
               />
             ))}
           </View>
-          <CameraIcon />
+          <View className="items-center justify-center">
+            <CameraIcon size={36} />
+          </View>
         </View>
       </Animated.View>
     </View>
