@@ -40,22 +40,22 @@ export const HomePage = () => {
         className="absolute left-0 right-0 top-0 h-40 py-0"
         style={{ transform: [{ translateY: headerTranslateY }] }}>
         <Blur topBar />
-        <View className="px-4">
+        <View className="px-4 pt-14">
           <CircleLogo size={80} />
         </View>
-        <View className="flex-row items-center justify-between rounded-3xl px-3 py-3">
-          <View className="flex-row items-center gap-2.5">
+        <View className="relative px-3 py-3">
+          <View className="flex-row items-center gap-3">
             {stories.map((story, index) => (
               <Image
                 key={index}
                 source={{ uri: story }}
-                className="w-15 h-15 rounded-full"
+                className="h-[50] w-[50] rounded-full"
                 style={index < 2 ? { borderWidth: 2, borderColor: 'white' } : {}}
               />
             ))}
           </View>
-          <View className="items-center justify-center">
-            <CameraIcon size={36} />
+          <View className="absolute bottom-3 right-4 items-center justify-center">
+            <CameraIcon size={44} />
           </View>
         </View>
       </Animated.View>
