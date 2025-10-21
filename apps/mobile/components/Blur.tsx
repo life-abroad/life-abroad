@@ -22,7 +22,7 @@ function Blur({ topBar }: { topBar?: boolean }) {
         className={`absolute inset-0 ${topBar ? 'opacity-10' : 'opacity-15'}`}
       />
       {/* Black frosted overlay */}
-      <View className="absolute inset-0 bg-black/5" />
+      <View className="absolute inset-0 bg-black/25" />
 
       {/* Bottom edge subtle glow */}
       {!topBar ? (
