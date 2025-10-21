@@ -3,6 +3,7 @@ import { View, Image } from 'react-native';
 import { Post } from 'types/post';
 import { ChatBubbleIcon, LocationIcon, HeartIcon, ShareIcon } from 'components/Icons';
 import { Text } from 'components/Text';
+const screenWidth = require('react-native').Dimensions.get('window').width;
 
 export const FeedPost: React.FC<Post> = ({
   userName,
@@ -35,15 +36,39 @@ export const FeedPost: React.FC<Post> = ({
       </View>
     </View>
 
-    <View className="flex-col gap-[1]">
+    <View className="flex-col gap-[2]">
       {images.map((image, index) => (
         <View key={index} className="relative">
-          <Image
-            source={{ uri: image }}
-            className="w-full"
-            style={{ height: index === images.length - 1 ? 586 : 330 }}
-            resizeMode="cover"
-          />
+          {(() => {
+            const IntrinsicImage: React.FC = () => {
+              const [size, setSize] = React.useState<{ w: number; h: number } | null>(null);
+
+              React.useEffect(() => {
+                Image.getSize(
+                  image,
+                  (w, h) => setSize({ w, h }),
+                  () => setSize({ w: 1, h: 1 }) // fallback
+                );
+              }, [image]);
+
+              if (!size) {
+                return <View style={{ width: '100%', height: 200 }} />;
+              }
+
+              const height = (size.h / size.w) * screenWidth;
+
+              return (
+                <Image
+                  source={{ uri: image }}
+                  className="w-full"
+                  style={{ width: '100%', height }}
+                  resizeMode="contain"
+                />
+              );
+            };
+
+            return <IntrinsicImage />;
+          })()}
           {index === 0 && caption && (
             <View className="absolute bottom-2 left-2 px-0 py-2">
               <Text className="text-sm ">{caption}</Text>
