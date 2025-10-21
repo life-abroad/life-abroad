@@ -5,6 +5,7 @@ import { posts, stories } from './mockData';
 import { CameraIcon, CircleLogo } from 'components/Icons';
 import { Text } from 'components/Text';
 import { BlurView } from 'expo-blur';
+import Blur from 'components/Blur';
 
 export const HomePage = () => {
   const scrollY = useRef(new Animated.Value(0)).current;
@@ -38,12 +39,7 @@ export const HomePage = () => {
       <Animated.View
         className="absolute left-0 right-0 top-0 h-40 py-0"
         style={{ transform: [{ translateY: headerTranslateY }] }}>
-        <ImageBackground
-          source={require('../../assets/wood-grain.png')}
-          resizeMode="repeat"
-          className="absolute inset-0 opacity-25"
-        />
-        <BlurView intensity={80} tint="dark" className="absolute inset-0" />
+        <Blur topBar />
         <View className="px-4">
           <CircleLogo size={80} />
         </View>
