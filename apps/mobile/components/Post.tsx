@@ -25,8 +25,8 @@ export const FeedPost: React.FC<Post> = ({
         </View>
         <View className="flex-row items-center justify-end gap-3 px-3">
           <View>
-            <Text className="text-md text-right font-semibold ">{location}</Text>
-            <Text className="text-xs font-light ">{timestamp}</Text>
+            <Text className="text-md text-right font-medium">{location}</Text>
+            <Text className="text-xs font-light">{timestamp}</Text>
           </View>
           <View className="h-7 w-5">
             <LocationIcon />
@@ -57,7 +57,7 @@ export const FeedPost: React.FC<Post> = ({
       <View className="h-16 flex-row items-start justify-between self-stretch">
         <View className="w-46 flex-row items-center gap-2.5 rounded-lg px-2 py-0.5">
           <HeartIcon />
-          <ChatBubbleIcon size={11} />
+          <ChatBubbleIcon size={30} />
           <ShareIcon />
         </View>
         <View className="h-16 w-52 flex-row items-center justify-end gap-1 pr-2">
