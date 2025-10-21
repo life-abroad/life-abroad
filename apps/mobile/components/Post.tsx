@@ -18,6 +18,7 @@ export const FeedPost: React.FC<Post> = ({
 }) => (
   <View className="mb-1 bg-background-secondary">
     <View className="h-16 flex-row items-center px-1 py-0.5">
+      {/* TODO: Make border thicker */}
       <Image source={{ uri: userAvatar }} className="h-11 w-11 rounded-full border border-white" />
       <View className="ml-2 flex-1 flex-row items-center justify-between">
         <View className="flex-col px-1 ">
