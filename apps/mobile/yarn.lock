@@ -3462,6 +3462,7 @@ __metadata:
     eslint-config-prettier: "npm:^10.1.2"
     expo: "npm:54.0.16"
     expo-blur: "npm:~15.0.7"
+    expo-linear-gradient: "npm:~15.0.7"
     expo-splash-screen: "npm:^31.0.10"
     expo-status-bar: "npm:~3.0.8"
     nativewind: "npm:latest"
@@ -4601,6 +4602,17 @@ __metadata:
     expo: "*"
     react: "*"
   checksum: 10c0/6ca4cb430a97627b5657a220720808e4bd6dd89f4e9f86d52db71b9f91a72af8e63a83005d49af86924fc8f7bd210c312dfcb07212a1fe54334e0b4058943ec9
+  languageName: node
+  linkType: hard
+
+"expo-linear-gradient@npm:~15.0.7":
+  version: 15.0.7
+  resolution: "expo-linear-gradient@npm:15.0.7"
+  peerDependencies:
+    expo: "*"
+    react: "*"
+    react-native: "*"
+  checksum: 10c0/ee9984f4bc8985b3ad32f8a59138fd7336e16e782c1d2d10110f70b2e05b9c563382d2c16cfbe21e6463fa896f573dcc3d70d0afd32f8d435bccd9afadf8b006
   languageName: node
   linkType: hard
 
