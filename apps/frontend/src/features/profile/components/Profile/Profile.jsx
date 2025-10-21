@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { authAPI, postsAPI, audiencesAPI, contactsAPI } from '../../../../api';
+import ContactForm from '../ContactForm/ContactForm';
+import ContactCard from '../ContactCard/ContactCard';
 import './Profile.css';
 
 function Profile({ onLogout }) {
@@ -10,6 +12,9 @@ function Profile({ onLogout }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [activeTab, setActiveTab] = useState('posts');
+  const [showContactForm, setShowContactForm] = useState(false);
+  const [editingContact, setEditingContact] = useState(null);
+  const [actionError, setActionError] = useState('');
 
   useEffect(() => {
     fetchData();
@@ -39,6 +44,70 @@ function Profile({ onLogout }) {
   const handleLogout = async () => {
     await authAPI.logout();
     onLogout();
+  };
+
+  const handleCreateContact = async (formData) => {
+    try {
+      setActionError('');
+      await contactsAPI.createContact(
+        formData.name,
+        formData.phoneNumber,
+        formData.email || null
+      );
+      await fetchData();
+      setShowContactForm(false);
+    } catch (err) {
+      setActionError(err.message);
+    }
+  };
+
+  const handleUpdateContact = async (formData) => {
+    if (!editingContact) return;
+    try {
+      setActionError('');
+      await contactsAPI.updateContact(
+        editingContact.id,
+        formData.name,
+        formData.phoneNumber,
+        formData.email || null
+      );
+      await fetchData();
+      setEditingContact(null);
+      setShowContactForm(false);
+    } catch (err) {
+      setActionError(err.message);
+    }
+  };
+
+  const handleDeleteContact = async (contactId) => {
+    if (!window.confirm('Are you sure you want to delete this contact?')) {
+      return;
+    }
+    try {
+      setActionError('');
+      await contactsAPI.deleteContact(contactId);
+      await fetchData();
+    } catch (err) {
+      setActionError(err.message);
+    }
+  };
+
+  const handleEditContact = (contact) => {
+    setEditingContact(contact);
+    setShowContactForm(true);
+    setActionError('');
+  };
+
+  const handleCancelForm = () => {
+    setShowContactForm(false);
+    setEditingContact(null);
+    setActionError('');
+  };
+
+  const handleAddContact = () => {
+    setEditingContact(null);
+    setShowContactForm(true);
+    setActionError('');
   };
 
   if (loading) {
@@ -120,25 +189,50 @@ function Profile({ onLogout }) {
         )}
 
         {activeTab === 'contacts' && (
-          <div className="contacts-list">
-            {contacts.length === 0 ? (
-              <div className="empty-state">
-                <p>You haven't added any contacts yet.</p>
-                <p className="hint">Add contacts to organize them into audiences!</p>
+          <div className="contacts-section">
+            <div className="contacts-header">
+              <h2>My Contacts</h2>
+              {!showContactForm && (
+                <button onClick={handleAddContact} className="btn-add">
+                  Add Contact
+                </button>
+              )}
+            </div>
+
+            {actionError && (
+              <div className="action-error">
+                {actionError}
               </div>
-            ) : (
-              contacts.map((contact) => (
-                <div key={contact.id} className="profile-contact-card">
-                  <div className="profile-contact-header">
-                    <h3>{contact.name}</h3>
-                    <span className="profile-contact-phone">{contact.phone_number}</span>
-                  </div>
-                  {contact.email && (
-                    <p className="profile-contact-email">{contact.email}</p>
-                  )}
-                </div>
-              ))
             )}
+
+            {showContactForm && (
+              <div className="contact-form-container">
+                <h3>{editingContact ? 'Edit Contact' : 'New Contact'}</h3>
+                <ContactForm
+                  contact={editingContact}
+                  onSubmit={editingContact ? handleUpdateContact : handleCreateContact}
+                  onCancel={handleCancelForm}
+                />
+              </div>
+            )}
+
+            <div className="contacts-list">
+              {contacts.length === 0 ? (
+                <div className="empty-state">
+                  <p>You haven't added any contacts yet.</p>
+                  <p className="hint">Add contacts to organize them into audiences!</p>
+                </div>
+              ) : (
+                contacts.map((contact) => (
+                  <ContactCard
+                    key={contact.id}
+                    contact={contact}
+                    onEdit={handleEditContact}
+                    onDelete={handleDeleteContact}
+                  />
+                ))
+              )}
+            </div>
           </div>
         )}
 
