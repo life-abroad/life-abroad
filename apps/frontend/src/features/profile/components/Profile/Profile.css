@@ -81,6 +81,63 @@
   min-height: 400px;
 }
 
+.contacts-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.contacts-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.contacts-header h2 {
+  margin: 0;
+  color: #333;
+  font-size: 22px;
+}
+
+.btn-add {
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-add:hover {
+  background: var(--color-primary-dark);
+}
+
+.contact-form-container {
+  background: white;
+  padding: 20px;
+  border-radius: var(--radius-md);
+  border: 2px solid #e0e0e0;
+}
+
+.contact-form-container h3 {
+  margin: 0 0 16px 0;
+  color: #333;
+  font-size: 18px;
+}
+
+.action-error {
+  background: #fee;
+  color: var(--color-logout);
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
 .posts-list,
 .contacts-list,
 .audiences-list {
@@ -89,7 +146,6 @@
 }
 
 .profile-post-card,
-.profile-contact-card,
 .profile-audience-card {
   background: #f8f9fa;
   border-radius: var(--radius-md);
@@ -98,19 +154,13 @@
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.profile-contact-card {
-  border-left-color: #28a745;
-}
-
 .profile-post-card:hover,
-.profile-contact-card:hover,
 .profile-audience-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .profile-post-header,
-.profile-contact-header,
 .profile-audience-header {
   display: flex;
   justify-content: space-between;
@@ -119,7 +169,6 @@
 }
 
 .profile-post-header h3,
-.profile-contact-header h3,
 .profile-audience-header h3 {
   margin: 0;
   color: #333;
@@ -127,7 +176,6 @@
 }
 
 .profile-post-date,
-.profile-contact-phone,
 .profile-audience-id {
   color: #999;
   font-size: 12px;
@@ -138,12 +186,6 @@
   margin: 0;
   color: #555;
   line-height: 1.6;
-}
-
-.profile-contact-email {
-  margin: 8px 0 0 0;
-  color: #666;
-  font-size: 14px;
 }
 
 .empty-state {
