@@ -34,7 +34,8 @@ export const HomePage = () => {
             scrollY.setValue(event.nativeEvent.contentOffset.y);
           }}
           scrollEventThrottle={16}
-          className="flex-1 pt-[136]"
+          className="flex-1"
+          contentContainerStyle={{ paddingTop: 136, paddingBottom: 70 }}
         />
       ) : (
         <View className="flex-1 items-center justify-center">

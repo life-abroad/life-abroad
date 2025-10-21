@@ -21,14 +21,14 @@ const posts: Post[] = [
     ],
   },
   {
-    userName: 'Nathan Baker',
-    userHandle: 'nbaker',
+    userName: 'Karen Foo',
+    userHandle: 'kfoo',
     userAvatar:
-      'https://api.builder.io/api/v1/image/assets/TEMP/d30722627ec835ca8e06d042247b444758373973?width=84',
+      'https://www.kindpng.com/picc/m/41-415494_profile-picture-in-circle-hd-png-download.png',
     location: 'Tokyo, Japan',
     timestamp: 'Yesterday, 10:01am',
     images: [
-      'https://api.builder.io/api/v1/image/assets/TEMP/637fb687298c11ba301a8a8bbe249161713fca66?width=880',
+      'https://www.holysmithereens.com/wp-content/uploads/2019/08/IMG_20190823_183442_979-1024x822.jpg',
     ],
     comment: 'Karen Lefoo: Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     reactions: [
