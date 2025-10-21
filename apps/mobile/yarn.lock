@@ -1945,6 +1945,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-community/blur@npm:^4.4.1":
+  version: 4.4.1
+  resolution: "@react-native-community/blur@npm:4.4.1"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 10c0/f8f3b2e0dc630d93219c5db822a5d283754beedf31b8e481c17bca6f8b2a29d0e24cad4c5013f692f120a3336490dc5b1b3990a68c714c3308151adf92686ad7
+  languageName: node
+  linkType: hard
+
 "@react-native/assets-registry@npm:0.81.4":
   version: 0.81.4
   resolution: "@react-native/assets-registry@npm:0.81.4"
@@ -2125,6 +2135,16 @@ __metadata:
   version: 1.1.0
   resolution: "@rtsao/scc@npm:1.1.0"
   checksum: 10c0/b5bcfb0d87f7d1c1c7c0f7693f53b07866ed9fec4c34a97a8c948fb9a7c0082e416ce4d3b60beb4f5e167cbe04cdeefbf6771320f3ede059b9ce91188c409a5b
+  languageName: node
+  linkType: hard
+
+"@sbaiahmed1/react-native-blur@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "@sbaiahmed1/react-native-blur@npm:3.2.0"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 10c0/def4d22be25357bc778d2e3a81a993e73b3d7718b20e24a952de10a7a09116404b7a0c4109377f8d9a0e05402067d46d7d686197f33a0cc5541307d403c9708e
   languageName: node
   linkType: hard
 
@@ -3456,6 +3476,8 @@ __metadata:
   dependencies:
     "@babel/core": "npm:^7.20.0"
     "@expo-google-fonts/madimi-one": "npm:^0.4.0"
+    "@react-native-community/blur": "npm:^4.4.1"
+    "@sbaiahmed1/react-native-blur": "npm:^3.2.0"
     "@types/react": "npm:~19.1.10"
     eslint: "npm:^9.25.1"
     eslint-config-expo: "npm:~10.0.0"

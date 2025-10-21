@@ -2,8 +2,8 @@
   "name": "circle-app",
   "version": "1.0.0",
   "scripts": {
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "start": "expo start",
     "prebuild": "expo prebuild",
     "lint": "eslint \"**/*.{js,jsx,ts,tsx}\" && prettier -c \"**/*.{js,jsx,ts,tsx,json}\"",
@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "@expo-google-fonts/madimi-one": "^0.4.0",
+    "@react-native-community/blur": "^4.4.1",
+    "@sbaiahmed1/react-native-blur": "^3.2.0",
     "expo": "54.0.16",
     "expo-blur": "~15.0.7",
     "expo-linear-gradient": "~15.0.7",

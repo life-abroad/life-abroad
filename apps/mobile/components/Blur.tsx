@@ -1,18 +1,18 @@
 import React from 'react';
-import { Image, ImageBackground, View } from 'react-native';
-import { BlurView } from 'expo-blur';
+import { ImageBackground, View } from 'react-native';
+import { BlurView } from '@react-native-community/blur';
 import { LinearGradient } from 'expo-linear-gradient';
 
 function Blur() {
   return (
-    <>
-      {' '}
+    <View style={{ position: 'absolute', width: '100%', height: '100%', overflow: 'hidden' }}>
       {/* Frosted glass blur */}
       <BlurView
-        intensity={25}
-        tint="dark"
-        className="absolute inset-0"
-        experimentalBlurMethod="dimezisBlurView"
+        style={{ position: 'absolute', width: '100%', height: '100%' }}
+        blurType="dark"
+        blurAmount={25}
+        reducedTransparencyFallbackColor="white"
+        // experimentalBlurMethod="dimezisBlurView"
       />
       {/* Background texture */}
       <ImageBackground
@@ -21,21 +21,7 @@ function Blur() {
         className="absolute inset-0 opacity-15"
       />
       {/* Black frosted overlay */}
-      <View className="absolute inset-0 bg-black/15" />
-      {/* Light dispersion - multiple gradient layers */}
-      {/* <LinearGradient
-        colors={[
-          'rgba(255, 255, 255, 0.1)',
-          'rgba(200, 220, 255, 0.1)',
-          'rgba(255, 255, 255, 0)',
-          'rgba(180, 200, 255, 0.10)',
-          'rgba(255, 255, 255, 0.15)',
-        ]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        className="absolute inset-0"
-      /> */}
-      {/* Light refraction gradient */}
+      <View className="absolute inset-0 bg-black/30" />
       {/* Top edge highlight */}
       <LinearGradient
         colors={['rgba(255, 255, 255, 0.4)', 'rgba(255, 255, 255, 0)']}
@@ -50,7 +36,20 @@ function Blur() {
         end={{ x: 0, y: 1 }}
         className="absolute bottom-0 left-0 right-0 h-2"
       />
-    </>
+      {/* Side Edges */}
+      <LinearGradient
+        colors={[
+          'rgba(255, 255, 255, 0.1)',
+          'rgba(200, 220, 255, 0.1)',
+          'rgba(255, 255, 255, 0)',
+          'rgba(180, 200, 255, 0.10)',
+          'rgba(255, 255, 255, 0.15)',
+        ]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        className="absolute inset-0 opacity-100"
+      />
+    </View>
   );
 }
 
