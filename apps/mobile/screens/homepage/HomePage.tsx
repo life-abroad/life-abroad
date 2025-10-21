@@ -56,14 +56,23 @@ export const HomePage = () => {
         {/* Stories row */}
         <View className="relative px-3 py-3">
           <View className="flex-row items-center gap-3">
-            {stories.map((story, index) => (
-              <Image
-                key={index}
-                source={{ uri: story }}
-                className="h-[50] w-[50] rounded-full"
-                style={index < 2 ? { borderWidth: 2, borderColor: 'white' } : {}}
-              />
-            ))}
+            {stories.map((story, index) => {
+              const isGray = index >= stories.length - 2;
+              return (
+                <View key={index} className="relative">
+                  <Image
+                    source={{ uri: story }}
+                    className={`h-[50] w-[50] rounded-full ${index < 2 ? 'border-2 border-white' : ''} ${isGray ? 'opacity-100' : ''}`}
+                  />
+                  {isGray && (
+                    <View
+                      pointerEvents="none"
+                      className="absolute inset-0 rounded-full bg-[rgba(0,0,0,0.4)]"
+                    />
+                  )}
+                </View>
+              );
+            })}
           </View>
           <View className="absolute bottom-3 right-4 items-center justify-center">
             <CameraIcon size={44} />

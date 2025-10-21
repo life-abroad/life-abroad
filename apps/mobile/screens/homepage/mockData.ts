@@ -1,17 +1,19 @@
-const posts: PostProps[] = [
+import { Post } from '../../types/post';
+
+const posts: Post[] = [
   {
     userName: 'Nathan Baker',
     userHandle: 'nbaker',
     userAvatar:
-      'https://api.builder.io/api/v1/image/assets/TEMP/d30722627ec835ca8e06d042247b444758373973?width=84',
+      'https://www.pngitem.com/pimgs/m/627-6275754_chad-profile-pic-profile-photo-circle-png-transparent.png',
     location: 'Tokyo, Japan',
     timestamp: 'Yesterday, 10:01am',
     images: [
-      'https://api.builder.io/api/v1/image/assets/TEMP/7628edebfc0a1aeb218c48f62f433ef4f00c1618?width=880',
-      'https://api.builder.io/api/v1/image/assets/TEMP/7bad7416684ff6ba119bf9a74149dd40d5aa7b51?width=880',
-      'https://api.builder.io/api/v1/image/assets/TEMP/98aaaee979714500e3272821d054c62832c8358d?width=880',
+      'https://www.gotokyo.org/en/destinations/southern-tokyo/roppongi/images/81_0154_1.jpg',
+      'https://yotsuya.hotelkeihan.co.jp/wp-content/uploads/sites/394/2019/02/Tokyo-Tower.jpg',
+      'https://dianathemama.com/wp-content/uploads/2018/02/fuji-proposal.jpg',
     ],
-    caption: 'View from Tokyo Tower',
+    // caption: 'View from Tokyo Tower',
     comment: 'Nathan Baker: Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     reactions: [
       'https://api.builder.io/api/v1/image/assets/TEMP/e32a4adcef70ff364c7d655c7db4f440f66c7279?width=92',
@@ -39,10 +41,10 @@ const posts: PostProps[] = [
 ];
 
 const stories = [
-  'https://api.builder.io/api/v1/image/assets/TEMP/fc338f6d7b628963ed87718ba000aad58c1af291?width=120',
-  'https://api.builder.io/api/v1/image/assets/TEMP/d9d60d77e2fd12c1b3ba9515a3a716cc9130b733?width=120',
-  'https://api.builder.io/api/v1/image/assets/TEMP/6c5adcb798537ec4d7477e9f0dbb25add091a982?width=120',
-  'https://api.builder.io/api/v1/image/assets/TEMP/6c5adcb798537ec4d7477e9f0dbb25add091a982?width=120',
+  'https://www.kindpng.com/picc/m/41-415494_profile-picture-in-circle-hd-png-download.png',
+  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFA9bLSF5x5jPFcYFikCLaNrFel6C8FfJpeyQYhmG-Xuc3yhuTYprL3iQApDAoc-5nZ28&usqp=CAU',
+  'https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+  'https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTA5L3Jhd3BpeGVsX29mZmljZV8zNF9waG90b19vZl9hZnJpY2FuLWFtZXJpY2FuX3dvbWFuX2NvbXBhbnlfd29ya19kNmM4MmJhNS1iYjA2LTRkN2EtYjJlMy1hNDZhNDYyMjA0ZmZfMS5qcGc.jpg',
 ];
 
 export { posts, stories };
