@@ -7,6 +7,7 @@ import {
   Dimensions,
   Animated,
   PanResponder,
+  GestureResponderEvent,
 } from 'react-native';
 import { Text } from './Text';
 import { HeartIcon, ChatBubbleIcon } from './Icons';
@@ -39,7 +40,8 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
 }) => {
   const [currentIndex, setCurrentIndex] = React.useState(initialIndex);
 
-  // Animation values for image transitions
+  // Animation values for transitions
+  const position = React.useRef(new Animated.ValueXY()).current;
   const imageOpacity = React.useRef(new Animated.Value(1)).current;
 
   // Update current index when initialIndex prop changes
@@ -49,36 +51,87 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
     }
   }, [initialIndex, isVisible]);
 
-  // Pan responder for swipe gestures
-  const panResponder = React.useRef(
-    PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-      onPanResponderRelease: (_, gestureState) => {
-        // Vertical swipe to close
-        if (gestureState.dy > 50) {
-          onClose();
-          return;
-        }
+  // Track touch positions for tap navigation
+  const tapStartTime = React.useRef(0);
+  const [tapPosition, setTapPosition] = React.useState({ x: 0, y: 0 });
 
-        // Horizontal swipes
-        if (Math.abs(gestureState.dx) > 50) {
-          if (gestureState.dx > 0) {
-            handlePrev();
-          } else {
-            handleNext();
+  // Pan responder for handling all gestures (swipes and taps)
+  const panResponder = React.useMemo(
+    () =>
+      PanResponder.create({
+        onStartShouldSetPanResponder: () => true,
+        onMoveShouldSetPanResponder: (_, gestureState) => {
+          // Only hijack the gesture if there's significant movement
+          console.log('Gesture dx:', gestureState.dx, 'dy:', gestureState.dy);
+          return Math.abs(gestureState.dx) > 10 || Math.abs(gestureState.dy) > 10;
+        },
+        onPanResponderGrant: (evt: GestureResponderEvent) => {
+          console.log('Gesture grant');
+
+          // Record tap start time and position
+          tapStartTime.current = Date.now();
+          setTapPosition({
+            x: evt.nativeEvent.locationX,
+            y: evt.nativeEvent.locationY,
+          });
+        },
+        onPanResponderMove: Animated.event([null, { dx: position.x, dy: position.y }], {
+          useNativeDriver: false,
+        }),
+        onPanResponderRelease: (evt: GestureResponderEvent, gestureState) => {
+          const currentTime = Date.now();
+          const tapDuration = tapStartTime.current > 0 ? currentTime - tapStartTime.current : 0;
+          const { dx, dy } = gestureState;
+          console.log(
+            'Gesture released with dx:',
+            gestureState.dx,
+            'dy:',
+            gestureState.dy,
+            'duration:',
+            tapDuration,
+            'ms'
+          );
+
+          // Handle as tap if minimal movement and short duration
+          if (Math.abs(dx) < 10 && Math.abs(dy) < 10 && tapDuration < 300) {
+            console.log('Tap detected - handling navigation');
+            handleTapNavigation(evt.nativeEvent.locationX);
+            position.setValue({ x: 0, y: 0 });
+            return;
           }
-        }
-      },
-    })
-  ).current;
+
+          // Vertical swipe to close
+          if (Math.abs(dy) > 100) {
+            console.log('Vertical swipe detected - closing viewer');
+            onClose();
+            position.setValue({ x: 0, y: 0 });
+            return;
+          }
+
+          // Horizontal swipes for navigation
+          if (Math.abs(dx) > 50) {
+            console.log('Horizontal swipe detected - navigating images');
+            if (dx > 0) {
+              handlePrev();
+            } else {
+              handleNext();
+            }
+            position.setValue({ x: 0, y: 0 });
+          }
+        },
+      }),
+    [currentIndex, images.length, onClose, position]
+  );
 
   const handleNext = () => {
+    console.log('handleNext called - currentIndex:', currentIndex, 'images length:', images.length);
     if (currentIndex < images.length - 1) {
       const nextIndex = currentIndex + 1;
+      console.log('currentIndex:', currentIndex, '-> nextIndex:', nextIndex);
       // Update the current index
       setCurrentIndex(nextIndex);
     } else {
-      onClose();
+      //   onClose();
     }
   };
 
@@ -91,20 +144,21 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
 
   const handleTapNavigation = (x: number) => {
     const tapThreshold = SCREEN_WIDTH / 3;
+    console.log('Tap detected at:', x, 'Screen width:', SCREEN_WIDTH, 'Threshold:', tapThreshold);
 
     // Tapped on right side
     if (x > SCREEN_WIDTH - tapThreshold) {
+      console.log('Right tap navigation - next image');
       handleNext();
     }
     // Tapped on left side
     else if (x < tapThreshold) {
+      console.log('Left tap navigation - previous image');
       handlePrev();
+    } else {
+      console.log('Center tap - no navigation');
     }
   };
-
-  if (!images || !images[currentIndex]) {
-    return null;
-  }
 
   return (
     <Modal visible={isVisible} transparent={true} animationType="fade" onRequestClose={onClose}>
@@ -136,19 +190,17 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
       </TouchableOpacity>
 
       {/* Main Image */}
-      <TouchableOpacity
-        activeOpacity={1}
-        className="flex-1"
-        onPress={(e) => handleTapNavigation(e.nativeEvent.locationX)}>
+      <Animated.View
+        {...panResponder.panHandlers}
+        style={{
+          flex: 1,
+        }}>
         <Animated.Image
           source={{ uri: images[currentIndex] }}
-          className="flex-1"
+          style={{ flex: 1, opacity: imageOpacity }}
           resizeMode="contain"
-          style={{
-            opacity: imageOpacity,
-          }}
         />
-      </TouchableOpacity>
+      </Animated.View>
 
       {/* Bottom Bar - Always show controls */}
       <View className="absolute bottom-0 left-0 right-0 flex-row items-center justify-between bg-black/40 p-4 pb-8">
@@ -169,8 +221,8 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
               <Text className="font-madimi text-lg text-white">Image</Text>
             )}
             {/* {userInfo && userInfo.userHandle && (
-                <Text className="text-sm text-white opacity-80">{userInfo.userHandle}</Text>
-              )} */}
+                  <Text className="text-sm text-white opacity-80">{userInfo.userHandle}</Text>
+                )} */}
           </View>
         </View>
 
