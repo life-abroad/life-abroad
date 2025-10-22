@@ -5,6 +5,32 @@
   margin-bottom: 20px;
 }
 
+.import-contact-section {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.btn-import-contact {
+  background: var(--color-secondary);
+  color: var(--color-text-dark);
+  border: 2px solid var(--color-border);
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-import-contact:hover {
+  background: var(--color-border);
+  transform: translateY(-1px);
+}
+
+.btn-import-contact:active {
+  transform: translateY(0);
+}
+
 .form-group {
   margin-bottom: 16px;
 }

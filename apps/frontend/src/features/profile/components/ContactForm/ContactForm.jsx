@@ -67,8 +67,44 @@ function ContactForm({ contact = null, onSubmit, onCancel }) {
     }
   };
 
+  const handleImportContact = async () => {
+    // Check if Contact Picker API is supported (Safari iOS 14.5+)
+    if ('contacts' in navigator && 'ContactsManager' in window) {
+      try {
+        const props = ['name', 'tel', 'email'];
+        const opts = { multiple: false };
+        
+        const contacts = await navigator.contacts.select(props, opts);
+        
+        if (contacts.length > 0) {
+          const contact = contacts[0];
+          
+          setFormData((prev) => ({
+            ...prev,
+            name: contact.name?.[0] || prev.name,
+            phoneNumber: contact.tel?.[0] || prev.phoneNumber,
+            email: contact.email?.[0] || prev.email,
+          }));
+        }
+      } catch (error) {
+        // User cancelled or error occurred
+        console.error('Error importing contact:', error);
+      }
+    } else {
+      alert('Contact import is not supported on this device/browser');
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit} className="contact-form">
+      {'contacts' in navigator && (
+        <div className="import-contact-section">
+          <button type="button" onClick={handleImportContact} className="btn-import-contact">
+            Import from Contacts
+          </button>
+        </div>
+      )}
+      
       <div className="form-group">
         <label htmlFor="name">Name *</label>
         <input
