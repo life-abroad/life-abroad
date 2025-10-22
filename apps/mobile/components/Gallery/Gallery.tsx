@@ -7,10 +7,12 @@ const Gallery = ({
   images,
   currentIndex,
   onIndexChange,
+  onVerticalPull,
 }: {
   images: string[];
   currentIndex: number;
   onIndexChange: (index: number) => void;
+  onVerticalPull: () => void;
 }) => {
   const ref = useRef<GalleryType>(null);
 
@@ -39,6 +41,9 @@ const Gallery = ({
       customTransition={transition}
       onIndexChange={onIndexChange}
       initialIndex={currentIndex}
+      onSwipe={(direction) => {
+        direction === 'up' || direction === 'down' ? onVerticalPull() : null;
+      }}
     />
   );
 };
