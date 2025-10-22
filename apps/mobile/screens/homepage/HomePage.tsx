@@ -12,6 +12,8 @@ export const HomePage = () => {
   const [imageViewerVisible, setImageViewerVisible] = useState(false);
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [hideProgressBar, setHideProgressBar] = useState(false);
+  const [hideCounter, setHideCounter] = useState(false);
 
   const scrollY = useRef(new Animated.Value(0)).current;
   const diffClampScrollY = Animated.diffClamp(scrollY, 0, 300);
@@ -46,6 +48,8 @@ export const HomePage = () => {
     setSelectedImageIndex(initialIndex);
     setSelectedPostUser(stories[index].user);
     setImageViewerVisible(true);
+    setHideCounter(true);
+    setHideProgressBar(false);
   };
 
   const handlePostImagePress = (images: string[], initialIndex = 0, user: any) => {
@@ -53,6 +57,8 @@ export const HomePage = () => {
     setSelectedImageIndex(initialIndex);
     setSelectedPostUser(user);
     setImageViewerVisible(true);
+    setHideCounter(false);
+    setHideProgressBar(true);
   };
 
   return (
@@ -128,6 +134,10 @@ export const HomePage = () => {
         isVisible={imageViewerVisible}
         onClose={() => setImageViewerVisible(false)}
         userInfo={selectedPostUser}
+        hideProgressBar={hideProgressBar}
+        hideCounter={hideCounter}
+        setHideProgressBar={setHideProgressBar}
+        setHideCounter={setHideCounter}
       />
     </View>
   );
