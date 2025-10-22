@@ -6,9 +6,7 @@ import { Text } from 'components/Text';
 const screenWidth = require('react-native').Dimensions.get('window').width;
 
 export const FeedPost: React.FC<Post> = ({
-  userName,
-  userHandle,
-  userAvatar,
+  user,
   location,
   timestamp,
   images,
@@ -18,12 +16,14 @@ export const FeedPost: React.FC<Post> = ({
 }) => (
   <View className="mb-1 bg-background-secondary">
     <View className="h-16 flex-row items-center px-1 py-0.5">
-      {/* TODO: Make border thicker */}
-      <Image source={{ uri: userAvatar }} className="h-11 w-11 rounded-full border border-white" />
+      <Image
+        source={{ uri: user.userAvatar }}
+        className="h-11 w-11 rounded-full border-2 border-white"
+      />
       <View className="ml-2 flex-1 flex-row items-center justify-between">
         <View className="flex-col px-1 ">
-          <Text className="text-md font-madimi font-semibold">{userName}</Text>
-          <Text className="text-sm font-light ">{userHandle}</Text>
+          <Text className="text-md font-madimi font-semibold">{user.userName}</Text>
+          <Text className="text-sm font-light ">{user.userHandle}</Text>
         </View>
         <View className="flex-row items-center justify-end gap-3 px-3">
           <View>

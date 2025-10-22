@@ -62,7 +62,7 @@ export const HomePage = () => {
               return (
                 <View key={index} className="relative">
                   <Image
-                    source={{ uri: story }}
+                    source={{ uri: story.user.userAvatar }}
                     className={`h-[50] w-[50] rounded-full ${index < 2 ? 'border-2 border-white' : ''} ${isGray ? 'opacity-100' : ''}`}
                   />
                   {isGray && (
