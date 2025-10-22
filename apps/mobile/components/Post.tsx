@@ -57,6 +57,7 @@ export const FeedPost: React.FC<Post> = ({
           <TouchableOpacity
             key={index}
             className="relative"
+            activeOpacity={0.8}
             onPress={() => handleImagePress(index)}>
             {(() => {
               const IntrinsicImage: React.FC = () => {

@@ -115,6 +115,7 @@ export const HomePage = () => {
           scrollEventThrottle={16}
           className="flex-1"
           contentContainerStyle={{ paddingTop: 136, paddingBottom: 70 }}
+          showsVerticalScrollIndicator={false}
         />
       ) : (
         <View className="flex-1 items-center justify-center">
