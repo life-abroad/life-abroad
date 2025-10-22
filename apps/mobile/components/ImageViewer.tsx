@@ -278,17 +278,18 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
             return true;
           }
 
-          // If zoomed in, don't handle navigation gestures
-          if (lastScale.current > 1) {
-            return true;
-          }
-
           // Handle as tap if minimal movement and short duration
+          // Note: We want to detect taps even when zoomed in, for double-tap to zoom out
           if (Math.abs(dx) < 10 && Math.abs(dy) < 10 && tapDuration < 300) {
             console.log('Tap detected - handling navigation');
             handleTapNavigation(evt.nativeEvent.locationX);
             position.setValue({ x: 0, y: 0 });
-            return;
+            return true;
+          }
+
+          // If zoomed in, don't handle navigation gestures
+          if (lastScale.current > 1) {
+            return true;
           }
 
           // Vertical swipe to close
@@ -347,9 +348,13 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
 
     // Handle double tap to zoom
     if (isDoubleTap) {
-      if (lastScale.current > 1) {
+      // Get the latest value from the animated value directly
+      const currentScale = (scale as any)._value;
+      console.log('Double tap detected with current scale:', currentScale);
+
+      if (currentScale > 1) {
         // Reset zoom
-        console.log('Double tap - resetting zoom');
+        console.log('Double tap - resetting zoom to 1x');
 
         // Animate back to original size
         Animated.parallel([
@@ -362,6 +367,7 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
         lastScale.current = 1;
         lastTranslate.current = { x: 0, y: 0 };
         baseScale.current = 1;
+        initialDistance.current = 0;
       } else {
         // Zoom in to 2x centered on tap point
         console.log('Double tap - zooming to 2x at point:', x, tapPosition.y);
