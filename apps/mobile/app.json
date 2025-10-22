@@ -10,7 +10,7 @@
       "tsconfigPaths": true
     },
     "plugins": [],
-    "orientation": "portrait",
+    "orientation": "default",
     "icon": "./assets/app/icon.png",
     "userInterfaceStyle": "light",
     "splash": {

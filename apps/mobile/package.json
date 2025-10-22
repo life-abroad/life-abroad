@@ -17,6 +17,7 @@
     "expo": "54.0.16",
     "expo-blur": "~15.0.7",
     "expo-linear-gradient": "~15.0.7",
+    "expo-screen-orientation": "~9.0.7",
     "expo-splash-screen": "^31.0.10",
     "expo-status-bar": "~3.0.8",
     "nativewind": "latest",

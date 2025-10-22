@@ -9,6 +9,7 @@ import {
   PanResponder,
   GestureResponderEvent,
 } from 'react-native';
+import * as ScreenOrientation from 'expo-screen-orientation';
 import { Text } from './Text';
 import { HeartIcon, ChatBubbleIcon } from './Icons';
 import Blur from './Blur';
@@ -50,6 +51,22 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
       setCurrentIndex(initialIndex);
     }
   }, [initialIndex, isVisible]);
+
+  // Handle screen orientation - unlock when modal opens, lock to portrait when it closes
+  React.useEffect(() => {
+    if (isVisible) {
+      // Allow all orientations when image viewer is open
+      ScreenOrientation.unlockAsync();
+    } else {
+      // Lock to portrait when image viewer is closed
+      ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
+    }
+
+    // Cleanup: lock to portrait when component unmounts
+    return () => {
+      ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
+    };
+  }, [isVisible]);
 
   // Track touch positions for tap navigation
   const tapStartTime = React.useRef(0);
