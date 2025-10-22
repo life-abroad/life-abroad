@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
 import { useFonts } from 'expo-font';
 import { MadimiOne_400Regular } from '@expo-google-fonts/madimi-one';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -26,14 +27,16 @@ export default function App() {
   }
 
   return (
-    <View className="flex-1 bg-background">
-      <View className="flex-1">
-        <HomePage />
+    <GestureHandlerRootView>
+      <View className="flex-1 bg-background">
+        <View className="flex-1">
+          <HomePage />
+        </View>
+        <View className="absolute bottom-0 left-0 right-0 z-30">
+          <BottomNav />
+        </View>
+        <StatusBar style="light" translucent />
       </View>
-      <View className="absolute bottom-0 left-0 right-0 z-50">
-        <BottomNav />
-      </View>
-      <StatusBar style="light" translucent />
-    </View>
+    </GestureHandlerRootView>
   );
 }

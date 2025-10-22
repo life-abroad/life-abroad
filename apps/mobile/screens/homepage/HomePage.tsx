@@ -1,27 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  View,
-  Image,
-  ScrollView,
-  ImageBackground,
-  Animated,
-  Easing,
-  FlatList,
-  TouchableOpacity,
-} from 'react-native';
+import { View, Image, Animated, FlatList, TouchableOpacity } from 'react-native';
 import { FeedPost } from '../../components/Post';
 import { posts, stories } from './mockData';
 import { CameraIcon, CircleLogo } from 'components/Icons';
 import { Text } from 'components/Text';
-import { BlurView } from 'expo-blur';
 import Blur from 'components/Blur';
 import { StoryView } from 'components/StoryView';
 import { ImageViewer } from 'components/ImageViewer';
 
 export const HomePage = () => {
-  const [storyViewVisible, setStoryViewVisible] = useState(false);
-  const [selectedStoryIndex, setSelectedStoryIndex] = useState(0);
-
   // State for regular image viewer
   const [imageViewerVisible, setImageViewerVisible] = useState(false);
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
@@ -42,12 +29,10 @@ export const HomePage = () => {
     extrapolate: 'clamp',
   });
 
-  const opacity = useRef(new Animated.Value(0)).current;
-  const scale = useRef(new Animated.Value(1.2)).current;
-
   const handleStoryPress = (index: number) => {
-    setSelectedStoryIndex(index);
-    setStoryViewVisible(true);
+    setSelectedImages(stories[index].images);
+    setSelectedPostUser(stories[index].user);
+    setImageViewerVisible(true);
   };
 
   const [selectedPostUser, setSelectedPostUser] = useState<
@@ -133,21 +118,6 @@ export const HomePage = () => {
         </View>
       </Animated.View>
 
-      {/* Story View Modal */}
-      <Animated.View
-        style={{
-          opacity,
-          transform: [{ scale }],
-        }}>
-        <StoryView
-          stories={stories}
-          initialIndex={selectedStoryIndex}
-          isVisible={storyViewVisible}
-          onClose={() => setStoryViewVisible(false)}
-        />
-      </Animated.View>
-
-      {/* Image Viewer for Post Images */}
       <ImageViewer
         images={selectedImages}
         initialIndex={selectedImageIndex}
