@@ -11,7 +11,8 @@ function ChatRow({ user, unreadCount, lastMessage, timestamp, onPress }: ChatRow
   return (
     <TouchableOpacity
       onPress={onPress}
-      className="flex-row items-center bg-background-secondary px-4 py-3">
+      className="flex-row items-center bg-background-secondary px-4 py-3"
+      activeOpacity={0.8}>
       {/* Avatar */}
       <Image source={{ uri: user.userAvatar }} className="h-14 w-14 rounded-full" />
 
