@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import PhoneInput from 'react-phone-number-input';
+import 'react-phone-number-input/style.css';
 import './ContactForm.css';
 
 function ContactForm({ contact = null, onSubmit, onCancel }) {
@@ -41,7 +43,12 @@ function ContactForm({ contact = null, onSubmit, onCancel }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
-      onSubmit(formData);
+      // Format phone number: remove '+' and keep only digits
+      const formattedData = {
+        ...formData,
+        phoneNumber: formData.phoneNumber.replace(/\+/g, '')
+      };
+      onSubmit(formattedData);
     }
   };
 
@@ -50,6 +57,13 @@ function ContactForm({ contact = null, onSubmit, onCancel }) {
     setFormData((prev) => ({ ...prev, [name]: value }));
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: '' }));
+    }
+  };
+
+  const handlePhoneChange = (value) => {
+    setFormData((prev) => ({ ...prev, phoneNumber: value || '' }));
+    if (errors.phoneNumber) {
+      setErrors((prev) => ({ ...prev, phoneNumber: '' }));
     }
   };
 
@@ -70,13 +84,12 @@ function ContactForm({ contact = null, onSubmit, onCancel }) {
 
       <div className="form-group">
         <label htmlFor="phoneNumber">Phone Number *</label>
-        <input
-          type="tel"
-          id="phoneNumber"
-          name="phoneNumber"
+        <PhoneInput
+          international
+          defaultCountry="US"
           value={formData.phoneNumber}
-          onChange={handleChange}
-          className={errors.phoneNumber ? 'error' : ''}
+          onChange={handlePhoneChange}
+          className={errors.phoneNumber ? 'phone-input error' : 'phone-input'}
         />
         {errors.phoneNumber && <span className="error-message">{errors.phoneNumber}</span>}
       </div>
