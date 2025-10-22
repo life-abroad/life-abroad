@@ -2,6 +2,7 @@ import React, { useCallback, useRef } from 'react';
 import { Gallery as GalleryIm, type GalleryType, TapGestureEvent } from 'react-native-zoom-toolkit';
 
 import GalleryImage from './GalleryImage';
+import { withTiming } from 'react-native-reanimated';
 
 const Gallery = ({
   images,
@@ -29,6 +30,19 @@ const Gallery = ({
     // console.log(`Tapped on index ${index}`);
   }, []);
 
+  const customTransition = (state: any) => {
+    'worklet';
+    const { index, vertical, scroll, gallerySize } = state;
+
+    if (vertical) {
+      const translateY = withTiming(index * gallerySize.height - scroll, { duration: 0 });
+      return { transform: [{ translateY }] };
+    }
+
+    const translateX = withTiming(index * gallerySize.width - scroll, { duration: 0 });
+    return { transform: [{ translateX }] };
+  };
+
   return (
     <GalleryIm
       ref={ref}
@@ -36,7 +50,7 @@ const Gallery = ({
       keyExtractor={keyExtractor}
       renderItem={renderItem}
       onTap={onTap}
-      customTransition={undefined}
+      customTransition={customTransition}
       tapOnEdgeToItem={false}
       onIndexChange={onIndexChange}
       initialIndex={currentIndex}
