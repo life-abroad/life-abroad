@@ -38,6 +38,10 @@ export const HomePage = ({ setHideNav }: { setHideNav: (hide: boolean) => void }
   const [images, setImages] = useState<string[]>([]);
   const [imageIndex, setImageIndex] = useState(0);
 
+  useEffect(() => {
+    console.log('HomePage Current Index:', imageIndex);
+  }, [imageIndex]);
+
   const allStoryImages = stories.flatMap((s) => s.images ?? []);
   // Create a users array where each user is repeated for each of their images
   const allStoryUsers = stories.flatMap((s) => (s.images ?? []).map(() => s.user));
