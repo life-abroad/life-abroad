@@ -10,13 +10,13 @@ import {
 } from 'react-native';
 import { Text } from './Text';
 import { HeartIcon, ChatBubbleIcon } from './Icons';
-import { Story } from '../types/post';
+import { Post } from '../types/post';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 interface StoryViewProps {
-  stories: Story[];
+  stories: Post[];
   initialIndex: number;
   isVisible: boolean;
   onClose: () => void;
@@ -153,11 +153,7 @@ export const StoryView: React.FC<StoryViewProps> = ({
           activeOpacity={1}
           className="flex-1"
           onPress={(e) => handleTapNavigation(e.nativeEvent.locationX)}>
-          <Image
-            source={{ uri: currentStory.user.userAvatar }}
-            className="flex-1"
-            resizeMode="cover"
-          />
+          <Image source={{ uri: currentStory.images[0] }} className="flex-1" resizeMode="contain" />
         </TouchableOpacity>
 
         {/* Bottom Bar */}

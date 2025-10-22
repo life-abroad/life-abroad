@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
   Image,
@@ -35,6 +35,40 @@ export const HomePage = () => {
     outputRange: [1, 0.7, 0],
     extrapolate: 'clamp',
   });
+
+  const opacity = useRef(new Animated.Value(0)).current;
+  const scale = useRef(new Animated.Value(1.2)).current;
+
+  useEffect(() => {
+    if (storyViewVisible) {
+      Animated.parallel([
+        Animated.timing(opacity, {
+          toValue: 1,
+          duration: 300,
+          useNativeDriver: true,
+        }),
+        Animated.spring(scale, {
+          toValue: 1,
+          friction: 8,
+          tension: 40,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    } else {
+      Animated.parallel([
+        Animated.timing(opacity, {
+          toValue: 0,
+          duration: 200,
+          useNativeDriver: true,
+        }),
+        Animated.timing(scale, {
+          toValue: 1.1,
+          duration: 250,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    }
+  }, [storyViewVisible]);
 
   const handleStoryPress = (index: number) => {
     setSelectedStoryIndex(index);
@@ -103,12 +137,18 @@ export const HomePage = () => {
       </Animated.View>
 
       {/* Story View Modal */}
-      <StoryView
-        stories={stories}
-        initialIndex={selectedStoryIndex}
-        isVisible={storyViewVisible}
-        onClose={() => setStoryViewVisible(false)}
-      />
+      <Animated.View
+        style={{
+          opacity,
+          transform: [{ scale }],
+        }}>
+        <StoryView
+          stories={stories}
+          initialIndex={selectedStoryIndex}
+          isVisible={storyViewVisible}
+          onClose={() => setStoryViewVisible(false)}
+        />
+      </Animated.View>
     </View>
   );
 };
