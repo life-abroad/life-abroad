@@ -148,7 +148,6 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
         <View className="flex-1 items-center justify-center">
           <View className="h-[100%] w-[100%]">
             <Gallery
-              key={`gallery-${isVisible}`}
               images={images}
               currentIndex={imageIndex}
               onIndexChange={setImageIndex}

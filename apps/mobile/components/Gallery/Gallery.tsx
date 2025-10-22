@@ -16,6 +16,7 @@ const Gallery = ({
   onVerticalPull: () => void;
 }) => {
   const ref = useRef<GalleryType>(null);
+  const prevIndexRef = useRef<number>(currentIndex);
 
   // Remember to memoize your callbacks properly to keep a decent performance
   const renderItem = useCallback((item: string, index: number) => {
@@ -43,8 +44,12 @@ const Gallery = ({
     return { transform: [{ translateX }] };
   };
 
+  // Update gallery index when currentIndex prop changes from outside
   useEffect(() => {
-    console.log('Gallery Current Index:', currentIndex);
+    if (currentIndex !== prevIndexRef.current && ref.current) {
+      ref.current.setIndex(currentIndex, false);
+      prevIndexRef.current = currentIndex;
+    }
   }, [currentIndex]);
 
   return (
