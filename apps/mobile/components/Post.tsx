@@ -57,7 +57,7 @@ export const FeedPost: React.FC<Post> = ({
           <TouchableOpacity
             key={index}
             className="relative"
-            activeOpacity={0.8}
+            activeOpacity={1}
             onPress={() => handleImagePress(index)}>
             {(() => {
               const IntrinsicImage: React.FC = () => {
@@ -124,14 +124,12 @@ export const FeedPost: React.FC<Post> = ({
         </View>
       </View>
 
-      {imageViewerVisible && (
-        <ImageViewer
-          images={images}
-          initialIndex={selectedImageIndex}
-          isVisible={imageViewerVisible}
-          onClose={() => setImageViewerVisible(false)}
-        />
-      )}
+      <ImageViewer
+        images={images}
+        initialIndex={selectedImageIndex}
+        isVisible={imageViewerVisible}
+        onClose={() => setImageViewerVisible(false)}
+      />
     </View>
   );
 };
