@@ -14,8 +14,6 @@ import { Text } from './Text';
 import { HeartIcon, ChatBubbleIcon } from './Icons';
 import Blur from './Blur';
 
-const SCREEN_WIDTH = Dimensions.get('window').width;
-
 interface ImageViewerProps {
   images: string[];
   initialIndex?: number;
@@ -40,10 +38,23 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
   showProgressBar = false,
 }) => {
   const [currentIndex, setCurrentIndex] = React.useState(initialIndex);
+  const [hideBottomBar, setHideBottomBar] = React.useState(false);
+  const [screenDimensions, setScreenDimensions] = React.useState(Dimensions.get('window'));
 
   // Animation values for transitions
   const position = React.useRef(new Animated.ValueXY()).current;
   const imageOpacity = React.useRef(new Animated.Value(1)).current;
+
+  // Update screen dimensions when orientation changes
+  React.useEffect(() => {
+    const subscription = Dimensions.addEventListener('change', ({ window }) => {
+      setScreenDimensions(window);
+    });
+
+    return () => {
+      subscription?.remove();
+    };
+  }, []);
 
   // Update current index when initialIndex prop changes
   React.useEffect(() => {
@@ -160,11 +171,18 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
   };
 
   const handleTapNavigation = (x: number) => {
-    const tapThreshold = SCREEN_WIDTH / 3;
-    console.log('Tap detected at:', x, 'Screen width:', SCREEN_WIDTH, 'Threshold:', tapThreshold);
+    const tapThreshold = screenDimensions.width / 3;
+    console.log(
+      'Tap detected at:',
+      x,
+      'Screen width:',
+      screenDimensions.width,
+      'Threshold:',
+      tapThreshold
+    );
 
     // Tapped on right side
-    if (x > SCREEN_WIDTH - tapThreshold) {
+    if (x > screenDimensions.width - tapThreshold) {
       console.log('Right tap navigation - next image');
       handleNext();
     }
@@ -173,7 +191,8 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
       console.log('Left tap navigation - previous image');
       handlePrev();
     } else {
-      console.log('Center tap - no navigation');
+      console.log('Center tap - hiding/showing bottom bar');
+      setHideBottomBar((prev) => !prev);
     }
   };
 
@@ -220,7 +239,8 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
       </Animated.View>
 
       {/* Bottom Bar - Always show controls */}
-      <View className="absolute bottom-0 left-0 right-0 flex-row items-center justify-between bg-black/40 p-4 pb-8">
+      <View
+        className={`absolute bottom-0 left-0 right-0 flex-row items-center justify-between bg-black/40 p-4 pb-8 ${hideBottomBar ? 'hidden' : 'flex'}`}>
         {/* User Info */}
         <View className="flex-row items-center">
           {userInfo && userInfo.userAvatar ? (
