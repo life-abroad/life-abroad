@@ -5,7 +5,7 @@ const chats: ChatRow[] = [
     user: {
       userName: 'Nathan Baker',
       userAvatar:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFA9bLSF5x5jPFcYFikCLaNrFel6C8FfJpeyQYhmG-Xuc3yhuTYprL3iQApDAoc-5nZ28&usqp=CAU',
+        'https://img.freepik.com/free-photo/business-man-by-skyscraper_1303-13655.jpg?semt=ais_hybrid&w=740&q=80',
       userHandle: 'nbaker',
       profileUrl: '/users/nbaker',
     },

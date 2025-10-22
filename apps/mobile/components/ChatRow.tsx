@@ -22,10 +22,13 @@ function ChatRow({ user, unreadCount, lastMessage, timestamp, onPress }: ChatRow
           <Text className="text-xs text-foreground-muted">{timestamp}</Text>
         </View>
         <View className="flex-row items-center justify-between">
-          <Text className="mr-2 flex-1 text-sm text-foreground-muted">{lastMessage}</Text>
+          <Text
+            className={`mr-2 flex-1 text-sm ${unreadCount > 0 ? 'text-foreground' : 'text-foreground-muted'}`}>
+            {lastMessage}
+          </Text>
           {unreadCount > 0 && (
-            <View className="h-5 w-5 items-center justify-center rounded-full bg-primary">
-              <Text className="text-xs font-semibold text-white">{unreadCount}</Text>
+            <View className="size-6 items-center justify-center rounded-full bg-primary">
+              <Text className="text-sm font-extrabold text-white">{unreadCount}</Text>
             </View>
           )}
         </View>

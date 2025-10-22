@@ -181,7 +181,7 @@ const stories: Post[] = [
       },
       {
         userAvatar:
-          'https://api.builder.io/api/v1/image/assets/TEMP/a96e7f494de538eb263c3d497afd80c0a995b298?width=92',
+          'https://img.freepik.com/free-photo/business-man-by-skyscraper_1303-13655.jpg?semt=ais_hybrid&w=740&q=80',
         emoji: '👏',
       },
     ],

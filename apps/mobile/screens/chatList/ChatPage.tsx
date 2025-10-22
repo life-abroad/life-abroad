@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { View, Image, Animated, FlatList, TouchableOpacity } from 'react-native';
 import { FeedPost } from '../../components/Post';
 import { chats, bulletins } from './mockData';
-import { CameraIcon, CircleLogo } from 'components/Icons';
+import { CameraIcon, ChatBubbleIcon, CircleLogo } from 'components/Icons';
 import { Text } from 'components/Text';
 import Blur from 'components/Blur';
 import ChatRow from 'components/ChatRow';
@@ -89,7 +89,7 @@ export const ChatPage = () => {
             })}
           </View>
           <View className="absolute bottom-5 right-4 items-center justify-center">
-            <CameraIcon size={35} />
+            <ChatBubbleIcon size={35} onPress={() => {}} />
           </View>
         </View>
       </Animated.View>
