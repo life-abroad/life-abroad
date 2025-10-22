@@ -48,18 +48,44 @@ const posts: Post[] = [
     reactions: [
       {
         userAvatar:
-          'https://api.builder.io/api/v1/image/assets/TEMP/e32a4adcef70ff364c7d655c7db4f440f66c7279?width=92',
+          'https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTA5L3Jhd3BpeGVsX29mZmljZV8zNF9waG90b19vZl9hZnJpY2FuLWFtZXJpY2FuX3dvbWFuX2NvbXBhbnlfd29ya19kNmM4MmJhNS1iYjA2LTRkN2EtYjJlMy1hNDZhNDYyMjA0ZmZfMS5qcGc.jpg',
         emoji: '❤️',
       },
       {
         userAvatar:
-          'https://api.builder.io/api/v1/image/assets/TEMP/63d02802283446d3398286f440a78cb464c0c420?width=92',
+          'https://api.builder.io/api/v1/image/assets/TEMP/e32a4adcef70ff364c7d655c7db4f440f66c7279?width=92',
         emoji: '😂',
       },
       {
         userAvatar:
-          'https://api.builder.io/api/v1/image/assets/TEMP/a96e7f494de538eb263c3d497afd80c0a995b298?width=92',
+          'https://img.freepik.com/free-photo/business-man-by-skyscraper_1303-13655.jpg?semt=ais_hybrid&w=740&q=80',
         emoji: '👏',
+      },
+    ],
+  },
+  {
+    user: {
+      userName: 'Thomas Brown',
+      userHandle: 'tbrown',
+      userAvatar:
+        'https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTA5L3Jhd3BpeGVsX29mZmljZV8zNF9waG90b19vZl9hZnJpY2FuLWFtZXJpY2FuX3dvbWFuX2NvbXBhbnlfd29ya19kNmM4MmJhNS1iYjA2LTRkN2EtYjJlMy1hNDZhNDYyMjA0ZmZfMS5qcGc.jpg',
+      profileUrl: '/users/tbrown',
+    },
+    location: 'Kawaguchiko, Japan',
+    timestamp: 'Yesterday, 10:01am',
+    images: [
+      'https://career-advice.jobs.ac.uk/wp-content/uploads/Japan-e1634207070862.jpg.optimal.jpg',
+      'https://preview.redd.it/fopp0b1xu2151.jpg?width=640&crop=smart&auto=webp&s=b5aa6b1ccb57b53d4422adfcec2c24477a81df84',
+      'https://121clicks.com/wp-content/uploads/2024/07/discover-japan-hisa-matsumura-01.jpg',
+      'https://i.pinimg.com/564x/b1/3e/12/b13e1235906241a0f61923da76ade35d.jpg',
+    ],
+    // caption: 'View from Tokyo Tower',
+    comment: 'Thomas Brown: Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    reactions: [
+      {
+        userAvatar:
+          'https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+        emoji: '❤️',
       },
     ],
   },
