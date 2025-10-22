@@ -43,6 +43,20 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
 }) => {
   const [currentIndex, setCurrentIndex] = React.useState(initialIndex);
   const [hideBottomBar, setHideBottomBar] = React.useState(false);
+  const progressAnims = React.useRef(
+    images.map((_, i) => new Animated.Value(i <= initialIndex ? 1 : 0))
+  ).current;
+
+  // Animate progress bars when currentIndex changes
+  React.useEffect(() => {
+    progressAnims.forEach((anim, i) => {
+      Animated.timing(anim, {
+        toValue: i <= currentIndex ? 1 : 0,
+        duration: 200,
+        useNativeDriver: false, // width can't use native driver
+      }).start();
+    });
+  }, [currentIndex, progressAnims]);
 
   // Handle screen orientation - unlock when viewer opens, lock to portrait when it closes
   React.useEffect(() => {
@@ -101,7 +115,10 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
               <Animated.View
                 className="h-full bg-white"
                 style={{
-                  width: index <= currentIndex ? '100%' : '0%',
+                  width: progressAnims[index].interpolate({
+                    inputRange: [0, 1],
+                    outputRange: ['0%', '100%'],
+                  }),
                 }}
               />
             </View>

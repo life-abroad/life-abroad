@@ -1,5 +1,10 @@
 import React, { useCallback, useRef } from 'react';
-import { stackTransition, Gallery as GalleryIm, type GalleryType } from 'react-native-zoom-toolkit';
+import {
+  stackTransition,
+  Gallery as GalleryIm,
+  type GalleryType,
+  TapGestureEvent,
+} from 'react-native-zoom-toolkit';
 
 import GalleryImage from './GalleryImage';
 
@@ -25,11 +30,9 @@ const Gallery = ({
     return `${item}-${index}`;
   }, []);
 
-  const onTap = useCallback((_, index: number) => {
-    console.log(`Tapped on index ${index}`);
+  const onTap = useCallback((e: TapGestureEvent, index: number) => {
+    // console.log(`Tapped on index ${index}`);
   }, []);
-
-  const transition = useCallback(stackTransition, []);
 
   return (
     <GalleryIm
@@ -38,7 +41,8 @@ const Gallery = ({
       keyExtractor={keyExtractor}
       renderItem={renderItem}
       onTap={onTap}
-      customTransition={transition}
+      customTransition={undefined}
+      tapOnEdgeToItem={false}
       onIndexChange={onIndexChange}
       initialIndex={currentIndex}
       onSwipe={(direction) => {
