@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View, Image, Animated, FlatList, TouchableOpacity } from 'react-native';
 import { FeedPost } from '../../components/Post';
 import { posts, stories } from './mockData';
@@ -8,7 +8,7 @@ import Blur from 'components/Blur';
 import { ImageViewer } from 'components/ImageViewer';
 import { User } from 'types/user';
 
-export const HomePage = () => {
+export const HomePage = ({ setHideNav }: { setHideNav: (hide: boolean) => void }) => {
   // Scroll animations
   const scrollY = useRef(new Animated.Value(0)).current;
   const diffClampScrollY = Animated.diffClamp(scrollY, 0, 300);
@@ -28,6 +28,10 @@ export const HomePage = () => {
   const [imageViewerVisible, setImageViewerVisible] = useState(false);
   const [hideProgressBar, setHideProgressBar] = useState(false);
   const [hideCounter, setHideCounter] = useState(false);
+
+  useEffect(() => {
+    setHideNav(imageViewerVisible);
+  }, [imageViewerVisible]);
 
   // Image view data
   const [users, setUsers] = useState<User[]>([]);
@@ -138,7 +142,9 @@ export const HomePage = () => {
         setImageIndex={setImageIndex}
         users={users}
         isVisible={imageViewerVisible}
-        onClose={() => setImageViewerVisible(false)}
+        onClose={() => {
+          setImageViewerVisible(false);
+        }}
         hideProgressBar={hideProgressBar}
         hideCounter={hideCounter}
         setHideProgressBar={setHideProgressBar}

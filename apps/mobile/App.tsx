@@ -15,6 +15,7 @@ SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const [selectedTab, setSelectedTab] = React.useState('home');
+  const [hideNav, setHideNav] = React.useState(false);
 
   const [fontsLoaded] = useFonts({
     MadimiOne_400Regular,
@@ -35,13 +36,13 @@ export default function App() {
       <View className="flex-1 bg-background">
         <View className="flex-1">
           <PageTransition isActive={selectedTab === 'home'} direction="right">
-            <HomePage />
+            <HomePage setHideNav={setHideNav} />
           </PageTransition>
           <PageTransition isActive={selectedTab === 'chat'} direction="left">
             <ChatPage />
           </PageTransition>
         </View>
-        <View className="absolute bottom-0 left-0 right-0 z-30">
+        <View className={`absolute bottom-0 left-0 right-0 z-30 ${hideNav ? 'hidden' : ''}`}>
           <BottomNav selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
         </View>
         <StatusBar style="light" translucent />
