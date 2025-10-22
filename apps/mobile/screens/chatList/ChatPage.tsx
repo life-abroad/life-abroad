@@ -28,7 +28,7 @@ export const ChatPage = () => {
   };
 
   return (
-    <View className="flex-1 bg-background-secondary/80">
+    <View className="flex-1 bg-background-secondary">
       {chats && chats.length > 0 ? (
         <FlatList
           data={chats}
@@ -73,7 +73,11 @@ export const ChatPage = () => {
             {bulletins.map((bulletin, index) => {
               const isGray = index >= bulletins.length - 2;
               return (
-                <TouchableOpacity key={index} className="relative items-center" onPress={() => 0}>
+                <TouchableOpacity
+                  key={index}
+                  className="relative items-center"
+                  onPress={() => 0}
+                  activeOpacity={0.8}>
                   {/* Message bubble */}
                   <View className="z-10 -mb-3 h-[60px] w-[80px] justify-center overflow-hidden rounded-2xl bg-white px-1 py-2 shadow-md">
                     <ImageBackground

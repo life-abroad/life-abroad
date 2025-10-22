@@ -79,7 +79,7 @@ const bulletins: Bulletin[] = [
       userName: 'Emily Chen',
       userHandle: 'echen',
       userAvatar:
-        'https://images.pexels.com/photos/1239294/pexels-photo-1239294.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFA9bLSF5x5jPFcYFikCLaNrFel6C8FfJpeyQYhmG-Xuc3yhuTYprL3iQApDAoc-5nZ28&usqp=CAU',
       profileUrl: '/users/echen',
     },
     timestamp: 'Yesterday, 8:45am',
