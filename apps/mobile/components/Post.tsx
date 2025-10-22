@@ -22,7 +22,7 @@ export const FeedPost: React.FC<FeedPostProps> = ({
 }) => {
   return (
     <View className="mb-1 bg-background-secondary">
-      <View className="h-16 flex-row items-center px-1 py-0.5">
+      <View className="flex-row items-center px-1 py-2">
         <Image
           source={{ uri: user.userAvatar }}
           className="h-11 w-11 rounded-full border-2 border-white"
@@ -33,7 +33,7 @@ export const FeedPost: React.FC<FeedPostProps> = ({
             {/* <Text className="text-sm font-light ">{user.userHandle}</Text> */}
           </View>
           <View className="flex-row items-center justify-end gap-3 px-3">
-            <View>
+            <View className="max-w-32">
               <Text className="text-md text-right font-medium">{location}</Text>
               <Text className="text-xs font-light">{timestamp}</Text>
             </View>
@@ -94,7 +94,7 @@ export const FeedPost: React.FC<FeedPostProps> = ({
         <View className="h-10 flex-row items-start justify-between self-stretch py-2">
           <View className="w-46 flex-row items-center gap-2.5 rounded-lg px-2 py-0.5">
             <HeartIcon size={30} />
-            <ChatBubbleIcon size={23} />
+            <ChatBubbleIcon size={23} onPress={() => {}} />
             <ShareIcon size={25} />
           </View>
           <View className="h-10 w-52 flex-row items-center justify-end gap-5 pr-5">
