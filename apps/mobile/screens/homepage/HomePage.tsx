@@ -1,13 +1,26 @@
-import React, { useRef } from 'react';
-import { View, Image, ScrollView, ImageBackground, Animated, Easing, FlatList } from 'react-native';
+import React, { useRef, useState } from 'react';
+import {
+  View,
+  Image,
+  ScrollView,
+  ImageBackground,
+  Animated,
+  Easing,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
 import { FeedPost } from '../../components/Post';
 import { posts, stories } from './mockData';
 import { CameraIcon, CircleLogo } from 'components/Icons';
 import { Text } from 'components/Text';
 import { BlurView } from 'expo-blur';
 import Blur from 'components/Blur';
+import { StoryView } from 'components/StoryView';
 
 export const HomePage = () => {
+  const [storyViewVisible, setStoryViewVisible] = useState(false);
+  const [selectedStoryIndex, setSelectedStoryIndex] = useState(0);
+
   const scrollY = useRef(new Animated.Value(0)).current;
   const diffClampScrollY = Animated.diffClamp(scrollY, 0, 300);
   const headerTranslateY = diffClampScrollY.interpolate({
@@ -22,6 +35,11 @@ export const HomePage = () => {
     outputRange: [1, 0.7, 0],
     extrapolate: 'clamp',
   });
+
+  const handleStoryPress = (index: number) => {
+    setSelectedStoryIndex(index);
+    setStoryViewVisible(true);
+  };
 
   return (
     <View className="flex-1">
@@ -60,7 +78,10 @@ export const HomePage = () => {
             {stories.map((story, index) => {
               const isGray = index >= stories.length - 2;
               return (
-                <View key={index} className="relative">
+                <TouchableOpacity
+                  key={index}
+                  className="relative"
+                  onPress={() => handleStoryPress(index)}>
                   <Image
                     source={{ uri: story.user.userAvatar }}
                     className={`h-[50] w-[50] rounded-full ${index < 2 ? 'border-2 border-white' : ''} ${isGray ? 'opacity-100' : ''}`}
@@ -71,7 +92,7 @@ export const HomePage = () => {
                       className="absolute inset-0 rounded-full bg-[rgba(0,0,0,0.4)]"
                     />
                   )}
-                </View>
+                </TouchableOpacity>
               );
             })}
           </View>
@@ -80,6 +101,14 @@ export const HomePage = () => {
           </View>
         </View>
       </Animated.View>
+
+      {/* Story View Modal */}
+      <StoryView
+        stories={stories}
+        initialIndex={selectedStoryIndex}
+        isVisible={storyViewVisible}
+        onClose={() => setStoryViewVisible(false)}
+      />
     </View>
   );
 };
