@@ -43,6 +43,15 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
   const [hideBottomBar, setHideBottomBar] = React.useState(false);
   const [shouldRender, setShouldRender] = React.useState(false);
   const fadeAnim = React.useRef(new Animated.Value(0)).current;
+  const bottomBarFadeAnim = React.useRef(new Animated.Value(1)).current;
+
+  React.useEffect(() => {
+    Animated.timing(bottomBarFadeAnim, {
+      toValue: hideBottomBar ? 0 : 1,
+      duration: 100,
+      useNativeDriver: true,
+    }).start();
+  }, [hideBottomBar, bottomBarFadeAnim]);
 
   // Handle fade in/out animation
   React.useEffect(() => {
@@ -156,13 +165,18 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
               currentIndex={imageIndex}
               onIndexChange={setImageIndex}
               onVerticalPull={onClose}
+              setHideBottomBar={setHideBottomBar}
             />
           </View>
         </View>
 
         {/* Bottom Bar - Always show controls */}
-        <View
-          className={`absolute bottom-0 left-0 right-0 flex-row items-center justify-between bg-black/40 p-4 pb-8 ${hideBottomBar ? 'hidden' : 'flex'}`}>
+        <Animated.View
+          className={`absolute bottom-0 left-0 right-0 flex-row items-center justify-between bg-black/40 p-4 pb-8`}
+          style={{
+            opacity: bottomBarFadeAnim,
+          }}
+          pointerEvents={hideBottomBar ? 'none' : 'auto'}>
           {/* User Info */}
           <View className="flex-row items-center">
             {users && users[imageIndex] ? (
@@ -191,7 +205,7 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
               <ChatBubbleIcon size={25} onPress={() => {}} />
             </TouchableOpacity>
           </View>
-        </View>
+        </Animated.View>
       </SafeAreaView>
     </Animated.View>
   );
