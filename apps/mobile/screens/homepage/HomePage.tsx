@@ -5,7 +5,6 @@ import { posts, stories } from './mockData';
 import { CameraIcon, CircleLogo } from 'components/Icons';
 import { Text } from 'components/Text';
 import Blur from 'components/Blur';
-import { StoryView } from 'components/StoryView';
 import { ImageViewer } from 'components/ImageViewer';
 
 export const HomePage = () => {
@@ -29,12 +28,6 @@ export const HomePage = () => {
     extrapolate: 'clamp',
   });
 
-  const handleStoryPress = (index: number) => {
-    setSelectedImages(stories[index].images);
-    setSelectedPostUser(stories[index].user);
-    setImageViewerVisible(true);
-  };
-
   const [selectedPostUser, setSelectedPostUser] = useState<
     | {
         userName?: string;
@@ -43,6 +36,17 @@ export const HomePage = () => {
       }
     | undefined
   >(undefined);
+
+  const handleStoryPress = (index: number) => {
+    const allImages = stories.flatMap((s) => s.images ?? []);
+    const initialIndex = stories
+      .slice(0, index)
+      .reduce((acc, s) => acc + (s.images?.length ?? 0), 0);
+    setSelectedImages(allImages);
+    setSelectedImageIndex(initialIndex);
+    setSelectedPostUser(stories[index].user);
+    setImageViewerVisible(true);
+  };
 
   const handlePostImagePress = (images: string[], initialIndex = 0, user: any) => {
     setSelectedImages(images);

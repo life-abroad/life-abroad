@@ -3,7 +3,15 @@ import { stackTransition, Gallery as GalleryIm, type GalleryType } from 'react-n
 
 import GalleryImage from './GalleryImage';
 
-const Gallery = ({ images }: { images: string[] }) => {
+const Gallery = ({
+  images,
+  currentIndex,
+  onIndexChange,
+}: {
+  images: string[];
+  currentIndex: number;
+  onIndexChange: (index: number) => void;
+}) => {
   const ref = useRef<GalleryType>(null);
 
   // Remember to memoize your callbacks properly to keep a decent performance
@@ -29,6 +37,8 @@ const Gallery = ({ images }: { images: string[] }) => {
       renderItem={renderItem}
       onTap={onTap}
       customTransition={transition}
+      onIndexChange={onIndexChange}
+      initialIndex={currentIndex}
     />
   );
 };
