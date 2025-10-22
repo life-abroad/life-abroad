@@ -48,21 +48,24 @@ export const HomePage = ({ setHideNav }: { setHideNav: (hide: boolean) => void }
   // Create a users array where each user is repeated for each of their images
   const allStoryUsers = stories.flatMap((s) => (s.images ?? []).map(() => s.user));
 
-  const handleStoryPress = (index: number) => {
-    console.log('index', index);
-    const initialIndex = stories
-      .slice(0, index)
-      .reduce((acc, s) => acc + (s.images?.length ?? 0), 0);
-    console.log('initialIndex', initialIndex);
-    // data
-    setImages(allStoryImages);
-    setImageIndex(initialIndex);
-    setUsers(allStoryUsers);
-    // meta
-    setImageViewerVisible(true);
-    setHideCounter(true);
-    setHideProgressBar(false);
-  };
+  const handleStoryPress = useCallback(
+    (index: number) => {
+      console.log('index', index);
+      const initialIndex = stories
+        .slice(0, index)
+        .reduce((acc, s) => acc + (s.images?.length ?? 0), 0);
+      console.log('initialIndex', initialIndex);
+      // data
+      setImages(allStoryImages);
+      setImageIndex(initialIndex);
+      setUsers(allStoryUsers);
+      // meta
+      setImageViewerVisible(true);
+      setHideCounter(true);
+      setHideProgressBar(false);
+    },
+    [allStoryImages, allStoryUsers]
+  );
 
   const handlePostImagePress = useCallback((images: string[], initialIndex = 0, user: any) => {
     // Create a users array where the same user is repeated for each image
