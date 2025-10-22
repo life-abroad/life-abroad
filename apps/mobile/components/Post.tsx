@@ -6,7 +6,11 @@ import { Text } from 'components/Text';
 import { ImageViewer } from './ImageViewer';
 const screenWidth = require('react-native').Dimensions.get('window').width;
 
-export const FeedPost: React.FC<Post> = ({
+interface FeedPostProps extends Post {
+  onImagePress: (images: string[], index: number) => void;
+}
+
+export const FeedPost: React.FC<FeedPostProps> = ({
   user,
   location,
   timestamp,
@@ -16,18 +20,6 @@ export const FeedPost: React.FC<Post> = ({
   reactions,
   onImagePress,
 }) => {
-  const [imageViewerVisible, setImageViewerVisible] = useState(false);
-  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-
-  const handleImagePress = (index: number) => {
-    if (onImagePress) {
-      onImagePress(images, index);
-    } else {
-      setSelectedImageIndex(index);
-      setImageViewerVisible(true);
-    }
-  };
-
   return (
     <View className="mb-1 bg-background-secondary">
       <View className="h-16 flex-row items-center px-1 py-0.5">
@@ -58,7 +50,7 @@ export const FeedPost: React.FC<Post> = ({
             key={index}
             className="relative"
             activeOpacity={1}
-            onPress={() => handleImagePress(index)}>
+            onPress={() => onImagePress(images, index)}>
             {(() => {
               const IntrinsicImage: React.FC = () => {
                 const [size, setSize] = React.useState<{ w: number; h: number } | null>(null);
@@ -123,13 +115,6 @@ export const FeedPost: React.FC<Post> = ({
           <Text className="text-md font-normal ">{comment}</Text>
         </View>
       </View>
-
-      <ImageViewer
-        images={images}
-        initialIndex={selectedImageIndex}
-        isVisible={imageViewerVisible}
-        onClose={() => setImageViewerVisible(false)}
-      />
     </View>
   );
 };

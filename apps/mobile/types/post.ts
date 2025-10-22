@@ -18,5 +18,4 @@ export interface Post {
   caption?: string;
   comment: string;
   reactions: Reaction[];
-  onImagePress?: (images: string[], index: number) => void;
 }
