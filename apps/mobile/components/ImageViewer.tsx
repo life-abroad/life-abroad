@@ -39,25 +39,6 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
 }) => {
   const [currentIndex, setCurrentIndex] = React.useState(initialIndex);
   const [hideBottomBar, setHideBottomBar] = React.useState(false);
-  const [screenDimensions, setScreenDimensions] = React.useState(Dimensions.get('window'));
-
-  // Update screen dimensions when orientation changes
-  React.useEffect(() => {
-    const subscription = Dimensions.addEventListener('change', ({ window }) => {
-      setScreenDimensions(window);
-    });
-
-    return () => {
-      subscription?.remove();
-    };
-  }, []);
-
-  // Update current index when initialIndex prop changes
-  React.useEffect(() => {
-    if (isVisible) {
-      setCurrentIndex(initialIndex);
-    }
-  }, [initialIndex, isVisible]);
 
   // Handle screen orientation - unlock when viewer opens, lock to portrait when it closes
   React.useEffect(() => {
@@ -118,7 +99,7 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
         {/* Main Image */}
         <View className="flex-1 items-center justify-center">
           <View className="h-[100%] w-[100%]">
-            <Gallery images={images} />
+            <Gallery images={images} currentIndex={currentIndex} onIndexChange={setCurrentIndex} />
           </View>
         </View>
 
