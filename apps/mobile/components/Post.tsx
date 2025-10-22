@@ -90,15 +90,12 @@ export const FeedPost: React.FC<Post> = ({
           {reactions.map((reaction, index) => (
             <View key={index} className="relative h-10 w-10">
               <Image
-                source={{ uri: reaction }}
-                className="absolute -top-1 left-0 h-10 w-10 rounded-full"
+                source={{ uri: reaction.userAvatar }}
+                className="absolute -top-1 left-0 h-10 w-10 rounded-full border border-white"
               />
-              <Image
-                source={{
-                  uri: 'https://api.builder.io/api/v1/image/assets/TEMP/ca55d5715e5cdda061de1f1254914575bfdcc427?width=54',
-                }}
-                className="absolute left-7 top-3 z-10 h-7 w-7"
-              />
+              <View className="absolute left-7 top-3 z-10 h-7 w-7 items-center justify-center rounded-full">
+                <Text className="text-md">{reaction.emoji}</Text>
+              </View>
             </View>
           ))}
         </View>

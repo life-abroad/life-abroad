@@ -1,3 +1,8 @@
+export interface Reaction {
+  userAvatar: string;
+  emoji: string;
+}
+
 export interface Post {
   userName: string;
   userHandle: string;
@@ -7,5 +12,5 @@ export interface Post {
   images: string[];
   caption?: string;
   comment: string;
-  reactions: string[];
+  reactions: Reaction[];
 }

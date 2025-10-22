@@ -16,8 +16,16 @@ const posts: Post[] = [
     // caption: 'View from Tokyo Tower',
     comment: 'Nathan Baker: Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     reactions: [
-      'https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-      'https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTA5L3Jhd3BpeGVsX29mZmljZV8zNF9waG90b19vZl9hZnJpY2FuLWFtZXJpY2FuX3dvbWFuX2NvbXBhbnlfd29ya19kNmM4MmJhNS1iYjA2LTRkN2EtYjJlMy1hNDZhNDYyMjA0ZmZfMS5qcGc.jpg',
+      {
+        userAvatar:
+          'https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+        emoji: '❤️',
+      },
+      {
+        userAvatar:
+          'https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTA5L3Jhd3BpeGVsX29mZmljZV8zNF9waG90b19vZl9hZnJpY2FuLWFtZXJpY2FuX3dvbWFuX2NvbXBhbnlfd29ya19kNmM4MmJhNS1iYjA2LTRkN2EtYjJlMy1hNDZhNDYyMjA0ZmZfMS5qcGc.jpg',
+        emoji: '👍',
+      },
     ],
   },
   {
@@ -32,14 +40,27 @@ const posts: Post[] = [
     ],
     comment: 'Karen Lefoo: Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     reactions: [
-      'https://api.builder.io/api/v1/image/assets/TEMP/e32a4adcef70ff364c7d655c7db4f440f66c7279?width=92',
-      'https://api.builder.io/api/v1/image/assets/TEMP/63d02802283446d3398286f440a78cb464c0c420?width=92',
-      'https://api.builder.io/api/v1/image/assets/TEMP/a96e7f494de538eb263c3d497afd80c0a995b298?width=92',
+      {
+        userAvatar:
+          'https://api.builder.io/api/v1/image/assets/TEMP/e32a4adcef70ff364c7d655c7db4f440f66c7279?width=92',
+        emoji: '❤️',
+      },
+      {
+        userAvatar:
+          'https://api.builder.io/api/v1/image/assets/TEMP/63d02802283446d3398286f440a78cb464c0c420?width=92',
+        emoji: '😂',
+      },
+      {
+        userAvatar:
+          'https://api.builder.io/api/v1/image/assets/TEMP/a96e7f494de538eb263c3d497afd80c0a995b298?width=92',
+        emoji: '👏',
+      },
     ],
   },
 ];
 
-const stories = [
+// Stories are still just avatar images, not reactions
+const stories: string[] = [
   'https://www.kindpng.com/picc/m/41-415494_profile-picture-in-circle-hd-png-download.png',
   'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFA9bLSF5x5jPFcYFikCLaNrFel6C8FfJpeyQYhmG-Xuc3yhuTYprL3iQApDAoc-5nZ28&usqp=CAU',
   'https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
