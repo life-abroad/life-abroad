@@ -38,7 +38,7 @@ export const FeedPost: React.FC<Post> = ({
         <View className="ml-2 flex-1 flex-row items-center justify-between">
           <View className="flex-col px-1 ">
             <Text className="text-md font-madimi font-semibold">{user.userName}</Text>
-            <Text className="text-sm font-light ">{user.userHandle}</Text>
+            {/* <Text className="text-sm font-light ">{user.userHandle}</Text> */}
           </View>
           <View className="flex-row items-center justify-end gap-3 px-3">
             <View>

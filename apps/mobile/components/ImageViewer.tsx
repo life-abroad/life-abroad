@@ -42,6 +42,9 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
   const opacity = React.useRef(new Animated.Value(0)).current;
   const scale = React.useRef(new Animated.Value(1.1)).current;
 
+  // Animation values for slide transitions
+  const imageOpacity = React.useRef(new Animated.Value(1)).current;
+
   // Update current index when initialIndex prop changes
   React.useEffect(() => {
     if (isVisible) {
@@ -81,6 +84,29 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
     }
   }, [isVisible]);
 
+  // Animation for transitioning between images
+  const animateToNextImage = (nextIndex: number) => {
+    // Determine direction of animation (left or right)
+
+    // Fade out current image slightly
+    Animated.timing(imageOpacity, {
+      toValue: 0.5,
+      duration: 10,
+      useNativeDriver: true,
+    }).start(() => {
+      // Update the current index
+      setCurrentIndex(nextIndex);
+
+      Animated.parallel([
+        Animated.timing(imageOpacity, {
+          toValue: 1,
+          duration: 250,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    });
+  };
+
   // Pan responder for swipe gestures
   const panResponder = React.useRef(
     PanResponder.create({
@@ -106,7 +132,7 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
 
   const handleNext = () => {
     if (currentIndex < images.length - 1) {
-      setCurrentIndex(currentIndex + 1);
+      animateToNextImage(currentIndex + 1);
     } else {
       onClose();
     }
@@ -114,7 +140,7 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
 
   const handlePrev = () => {
     if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
+      animateToNextImage(currentIndex - 1);
     }
   };
 
@@ -172,11 +198,18 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
           activeOpacity={1}
           className="flex-1"
           onPress={(e) => handleTapNavigation(e.nativeEvent.locationX)}>
-          <Image source={{ uri: images[currentIndex] }} className="flex-1" resizeMode="contain" />
+          <Animated.Image
+            source={{ uri: images[currentIndex] }}
+            className="flex-1"
+            resizeMode="contain"
+            style={{
+              opacity: imageOpacity,
+            }}
+          />
         </TouchableOpacity>
 
         {/* Bottom Bar - Always show controls */}
-        <View className="absolute bottom-0 left-0 right-0 flex-row items-center justify-between bg-black/40 p-4">
+        <View className="absolute bottom-4 left-0 right-0 flex-row items-center justify-between bg-black/40 p-4">
           {/* User Info */}
           <View className="flex-row items-center">
             {userInfo && userInfo.userAvatar ? (
@@ -193,9 +226,9 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
               ) : (
                 <Text className="font-madimi text-lg text-white">Image</Text>
               )}
-              {userInfo && userInfo.userHandle && (
+              {/* {userInfo && userInfo.userHandle && (
                 <Text className="text-sm text-white opacity-80">{userInfo.userHandle}</Text>
-              )}
+              )} */}
             </View>
           </View>
 
