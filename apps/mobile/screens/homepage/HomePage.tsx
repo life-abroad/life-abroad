@@ -45,37 +45,6 @@ export const HomePage = () => {
   const opacity = useRef(new Animated.Value(0)).current;
   const scale = useRef(new Animated.Value(1.2)).current;
 
-  useEffect(() => {
-    if (storyViewVisible) {
-      Animated.parallel([
-        Animated.timing(opacity, {
-          toValue: 1,
-          duration: 300,
-          useNativeDriver: true,
-        }),
-        Animated.spring(scale, {
-          toValue: 1,
-          friction: 8,
-          tension: 40,
-          useNativeDriver: true,
-        }),
-      ]).start();
-    } else {
-      Animated.parallel([
-        Animated.timing(opacity, {
-          toValue: 0,
-          duration: 200,
-          useNativeDriver: true,
-        }),
-        Animated.timing(scale, {
-          toValue: 1.1,
-          duration: 250,
-          useNativeDriver: true,
-        }),
-      ]).start();
-    }
-  }, [storyViewVisible]);
-
   const handleStoryPress = (index: number) => {
     setSelectedStoryIndex(index);
     setStoryViewVisible(true);
