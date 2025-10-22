@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   Image,
@@ -40,10 +40,14 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
   setHideProgressBar,
   setHideCounter,
 }) => {
-  const [hideBottomBar, setHideBottomBar] = React.useState(false);
+  const [hideBottomBar, setHideBottomBar] = React.useState(true);
   const [shouldRender, setShouldRender] = React.useState(false);
   const fadeAnim = React.useRef(new Animated.Value(0)).current;
   const bottomBarFadeAnim = React.useRef(new Animated.Value(1)).current;
+
+  useEffect(() => {
+    setHideBottomBar(false);
+  }, [isVisible]);
 
   React.useEffect(() => {
     Animated.timing(bottomBarFadeAnim, {
