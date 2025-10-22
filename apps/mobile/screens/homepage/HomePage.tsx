@@ -9,6 +9,8 @@ import { ImageViewer } from 'components/ImageViewer';
 import { User } from 'types/user';
 
 export const HomePage = ({ setHideNav }: { setHideNav: (hide: boolean) => void }) => {
+  const flatListRef = useRef<FlatList>(null);
+
   // Scroll animations
   const scrollY = useRef(new Animated.Value(0)).current;
   const diffClampScrollY = Animated.diffClamp(scrollY, 0, 300);
@@ -77,6 +79,7 @@ export const HomePage = ({ setHideNav }: { setHideNav: (hide: boolean) => void }
     <View className="flex-1">
       {posts && posts.length > 0 ? (
         <FlatList
+          ref={flatListRef}
           data={posts}
           keyExtractor={(_, index) => index.toString()}
           renderItem={({ item }) => (
@@ -92,6 +95,9 @@ export const HomePage = ({ setHideNav }: { setHideNav: (hide: boolean) => void }
           className="flex-1"
           contentContainerStyle={{ paddingTop: 136, paddingBottom: 70 }}
           showsVerticalScrollIndicator={false}
+          maintainVisibleContentPosition={{
+            minIndexForVisible: 0,
+          }}
         />
       ) : (
         <View className="flex-1 items-center justify-center">
