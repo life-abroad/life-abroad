@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react';
 import { View, Image, Animated, FlatList, TouchableOpacity } from 'react-native';
 import { FeedPost } from '../../components/Post';
 import { posts, stories } from './mockData';
@@ -64,7 +64,7 @@ export const HomePage = ({ setHideNav }: { setHideNav: (hide: boolean) => void }
     setHideProgressBar(false);
   };
 
-  const handlePostImagePress = (images: string[], initialIndex = 0, user: any) => {
+  const handlePostImagePress = useCallback((images: string[], initialIndex = 0, user: any) => {
     // Create a users array where the same user is repeated for each image
     const usersArray = images.map(() => user);
     setImages(images);
@@ -73,37 +73,45 @@ export const HomePage = ({ setHideNav }: { setHideNav: (hide: boolean) => void }
     setHideCounter(false);
     setHideProgressBar(true);
     setUsers(usersArray);
-  };
+  }, []);
 
-  return (
-    <View className="flex-1">
-      {posts && posts.length > 0 ? (
-        <FlatList
-          ref={flatListRef}
-          data={posts}
-          keyExtractor={(_, index) => index.toString()}
-          renderItem={({ item }) => (
-            <FeedPost
-              {...item}
-              onImagePress={(images, index) => handlePostImagePress(images, index, item.user)}
-            />
-          )}
-          onScroll={(event) => {
-            scrollY.setValue(event.nativeEvent.contentOffset.y);
-          }}
-          scrollEventThrottle={16}
-          className="flex-1"
-          contentContainerStyle={{ paddingTop: 136, paddingBottom: 70 }}
-          showsVerticalScrollIndicator={false}
-          maintainVisibleContentPosition={{
-            minIndexForVisible: 0,
-          }}
-        />
-      ) : (
+  const feedList = useMemo(() => {
+    if (!posts || posts.length === 0) {
+      return (
         <View className="flex-1 items-center justify-center">
           <Text>No posts available</Text>
         </View>
-      )}
+      );
+    }
+
+    return (
+      <FlatList
+        ref={flatListRef}
+        data={posts}
+        keyExtractor={(_, index) => index.toString()}
+        renderItem={({ item }) => (
+          <FeedPost
+            {...item}
+            onImagePress={(images, index) => handlePostImagePress(images, index, item.user)}
+          />
+        )}
+        onScroll={(event) => {
+          scrollY.setValue(event.nativeEvent.contentOffset.y);
+        }}
+        scrollEventThrottle={16}
+        className="flex-1"
+        contentContainerStyle={{ paddingTop: 136, paddingBottom: 70 }}
+        showsVerticalScrollIndicator={false}
+        maintainVisibleContentPosition={{
+          minIndexForVisible: 0,
+        }}
+      />
+    );
+  }, [posts, handlePostImagePress]);
+
+  return (
+    <View className="flex-1">
+      {feedList}
 
       {/* Stories - Floating Header */}
       <Animated.View
