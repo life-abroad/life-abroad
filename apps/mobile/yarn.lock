@@ -3485,6 +3485,7 @@ __metadata:
     expo: "npm:54.0.16"
     expo-blur: "npm:~15.0.7"
     expo-linear-gradient: "npm:~15.0.7"
+    expo-screen-orientation: "npm:~9.0.7"
     expo-splash-screen: "npm:^31.0.10"
     expo-status-bar: "npm:~3.0.8"
     nativewind: "npm:latest"
@@ -4663,6 +4664,16 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 10c0/c3054c41cda15637545283581919c14e6a7d741199af14c65df3be6f26aed5d0a17e7bc47a0e855fde550bcd20a1ef98d0212428b6ff644e057e7305b6cdc833
+  languageName: node
+  linkType: hard
+
+"expo-screen-orientation@npm:~9.0.7":
+  version: 9.0.7
+  resolution: "expo-screen-orientation@npm:9.0.7"
+  peerDependencies:
+    expo: "*"
+    react-native: "*"
+  checksum: 10c0/62abb0cb18866a3d2b52b4516aa3ea2b233f0cda082458b85e6acc57e413d0b272d17e18e2da8d75698d8c25e21c7d9bd89b9849d1bdacfdff6c3548972504f9
   languageName: node
   linkType: hard
 
