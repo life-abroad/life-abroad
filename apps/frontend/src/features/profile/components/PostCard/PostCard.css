@@ -54,7 +54,7 @@
   margin-bottom: 16px;
 }
 
-.media-item {
+.post-card .media-item {
   position: relative;
   aspect-ratio: 1;
   border-radius: var(--radius-sm);
@@ -62,18 +62,18 @@
   background: #e0e0e0;
 }
 
-.media-item img {
+.post-card .media-item img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: transform 0.3s;
 }
 
-.media-item:hover img {
+.post-card .media-item:hover img {
   transform: scale(1.05);
 }
 
-.media-error {
+.post-card .media-error {
   display: flex;
   align-items: center;
   justify-content: center;

@@ -13,7 +13,7 @@ function PostView({ post }) {
     <div className="post-view">
       <div className="post-view-header">
         <button 
-          className="view-all-button"
+          className="view-all-button view-all-button-large"
           onClick={handleViewAllPosts}
         >
           view all {post.creator_name}'s posts
@@ -28,7 +28,6 @@ function PostView({ post }) {
         
         {post.media_items && post.media_items.length > 0 && (
           <div className="media-gallery">
-            <h3>Media ({post.media_items.length} items)</h3>
             <div className="media-grid">
               {post.media_items.map((media) => {
                 console.log('Rendering media item:', media); // Debug
