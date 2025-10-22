@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { View, Image, Animated, FlatList, TouchableOpacity } from 'react-native';
+import { View, Image, Animated, FlatList, TouchableOpacity, ImageBackground } from 'react-native';
 import { FeedPost } from '../../components/Post';
 import { chats, bulletins } from './mockData';
 import { CameraIcon, ChatBubbleIcon, CircleLogo } from 'components/Icons';
@@ -75,7 +75,12 @@ export const ChatPage = () => {
               return (
                 <TouchableOpacity key={index} className="relative items-center" onPress={() => 0}>
                   {/* Message bubble */}
-                  <View className="z-10 -mb-3 h-[60px] w-[80px] justify-center rounded-2xl bg-white px-1 py-2 shadow-md">
+                  <View className="z-10 -mb-3 h-[60px] w-[80px] justify-center overflow-hidden rounded-2xl bg-white px-1 py-2 shadow-md">
+                    <ImageBackground
+                      source={require('../../assets/textures/snow.png')}
+                      resizeMode="repeat"
+                      className={`absolute inset-0 opacity-100`}
+                    />
                     <Text className="text-center text-[0.6rem] leading-tight text-gray-900">
                       {bulletin.content}
                     </Text>
