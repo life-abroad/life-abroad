@@ -148,7 +148,7 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
         <View className="flex-1 items-center justify-center">
           <View className="h-[100%] w-[100%]">
             <Gallery
-              key={`gallery-${isVisible}-${imageIndex}`}
+              key={`gallery-${isVisible}`}
               images={images}
               currentIndex={imageIndex}
               onIndexChange={setImageIndex}
@@ -185,7 +185,7 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
               <HeartIcon size={34} />
             </TouchableOpacity>
             <TouchableOpacity>
-              <ChatBubbleIcon size={25} />
+              <ChatBubbleIcon size={25} onPress={() => {}} />
             </TouchableOpacity>
           </View>
         </View>
