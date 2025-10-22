@@ -41,22 +41,26 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
   setHideCounter,
 }) => {
   const [hideBottomBar, setHideBottomBar] = React.useState(false);
+  const [shouldRender, setShouldRender] = React.useState(false);
   const fadeAnim = React.useRef(new Animated.Value(0)).current;
 
   // Handle fade in/out animation
   React.useEffect(() => {
     if (isVisible) {
+      setShouldRender(true);
       Animated.timing(fadeAnim, {
         toValue: 1,
-        duration: 300,
+        duration: 100,
         useNativeDriver: true,
       }).start();
     } else {
       Animated.timing(fadeAnim, {
         toValue: 0,
-        duration: 300,
+        duration: 100,
         useNativeDriver: true,
-      }).start();
+      }).start(() => {
+        setShouldRender(false);
+      });
     }
   }, [isVisible, fadeAnim]);
 
