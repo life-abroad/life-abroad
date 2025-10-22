@@ -235,8 +235,24 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
             }
           } else if (lastScale.current > 1) {
             // Single finger pan when zoomed in
-            const newX = lastTranslate.current.x + gestureState.dx;
-            const newY = lastTranslate.current.y + gestureState.dy;
+
+            // Calculate a scaling factor for the pan - the higher the zoom, the slower the pan
+            // This makes it easier to make precise adjustments when zoomed in
+            const panScaleFactor = 1 / Math.sqrt(lastScale.current);
+
+            // Apply the scaling factor to reduce movement amount when zoomed in
+            const scaledDx = gestureState.dx * panScaleFactor;
+            const scaledDy = gestureState.dy * panScaleFactor;
+
+            const newX = lastTranslate.current.x + scaledDx;
+            const newY = lastTranslate.current.y + scaledDy;
+
+            console.log(
+              'Panning with scale factor:',
+              panScaleFactor.toFixed(2),
+              'zoom level:',
+              lastScale.current.toFixed(2)
+            );
 
             // Apply pan limits based on zoom level
             const maxPan = ((lastScale.current - 1) * screenDimensions.width) / 2;
