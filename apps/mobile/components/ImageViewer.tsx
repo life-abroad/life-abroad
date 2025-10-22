@@ -10,7 +10,6 @@ import {
   GestureResponderEvent,
 } from 'react-native';
 import * as ScreenOrientation from 'expo-screen-orientation';
-import { PinchGestureHandler } from 'react-native-gesture-handler';
 import { Text } from './Text';
 import { HeartIcon, ChatBubbleIcon } from './Icons';
 import Blur from './Blur';
@@ -45,6 +44,16 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
   // Animation values for transitions
   const position = React.useRef(new Animated.ValueXY()).current;
   const imageOpacity = React.useRef(new Animated.Value(1)).current;
+
+  // Zoom and pan state
+  const scale = React.useRef(new Animated.Value(1)).current;
+  const translateX = React.useRef(new Animated.Value(0)).current;
+  const translateY = React.useRef(new Animated.Value(0)).current;
+  const lastScale = React.useRef(1);
+  const lastTranslate = React.useRef({ x: 0, y: 0 });
+  const initialDistance = React.useRef(0);
+  const initialCenter = React.useRef({ x: 0, y: 0 });
+  const baseScale = React.useRef(1);
 
   // Update screen dimensions when orientation changes
   React.useEffect(() => {
@@ -83,6 +92,34 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
   // Track touch positions for tap navigation
   const tapStartTime = React.useRef(0);
   const [tapPosition, setTapPosition] = React.useState({ x: 0, y: 0 });
+  const lastTapTime = React.useRef(0);
+  const isPinching = React.useRef(false);
+
+  // Helper function to calculate distance between two touches
+  const getDistance = (touches: any[]) => {
+    const [touch1, touch2] = touches;
+    const dx = touch1.pageX - touch2.pageX;
+    const dy = touch1.pageY - touch2.pageY;
+    return Math.sqrt(dx * dx + dy * dy);
+  };
+
+  // Helper function to get center point between two touches
+  const getCenter = (touches: any[]) => {
+    const [touch1, touch2] = touches;
+    return {
+      x: (touch1.pageX + touch2.pageX) / 2,
+      y: (touch1.pageY + touch2.pageY) / 2,
+    };
+  };
+
+  // Reset zoom when image changes
+  React.useEffect(() => {
+    scale.setValue(1);
+    translateX.setValue(0);
+    translateY.setValue(0);
+    lastScale.current = 1;
+    lastTranslate.current = { x: 0, y: 0 };
+  }, [currentIndex]);
 
   // Pan responder for handling all gestures (swipes and taps)
   const panResponder = React.useMemo(
@@ -104,34 +141,147 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
             x: evt.nativeEvent.locationX,
             y: evt.nativeEvent.locationY,
           });
+
+          // Get current animated values - using ._value which is the internal value
+          lastScale.current = (scale as any)._value;
+          lastTranslate.current = {
+            x: (translateX as any)._value,
+            y: (translateY as any)._value,
+          };
+
+          console.log('Starting gesture with scale:', lastScale.current);
+
+          // Initialize pinch gesture
+          const touches = evt.nativeEvent.touches;
+          if (touches.length >= 2) {
+            isPinching.current = true;
+            // Calculate and store the initial distance between fingers
+            initialDistance.current = getDistance(touches);
+            initialCenter.current = getCenter(touches);
+            // Store the base scale that we'll be modifying
+            baseScale.current = lastScale.current;
+
+            console.log('Pinch gesture started, initial distance:', initialDistance.current);
+          } else {
+            // Just mark as not pinching, but don't reset the distance yet
+            // so we can recover if a finger temporarily loses contact
+            isPinching.current = false;
+            // Don't reset initialDistance here
+          }
+
           return true;
         },
         onPanResponderMove: (event, gestureState) => {
           console.log('Gesture move');
           const touches = event.nativeEvent.touches;
-          console.log('Number of touches:', touches.length);
 
           if (touches.length >= 2) {
-            console.log('Pinch-to-zoom detected');
-            // We have a pinch-to-zoom movement
-          } else {
-            // We have a regular scroll movement
+            // Pinch-to-zoom logic
+            const currentDistance = getDistance(touches);
+            const currentCenter = getCenter(touches);
+
+            // If this is the first move with 2+ fingers and initial distance wasn't set,
+            // initialize it now to avoid division by zero
+            if (initialDistance.current === 0) {
+              console.log('Setting initial distance during move:', currentDistance);
+              initialDistance.current = currentDistance;
+              initialCenter.current = currentCenter;
+              baseScale.current = lastScale.current;
+              isPinching.current = true;
+              return true; // Skip this frame to establish baseline
+            }
+
+            console.log(
+              'Current distance:',
+              currentDistance,
+              'Initial distance:',
+              initialDistance.current
+            );
+
+            // Ensure we have a valid initial distance
+            if (initialDistance.current > 0) {
+              isPinching.current = true;
+              // Calculate the scale factor properly
+              const scaleFactor = currentDistance / initialDistance.current;
+              const newScale = baseScale.current * scaleFactor;
+
+              // Limit scale between 1x and 5x
+              const clampedScale = Math.max(1, Math.min(5, newScale));
+
+              console.log(
+                'Pinch zoom - scaleFactor:',
+                scaleFactor.toFixed(2),
+                'new scale:',
+                clampedScale.toFixed(2),
+                'from base:',
+                baseScale.current.toFixed(2)
+              );
+
+              // Apply scale
+              scale.setValue(clampedScale);
+
+              // Calculate pan to keep zoom centered on pinch point
+              if (clampedScale > 1 && initialCenter.current) {
+                // Calculate offsets to keep pinch point stable
+                const dx = currentCenter.x - initialCenter.current.x;
+                const dy = currentCenter.y - initialCenter.current.y;
+
+                // Apply translation
+                translateX.setValue(lastTranslate.current.x + dx / clampedScale);
+                translateY.setValue(lastTranslate.current.y + dy / clampedScale);
+
+                console.log('Applying translation:', dx, dy);
+              }
+            }
+          } else if (lastScale.current > 1) {
+            // Single finger pan when zoomed in
+            const newX = lastTranslate.current.x + gestureState.dx;
+            const newY = lastTranslate.current.y + gestureState.dy;
+
+            // Apply pan limits based on zoom level
+            const maxPan = ((lastScale.current - 1) * screenDimensions.width) / 2;
+            const clampedX = Math.max(-maxPan, Math.min(maxPan, newX));
+            const clampedY = Math.max(-maxPan, Math.min(maxPan, newY));
+
+            translateX.setValue(clampedX);
+            translateY.setValue(clampedY);
           }
+
           return true;
         },
         onPanResponderRelease: (evt: GestureResponderEvent, gestureState) => {
           const currentTime = Date.now();
           const tapDuration = tapStartTime.current > 0 ? currentTime - tapStartTime.current : 0;
           const { dx, dy } = gestureState;
-          console.log(
-            'Gesture released with dx:',
-            gestureState.dx,
-            'dy:',
-            gestureState.dy,
-            'duration:',
-            tapDuration,
-            'ms'
-          );
+
+          console.log('Gesture released, updating scale/position');
+
+          // Update last scale and translate values
+          lastScale.current = (scale as any)._value;
+          lastTranslate.current = {
+            x: (translateX as any)._value,
+            y: (translateY as any)._value,
+          };
+
+          console.log('Updated values:', {
+            scale: lastScale.current,
+            translateX: lastTranslate.current.x,
+            translateY: lastTranslate.current.y,
+          });
+
+          // If we were pinching, don't treat this as a navigation gesture
+          if (isPinching.current) {
+            console.log('Pinch gesture ended with scale:', lastScale.current);
+            isPinching.current = false;
+            // Now it's safe to reset the initial distance
+            initialDistance.current = 0;
+            return true;
+          }
+
+          // If zoomed in, don't handle navigation gestures
+          if (lastScale.current > 1) {
+            return true;
+          }
 
           // Handle as tap if minimal movement and short duration
           if (Math.abs(dx) < 10 && Math.abs(dy) < 10 && tapDuration < 300) {
@@ -191,6 +341,72 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
 
   const handleTapNavigation = (x: number) => {
     const tapThreshold = screenDimensions.width / 3;
+    const currentTime = Date.now();
+    const isDoubleTap = currentTime - lastTapTime.current < 300;
+    lastTapTime.current = currentTime;
+
+    // Handle double tap to zoom
+    if (isDoubleTap) {
+      if (lastScale.current > 1) {
+        // Reset zoom
+        console.log('Double tap - resetting zoom');
+
+        // Animate back to original size
+        Animated.parallel([
+          Animated.spring(scale, { toValue: 1, useNativeDriver: true }),
+          Animated.spring(translateX, { toValue: 0, useNativeDriver: true }),
+          Animated.spring(translateY, { toValue: 0, useNativeDriver: true }),
+        ]).start();
+
+        // Update reference values
+        lastScale.current = 1;
+        lastTranslate.current = { x: 0, y: 0 };
+        baseScale.current = 1;
+      } else {
+        // Zoom in to 2x centered on tap point
+        console.log('Double tap - zooming to 2x at point:', x, tapPosition.y);
+
+        // Calculate focal point for zooming (relative to center)
+        const focusX = x - screenDimensions.width / 2;
+        const focusY = tapPosition.y - screenDimensions.height / 2;
+
+        // Move the focus point to center when zooming
+        const newTranslateX = -focusX / 2; // Divide by 2 because we're zooming 2x
+        const newTranslateY = -focusY / 2;
+
+        console.log('Setting zoom translation to:', newTranslateX, newTranslateY);
+
+        // Animate both scale and position
+        Animated.parallel([
+          Animated.spring(scale, {
+            toValue: 2,
+            useNativeDriver: true,
+            friction: 7,
+          }),
+          Animated.spring(translateX, {
+            toValue: newTranslateX,
+            useNativeDriver: true,
+            friction: 7,
+          }),
+          Animated.spring(translateY, {
+            toValue: newTranslateY,
+            useNativeDriver: true,
+            friction: 7,
+          }),
+        ]).start();
+
+        // Update reference values immediately (don't wait for animation)
+        lastScale.current = 2;
+        lastTranslate.current = { x: newTranslateX, y: newTranslateY };
+        baseScale.current = 2;
+
+        // Reset pinch gesture state
+        initialDistance.current = 0;
+        isPinching.current = false;
+      }
+      return;
+    }
+
     console.log(
       'Tap detected at:',
       x,
@@ -249,10 +465,17 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
         {...panResponder.panHandlers}
         style={{
           flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
         }}>
         <Animated.Image
           source={{ uri: images[currentIndex] }}
-          style={{ flex: 1, opacity: imageOpacity }}
+          style={{
+            width: '100%',
+            height: '100%',
+            opacity: imageOpacity,
+            transform: [{ scale: scale }, { translateX: translateX }, { translateY: translateY }],
+          }}
           resizeMode="contain"
         />
       </Animated.View>
