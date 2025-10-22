@@ -24,6 +24,22 @@ const PressableIcon = ({
   );
 };
 
+const ActiveCircle = ({ size, top }: { size: number; top: number }) => {
+  return (
+    <View
+      style={{
+        position: 'absolute',
+        width: Math.round(size * 0.6),
+        height: Math.round(size * 0.6),
+        borderRadius: Math.round((size * 0.6) / 2),
+        left: Math.round((size - Math.round(size * 0.6)) / 2),
+        top: Math.round((size - Math.round(size * 0.6)) / 2) + top,
+        backgroundColor: '#0055FF',
+      }}
+    />
+  );
+};
+
 export const HeartIcon = ({ size }: { size: number }) => {
   return (
     <View className="items-center justify-center">
@@ -85,17 +101,28 @@ export const LocationIcon = ({ size, width, height }: IconProps) => {
   );
 };
 
-export const ChatBubbleIcon = ({ size, onPress }: { size: number; onPress: () => void }) => {
+export const ChatBubbleIcon = ({
+  size,
+  onPress,
+  active,
+}: {
+  size: number;
+  onPress: () => void;
+  active?: boolean;
+}) => {
   return (
     <PressableIcon onPress={onPress} size={size}>
-      <ImageRN
-        source={require('../assets/ui-icons/chat-icon.png')}
-        resizeMode="contain"
-        style={(() => {
-          const s = ImageRN.resolveAssetSource(require('../assets/ui-icons/chat-icon.png'));
-          return { height: size, aspectRatio: s.width / s.height };
-        })()}
-      />
+      <View style={{ width: size, height: size, alignItems: 'center', justifyContent: 'center' }}>
+        <ImageRN
+          source={require('../assets/ui-icons/chat-icon.png')}
+          resizeMode="contain"
+          style={(() => {
+            const s = ImageRN.resolveAssetSource(require('../assets/ui-icons/chat-icon.png'));
+            return { height: size, aspectRatio: s.width / s.height };
+          })()}
+        />
+        {active && <ActiveCircle size={size} top={-3} />}
+      </View>
     </PressableIcon>
   );
 };
@@ -132,21 +159,7 @@ export const CircleIconNav = ({
           resizeMode="cover"
           style={{ height: size, width: size, borderRadius: size / 2, backgroundColor: 'white' }}
         />
-        {active && (
-          <View
-            style={{
-              position: 'absolute',
-              width: Math.round(size * 0.6),
-              height: Math.round(size * 0.6),
-              borderRadius: Math.round((size * 0.6) / 2),
-              left: Math.round((size - Math.round(size * 0.6)) / 2),
-              top: Math.round((size - Math.round(size * 0.6)) / 2),
-              backgroundColor: '#0055FF',
-              borderWidth: 1,
-              borderColor: 'white',
-            }}
-          />
-        )}
+        {active && <ActiveCircle size={size} />}
       </View>
     </PressableIcon>
   );

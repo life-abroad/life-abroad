@@ -14,7 +14,13 @@ export default function BottomNav({
     <View className="h-20">
       <Blur />
       <View className="h-full w-full flex-row items-center justify-center gap-9 px-2 pb-5">
-        <ChatBubbleIcon size={36} onPress={() => setSelectedTab('chat')} />
+        <View className="mt-1">
+          <ChatBubbleIcon
+            size={36}
+            onPress={() => setSelectedTab('chat')}
+            active={selectedTab === 'chat'}
+          />
+        </View>
         <CircleIconNav
           size={40}
           active={selectedTab === 'home'}
