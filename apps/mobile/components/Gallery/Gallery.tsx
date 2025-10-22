@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { Gallery as GalleryIm, type GalleryType, TapGestureEvent } from 'react-native-zoom-toolkit';
 
 import GalleryImage from './GalleryImage';
@@ -42,6 +42,10 @@ const Gallery = ({
     const translateX = withTiming(index * gallerySize.width - scroll, { duration: 0 });
     return { transform: [{ translateX }] };
   };
+
+  useEffect(() => {
+    console.log('Gallery Current Index:', currentIndex);
+  }, [currentIndex]);
 
   return (
     <GalleryIm
