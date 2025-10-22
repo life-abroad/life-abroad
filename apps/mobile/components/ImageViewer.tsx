@@ -19,13 +19,15 @@ interface ImageViewerProps {
   initialIndex?: number;
   isVisible: boolean;
   onClose: () => void;
-  showControls?: boolean;
   userInfo?: {
     userName?: string;
     userHandle?: string;
     userAvatar?: string;
   };
-  showProgressBar?: boolean;
+  hideProgressBar?: boolean;
+  hideCounter?: boolean;
+  setHideProgressBar?: (hide: boolean) => void;
+  setHideCounter?: (hide: boolean) => void;
 }
 
 export const ImageViewer: React.FC<ImageViewerProps> = ({
@@ -33,9 +35,11 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
   initialIndex = 0,
   isVisible,
   onClose,
-  showControls = true,
   userInfo,
-  showProgressBar = false,
+  hideProgressBar,
+  hideCounter,
+  setHideProgressBar,
+  setHideCounter,
 }) => {
   const [currentIndex, setCurrentIndex] = React.useState(initialIndex);
   const [hideBottomBar, setHideBottomBar] = React.useState(false);
@@ -61,16 +65,37 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
     };
   }, [isVisible]);
 
+  // When landscape, hide bottom bar, hide progress bar
+  React.useEffect(() => {
+    const subscription = ScreenOrientation.addOrientationChangeListener((event) => {
+      const orientationInfo = event.orientationInfo;
+      if (
+        orientationInfo.orientation === ScreenOrientation.Orientation.LANDSCAPE_LEFT ||
+        orientationInfo.orientation === ScreenOrientation.Orientation.LANDSCAPE_RIGHT
+      ) {
+        setHideBottomBar(true);
+        setHideProgressBar && setHideProgressBar(true);
+      } else {
+        setHideBottomBar(false);
+        setHideProgressBar && setHideProgressBar(false);
+      }
+    });
+
+    return () => {
+      ScreenOrientation.removeOrientationChangeListener(subscription);
+    };
+  }, []);
+
   // If not visible, don't render anything
   if (!isVisible) {
     return null;
   }
 
   return (
-    <View className="elevation-50 absolute inset-0 left-0 top-0 z-50 flex-1 bg-black">
+    <View className="elevation-50 absolute inset-0 left-0 top-0 z-40 flex-1 bg-black">
       {/* Progress Bar */}
-      {showProgressBar && (
-        <View className="absolute left-0 right-0 top-11 z-20 flex-row px-2">
+      {!hideProgressBar && images.length > 1 && (
+        <View className="absolute left-0 right-0 top-1 z-50 h-1 flex-row px-2">
           {images.map((_, index) => (
             <View key={index} className="mx-0.5 h-1 flex-1 overflow-hidden rounded bg-gray-500">
               <Animated.View
@@ -81,6 +106,15 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
               />
             </View>
           ))}
+        </View>
+      )}
+
+      {/* Image counter for multiple images */}
+      {!hideCounter && images.length > 1 && (
+        <View className="absolute left-3 top-14 z-50 rounded-full bg-black/50 px-3 py-1">
+          <Text className="text-white">
+            {currentIndex + 1} / {images.length}
+          </Text>
         </View>
       )}
 
@@ -135,15 +169,6 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
             </TouchableOpacity>
           </View>
         </View>
-
-        {/* Image counter for multiple images */}
-        {images.length > 1 && (
-          <View className="absolute left-3 top-14 rounded-full bg-black/50 px-3 py-1">
-            <Text className="text-white">
-              {currentIndex + 1} / {images.length}
-            </Text>
-          </View>
-        )}
       </SafeAreaView>
     </View>
   );
