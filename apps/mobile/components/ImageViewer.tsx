@@ -10,6 +10,7 @@ import {
   GestureResponderEvent,
 } from 'react-native';
 import * as ScreenOrientation from 'expo-screen-orientation';
+import { PinchGestureHandler } from 'react-native-gesture-handler';
 import { Text } from './Text';
 import { HeartIcon, ChatBubbleIcon } from './Icons';
 import Blur from './Blur';
@@ -87,11 +88,12 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
   const panResponder = React.useMemo(
     () =>
       PanResponder.create({
-        onStartShouldSetPanResponder: () => true,
-        onMoveShouldSetPanResponder: (_, gestureState) => {
-          // Only hijack the gesture if there's significant movement
-          console.log('Gesture dx:', gestureState.dx, 'dy:', gestureState.dy);
-          return Math.abs(gestureState.dx) > 10 || Math.abs(gestureState.dy) > 10;
+        onStartShouldSetPanResponder: (evt, gestureState) => true,
+        onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
+        onMoveShouldSetPanResponder: (evt, gestureState) => true,
+        onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
+        onShouldBlockNativeResponder: (evt, gestureState) => {
+          return true;
         },
         onPanResponderGrant: (evt: GestureResponderEvent) => {
           console.log('Gesture grant');
@@ -102,10 +104,21 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
             x: evt.nativeEvent.locationX,
             y: evt.nativeEvent.locationY,
           });
+          return true;
         },
-        onPanResponderMove: Animated.event([null, { dx: position.x, dy: position.y }], {
-          useNativeDriver: false,
-        }),
+        onPanResponderMove: (event, gestureState) => {
+          console.log('Gesture move');
+          const touches = event.nativeEvent.touches;
+          console.log('Number of touches:', touches.length);
+
+          if (touches.length >= 2) {
+            console.log('Pinch-to-zoom detected');
+            // We have a pinch-to-zoom movement
+          } else {
+            // We have a regular scroll movement
+          }
+          return true;
+        },
         onPanResponderRelease: (evt: GestureResponderEvent, gestureState) => {
           const currentTime = Date.now();
           const tapDuration = tapStartTime.current > 0 ? currentTime - tapStartTime.current : 0;
@@ -146,7 +159,13 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
             }
             position.setValue({ x: 0, y: 0 });
           }
+          return true;
         },
+        onPanResponderEnd: (e, gestureState) => {
+          console.log(gestureState);
+          return true;
+        },
+        onPanResponderTerminationRequest: () => false,
       }),
     [currentIndex, images.length, onClose, position]
   );
