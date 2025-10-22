@@ -3470,9 +3470,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"circle-app@workspace:.":
+"circle@workspace:.":
   version: 0.0.0-use.local
-  resolution: "circle-app@workspace:."
+  resolution: "circle@workspace:."
   dependencies:
     "@babel/core": "npm:^7.20.0"
     "@expo-google-fonts/madimi-one": "npm:^0.4.0"
