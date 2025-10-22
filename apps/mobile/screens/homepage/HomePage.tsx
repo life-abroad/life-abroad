@@ -6,15 +6,10 @@ import { CameraIcon, CircleLogo } from 'components/Icons';
 import { Text } from 'components/Text';
 import Blur from 'components/Blur';
 import { ImageViewer } from 'components/ImageViewer';
+import { User } from 'types/post';
 
 export const HomePage = () => {
-  // State for regular image viewer
-  const [imageViewerVisible, setImageViewerVisible] = useState(false);
-  const [selectedImages, setSelectedImages] = useState<string[]>([]);
-  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-  const [hideProgressBar, setHideProgressBar] = useState(false);
-  const [hideCounter, setHideCounter] = useState(false);
-
+  // Scroll animations
   const scrollY = useRef(new Animated.Value(0)).current;
   const diffClampScrollY = Animated.diffClamp(scrollY, 0, 300);
   const headerTranslateY = diffClampScrollY.interpolate({
@@ -22,7 +17,6 @@ export const HomePage = () => {
     outputRange: [0, -100],
     extrapolate: 'clamp',
   });
-
   // Add opacity interpolation for fade effect
   const headerOpacity = diffClampScrollY.interpolate({
     inputRange: [0, 60, 90],
@@ -30,35 +24,45 @@ export const HomePage = () => {
     extrapolate: 'clamp',
   });
 
-  const [selectedPostUser, setSelectedPostUser] = useState<
-    | {
-        userName?: string;
-        userHandle?: string;
-        userAvatar?: string;
-      }
-    | undefined
-  >(undefined);
+  // Image viewer meta
+  const [imageViewerVisible, setImageViewerVisible] = useState(false);
+  const [hideProgressBar, setHideProgressBar] = useState(false);
+  const [hideCounter, setHideCounter] = useState(false);
+
+  // Image view data
+  const [users, setUsers] = useState<User[]>([]);
+  const [images, setImages] = useState<string[]>([]);
+  const [imageIndex, setImageIndex] = useState(0);
+
+  const allStoryImages = stories.flatMap((s) => s.images ?? []);
+  // Create a users array where each user is repeated for each of their images
+  const allStoryUsers = stories.flatMap((s) => (s.images ?? []).map(() => s.user));
 
   const handleStoryPress = (index: number) => {
-    const allImages = stories.flatMap((s) => s.images ?? []);
+    console.log('index', index);
     const initialIndex = stories
       .slice(0, index)
       .reduce((acc, s) => acc + (s.images?.length ?? 0), 0);
-    setSelectedImages(allImages);
-    setSelectedImageIndex(initialIndex);
-    setSelectedPostUser(stories[index].user);
+    console.log('initialIndex', initialIndex);
+    // data
+    setImages(allStoryImages);
+    setImageIndex(initialIndex);
+    setUsers(allStoryUsers);
+    // meta
     setImageViewerVisible(true);
     setHideCounter(true);
     setHideProgressBar(false);
   };
 
   const handlePostImagePress = (images: string[], initialIndex = 0, user: any) => {
-    setSelectedImages(images);
-    setSelectedImageIndex(initialIndex);
-    setSelectedPostUser(user);
+    // Create a users array where the same user is repeated for each image
+    const usersArray = images.map(() => user);
+    setImages(images);
+    setImageIndex(initialIndex);
     setImageViewerVisible(true);
     setHideCounter(false);
     setHideProgressBar(true);
+    setUsers(usersArray);
   };
 
   return (
@@ -129,11 +133,12 @@ export const HomePage = () => {
       </Animated.View>
 
       <ImageViewer
-        images={selectedImages}
-        initialIndex={selectedImageIndex}
+        images={images}
+        imageIndex={imageIndex}
+        setImageIndex={setImageIndex}
+        users={users}
         isVisible={imageViewerVisible}
         onClose={() => setImageViewerVisible(false)}
-        userInfo={selectedPostUser}
         hideProgressBar={hideProgressBar}
         hideCounter={hideCounter}
         setHideProgressBar={setHideProgressBar}

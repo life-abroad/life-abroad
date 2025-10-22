@@ -13,17 +13,15 @@ import { Text } from './Text';
 import { HeartIcon, ChatBubbleIcon } from './Icons';
 import Blur from './Blur';
 import Gallery from './Gallery/Gallery';
+import { User } from 'types/post';
 
 interface ImageViewerProps {
   images: string[];
-  initialIndex?: number;
+  imageIndex: number;
+  setImageIndex: (index: number) => void;
+  users: User[];
   isVisible: boolean;
   onClose: () => void;
-  userInfo?: {
-    userName?: string;
-    userHandle?: string;
-    userAvatar?: string;
-  };
   hideProgressBar?: boolean;
   hideCounter?: boolean;
   setHideProgressBar?: (hide: boolean) => void;
@@ -32,31 +30,31 @@ interface ImageViewerProps {
 
 export const ImageViewer: React.FC<ImageViewerProps> = ({
   images,
-  initialIndex = 0,
+  imageIndex = 0,
+  setImageIndex,
+  users,
   isVisible,
   onClose,
-  userInfo,
   hideProgressBar,
   hideCounter,
   setHideProgressBar,
   setHideCounter,
 }) => {
-  const [currentIndex, setCurrentIndex] = React.useState(initialIndex);
   const [hideBottomBar, setHideBottomBar] = React.useState(false);
   const progressAnims = React.useRef(
-    images.map((_, i) => new Animated.Value(i <= initialIndex ? 1 : 0))
+    images.map((_, i) => new Animated.Value(i <= imageIndex ? 1 : 0))
   ).current;
 
-  // Animate progress bars when currentIndex changes
+  // Animate progress bars when imageIndex changes
   React.useEffect(() => {
     progressAnims.forEach((anim, i) => {
       Animated.timing(anim, {
-        toValue: i <= currentIndex ? 1 : 0,
+        toValue: i <= imageIndex ? 1 : 0,
         duration: 200,
         useNativeDriver: false, // width can't use native driver
       }).start();
     });
-  }, [currentIndex, progressAnims]);
+  }, [imageIndex, progressAnims]);
 
   // Handle screen orientation - unlock when viewer opens, lock to portrait when it closes
   React.useEffect(() => {
@@ -114,12 +112,12 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
             <View key={index} className="mx-0.5 h-1 flex-1 overflow-hidden rounded bg-gray-500">
               <Animated.View
                 className="h-full bg-white"
-                style={{
-                  width: progressAnims[index].interpolate({
-                    inputRange: [0, 1],
-                    outputRange: ['0%', '100%'],
-                  }),
-                }}
+                // style={{
+                //   width: progressAnims[index].interpolate({
+                //     inputRange: [0, 1],
+                //     outputRange: ['0%', '100%'],
+                //   }),
+                // }}
               />
             </View>
           ))}
@@ -130,7 +128,7 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
       {!hideCounter && images.length > 1 && (
         <View className="absolute left-3 top-14 z-50 rounded-full bg-black/50 px-3 py-1">
           <Text className="text-white">
-            {currentIndex + 1} / {images.length}
+            {imageIndex + 1} / {images.length}
           </Text>
         </View>
       )}
@@ -152,8 +150,8 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
           <View className="h-[100%] w-[100%]">
             <Gallery
               images={images}
-              currentIndex={currentIndex}
-              onIndexChange={setCurrentIndex}
+              currentIndex={imageIndex}
+              onIndexChange={setImageIndex}
               onVerticalPull={onClose}
             />
           </View>
@@ -164,17 +162,17 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
           className={`absolute bottom-0 left-0 right-0 flex-row items-center justify-between bg-black/40 p-4 pb-8 ${hideBottomBar ? 'hidden' : 'flex'}`}>
           {/* User Info */}
           <View className="flex-row items-center">
-            {userInfo && userInfo.userAvatar ? (
+            {users && users[imageIndex] ? (
               <Image
-                source={{ uri: userInfo.userAvatar }}
+                source={{ uri: users[imageIndex].userAvatar }}
                 className="h-12 w-12 rounded-full border-2 border-white"
               />
             ) : (
               <View className="h-12 w-12 rounded-full border-2 border-white bg-gray-500" />
             )}
             <View className="ml-3">
-              {userInfo && userInfo.userName ? (
-                <Text className="font-madimi text-lg text-white">{userInfo.userName}</Text>
+              {users && users[imageIndex] ? (
+                <Text className="font-madimi text-lg text-white">{users[imageIndex].userName}</Text>
               ) : (
                 <Text className="font-madimi text-lg text-white">Image</Text>
               )}

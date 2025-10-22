@@ -1,10 +1,5 @@
 import React, { useCallback, useRef } from 'react';
-import {
-  stackTransition,
-  Gallery as GalleryIm,
-  type GalleryType,
-  TapGestureEvent,
-} from 'react-native-zoom-toolkit';
+import { Gallery as GalleryIm, type GalleryType, TapGestureEvent } from 'react-native-zoom-toolkit';
 
 import GalleryImage from './GalleryImage';
 
