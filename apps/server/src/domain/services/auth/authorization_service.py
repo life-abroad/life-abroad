@@ -33,8 +33,10 @@ class AuthorizationService:
         if not contact_in_audience:
             raise PermissionError("Contact is not authorized to view this post")
         
-        # Generate a contact token (not post-specific)
-        token = self.jwt_provider.create_user_view_token(contact.user_id)
+        # Generate a contact-specific token
+        if not contact.id:
+            raise ValueError("Contact ID is missing")
+        token = self.jwt_provider.create_contact_view_token(contact.id)
         frontend_url = f"{get_env_var('FRONTEND_URL')}?token={token}"
         
         return {"token": token, "url": frontend_url}

@@ -26,9 +26,10 @@ class NotificationService:
             contacts = await self.audience_repository.get_contacts_in_audience(audience_id, session)
             for contact in contacts:
                 try:
-                    # Generate authenticated link for this contact with the specific post
-                    # Note: We use the contact's user_id (the owner) for the token
-                    token = self.jwt_provider.create_user_view_token(contact.user_id)
+                    # Generate authenticated link for this specific contact
+                    if not contact.id:
+                        continue
+                    token = self.jwt_provider.create_contact_view_token(contact.id)
                     view_url = f"{get_env_var('FRONTEND_URL')}?token={token}&post_id={post_id}"
                     
                     # Send SMS notification

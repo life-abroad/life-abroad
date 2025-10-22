@@ -175,18 +175,23 @@ async def get_media_file_stream(
         # Check authentication - accept either regular auth or view token
         user = auth_user or view_token_user
         payload = None
+        contact_id = None
         
         # If no user from dependencies, check query string token
         if not user and token:
             payload = authorization_service.verify_token(token)
-            if payload and payload.get("type") == "view":
-                user_id = payload.get("sub")
-                if user_id:
-                    from src.infrastructure.repositories.user_repository import UserRepository
-                    user_repo = UserRepository()
-                    user = await user_repo.get_user_by_id(int(user_id), session)
+            if payload:
+                # Only accept new contact-based tokens
+                if payload.get("type") == "contact_view" and payload.get("contact_id"):
+                    contact_id = int(payload["contact_id"])
+                else:
+                    raise HTTPException(
+                        status_code=status.HTTP_401_UNAUTHORIZED,
+                        detail="Invalid token format - please request a new link"
+                    )
         
-        if not user:
+        # Either need a user OR a contact_id from token
+        if not user and not contact_id:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Authentication required to access media"
@@ -197,18 +202,20 @@ async def get_media_file_stream(
         if not media_item:
             raise HTTPException(status_code=404, detail="Media item not found")
         
-        # Verify user has access to the post containing this media item
+        # Verify access to the post containing this media item
         post = await post_service.get_post_by_id(media_item.post_id, session)
         if not post:
             raise HTTPException(status_code=404, detail="Post not found")
         
-        # Authorization: Either user owns the post or is accessing via valid view token
-        # View tokens are already validated for post access at the /frontend/view endpoint
-        # So if they have a valid view token, we trust they have access
-        is_owner = post.user_id == user.id
-        has_view_token = view_token_user is not None or (payload is not None and payload.get("type") == "view")
+        # Authorization checks
+        is_owner = user is not None and post.user_id == user.id
         
-        if not (is_owner or has_view_token):
+        # For contact-based tokens, verify the contact can access this post
+        has_contact_access = False
+        if contact_id:
+            has_contact_access = await authorization_service.can_contact_access_post(contact_id, media_item.post_id, session)
+        
+        if not (is_owner or has_contact_access):
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="You do not have permission to access this media"
@@ -217,7 +224,7 @@ async def get_media_file_stream(
         # Get file stream from domain service
         file_stream, content_type, content_length = media_item_service.get_media_item_stream(media_item.path)
         
-        logger.info(f"Streaming media item {media_item_id}: {content_type}, {content_length} bytes (user: {user.id})")
+        logger.info(f"Streaming media item {media_item_id}: {content_type}, {content_length} bytes")
         
         return StreamingResponse(
             file_stream,

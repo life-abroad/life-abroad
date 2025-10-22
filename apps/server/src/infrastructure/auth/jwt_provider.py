@@ -8,11 +8,23 @@ class JwtProvider:
         self.algorithm = "HS256"
         
     def create_user_view_token(self, user_id: int, expires_days: int = 30) -> str:
-        """Create a JWT token for a user to view their accessible posts"""
+        """Create a JWT token for a user to view their accessible posts
+        
+        DEPRECATED: Use create_contact_view_token instead
+        """
         payload = {
             "sub": str(user_id),
             "exp": datetime.now(timezone.utc) + timedelta(days=expires_days),
             "type": "view"
+        }
+        return jwt.encode(payload, self.secret_key, algorithm=self.algorithm)
+    
+    def create_contact_view_token(self, contact_id: int, expires_days: int = 30) -> str:
+        """Create a JWT token for a contact to view posts they have access to"""
+        payload = {
+            "contact_id": str(contact_id),
+            "exp": datetime.now(timezone.utc) + timedelta(days=expires_days),
+            "type": "contact_view"
         }
         return jwt.encode(payload, self.secret_key, algorithm=self.algorithm)
     
