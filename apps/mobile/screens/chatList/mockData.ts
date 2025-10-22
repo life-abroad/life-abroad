@@ -72,7 +72,7 @@ const bulletins: Bulletin[] = [
       profileUrl: '/users/dlee',
     },
     timestamp: 'Yesterday, 9:30am',
-    content: 'Looking for recommendations on good hiking trails nearby.',
+    content: 'Good hiking trails nearby?',
   },
   {
     user: {
@@ -83,7 +83,7 @@ const bulletins: Bulletin[] = [
       profileUrl: '/users/echen',
     },
     timestamp: 'Yesterday, 8:45am',
-    content: 'Does anyone have tips for studying abroad in Europe?',
+    content: 'Tips for studying abroad in Europe?',
   },
 ];
 
