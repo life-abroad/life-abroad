@@ -9,6 +9,7 @@ function PostForm({ post = null, audiences = [], onSubmit, onCancel }) {
   });
   const [previewUrls, setPreviewUrls] = useState([]);
   const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (post) {
@@ -42,6 +43,8 @@ function PostForm({ post = null, audiences = [], onSubmit, onCancel }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
+      setIsSubmitting(true);
+      // onSubmit should handle setting isSubmitting back to false on completion
       onSubmit(formData);
     }
   };
@@ -123,6 +126,13 @@ function PostForm({ post = null, audiences = [], onSubmit, onCancel }) {
 
   return (
     <form onSubmit={handleSubmit} className="post-form">
+      {isSubmitting && (
+        <div className="loading-overlay">
+          <div className="loading-spinner"></div>
+          <p>Creating post...</p>
+        </div>
+      )}
+      
       <div className="form-group">
         <label htmlFor="description">Description *</label>
         <textarea
@@ -215,13 +225,13 @@ function PostForm({ post = null, audiences = [], onSubmit, onCancel }) {
       </div>
 
       <div className="form-actions">
-        <button type="button" onClick={onCancel} className="btn-cancel">
+        <button type="button" onClick={onCancel} className="btn-cancel" disabled={isSubmitting}>
           Cancel
         </button>
         <button 
           type="submit" 
           className="btn-submit"
-          disabled={audiences.length === 0}
+          disabled={audiences.length === 0 || isSubmitting}
         >
           {post ? 'Update' : 'Create'} Post
         </button>
