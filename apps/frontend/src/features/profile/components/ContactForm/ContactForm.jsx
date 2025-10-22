@@ -67,44 +67,32 @@ function ContactForm({ contact = null, onSubmit, onCancel }) {
     }
   };
 
-  const handleImportContact = async () => {
-    // Check if Contact Picker API is supported (Safari iOS 14.5+)
-    if ('contacts' in navigator && 'ContactsManager' in window) {
-      try {
-        const props = ['name', 'tel', 'email'];
-        const opts = { multiple: false };
-        
-        const contacts = await navigator.contacts.select(props, opts);
-        
-        if (contacts.length > 0) {
-          const contact = contacts[0];
-          
-          setFormData((prev) => ({
-            ...prev,
-            name: contact.name?.[0] || prev.name,
-            phoneNumber: contact.tel?.[0] || prev.phoneNumber,
-            email: contact.email?.[0] || prev.email,
-          }));
-        }
-      } catch (error) {
-        // User cancelled or error occurred
-        console.error('Error importing contact:', error);
-      }
-    } else {
-      alert('Contact import is not supported on this device/browser');
+  const handlePhonePaste = (e) => {
+    e.preventDefault();
+    
+    // Get pasted text
+    const pastedText = e.clipboardData.getData('text');
+    
+    // Remove all non-digit characters
+    let digitsOnly = pastedText.replace(/\D/g, '');
+    
+    // If it starts with 1 and has 11 digits (US format with country code), remove the 1
+    if (digitsOnly.startsWith('1') && digitsOnly.length === 11) {
+      digitsOnly = digitsOnly.substring(1);
+    }
+    
+    // Format as +1 followed by the number for the PhoneInput component
+    const formattedNumber = digitsOnly ? `+1${digitsOnly}` : '';
+    
+    setFormData((prev) => ({ ...prev, phoneNumber: formattedNumber }));
+    
+    if (errors.phoneNumber) {
+      setErrors((prev) => ({ ...prev, phoneNumber: '' }));
     }
   };
 
   return (
     <form onSubmit={handleSubmit} className="contact-form">
-      {'contacts' in navigator && (
-        <div className="import-contact-section">
-          <button type="button" onClick={handleImportContact} className="btn-import-contact">
-            Import from Contacts
-          </button>
-        </div>
-      )}
-      
       <div className="form-group">
         <label htmlFor="name">Name *</label>
         <input
@@ -120,13 +108,15 @@ function ContactForm({ contact = null, onSubmit, onCancel }) {
 
       <div className="form-group">
         <label htmlFor="phoneNumber">Phone Number *</label>
-        <PhoneInput
-          international
-          defaultCountry="US"
-          value={formData.phoneNumber}
-          onChange={handlePhoneChange}
-          className={errors.phoneNumber ? 'phone-input error' : 'phone-input'}
-        />
+        <div onPaste={handlePhonePaste}>
+          <PhoneInput
+            international
+            defaultCountry="US"
+            value={formData.phoneNumber}
+            onChange={handlePhoneChange}
+            className={errors.phoneNumber ? 'phone-input error' : 'phone-input'}
+          />
+        </div>
         {errors.phoneNumber && <span className="error-message">{errors.phoneNumber}</span>}
       </div>
 
