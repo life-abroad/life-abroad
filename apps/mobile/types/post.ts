@@ -1,10 +1,3 @@
-export interface User {
-  userName: string;
-  userHandle: string;
-  userAvatar: string;
-  profileUrl: string;
-}
-
 export interface Reaction {
   userAvatar: string;
   emoji: string;

@@ -9,6 +9,21 @@ type IconProps = {
   height?: number;
 };
 
+const PressableIcon = ({
+  onPress,
+  children,
+}: {
+  size: number;
+  onPress?: () => void;
+  children: React.ReactNode;
+}) => {
+  return (
+    <View className="items-center justify-center" onTouchEnd={onPress}>
+      {children}
+    </View>
+  );
+};
+
 export const HeartIcon = ({ size }: { size: number }) => {
   return (
     <View className="items-center justify-center">
@@ -23,14 +38,15 @@ export const HeartIcon = ({ size }: { size: number }) => {
     </View>
   );
 };
-export const ChatBubbleIcon = ({ size }: { size: number }) => {
+
+export const CameraIcon = ({ size }: { size: number }) => {
   return (
     <View className="items-center justify-center">
       <ImageRN
-        source={require('../assets/ui-icons/chat-icon.png')}
+        source={require('../assets/ui-icons/camera-icon.png')}
         resizeMode="contain"
         style={(() => {
-          const s = ImageRN.resolveAssetSource(require('../assets/ui-icons/chat-icon.png'));
+          const s = ImageRN.resolveAssetSource(require('../assets/ui-icons/camera-icon.png'));
           return { height: size, aspectRatio: s.width / s.height };
         })()}
       />
@@ -69,24 +85,24 @@ export const LocationIcon = ({ size, width, height }: IconProps) => {
   );
 };
 
-export const CameraIcon = ({ size }: { size: number }) => {
+export const ChatBubbleIcon = ({ size, onPress }: { size: number; onPress: () => void }) => {
   return (
-    <View className="items-center justify-center">
+    <PressableIcon onPress={onPress} size={size}>
       <ImageRN
-        source={require('../assets/ui-icons/camera-icon.png')}
+        source={require('../assets/ui-icons/chat-icon.png')}
         resizeMode="contain"
         style={(() => {
-          const s = ImageRN.resolveAssetSource(require('../assets/ui-icons/camera-icon.png'));
+          const s = ImageRN.resolveAssetSource(require('../assets/ui-icons/chat-icon.png'));
           return { height: size, aspectRatio: s.width / s.height };
         })()}
       />
-    </View>
+    </PressableIcon>
   );
 };
 
-export const UserIcon = ({ size }: { size: number }) => {
+export const UserIcon = ({ size, onPress }: { size: number; onPress: () => void }) => {
   return (
-    <View className="items-center justify-center">
+    <PressableIcon size={size} onPress={onPress}>
       <ImageRN
         source={require('../assets/ui-icons/user-icon.png')}
         resizeMode="contain"
@@ -95,32 +111,44 @@ export const UserIcon = ({ size }: { size: number }) => {
           return { height: size, aspectRatio: s.width / s.height };
         })()}
       />
-    </View>
+    </PressableIcon>
   );
 };
 
-export const CircleIconNav = ({ size, active }: { size: number; active: boolean }) => {
+export const CircleIconNav = ({
+  size,
+  active,
+  onPress,
+}: {
+  size: number;
+  active: boolean;
+  onPress: () => void;
+}) => {
   return (
-    <View style={{ width: size, height: size, alignItems: 'center', justifyContent: 'center' }}>
-      <ImageRN
-        source={require('../assets/textures/snow.png')}
-        resizeMode="cover"
-        style={{ height: size, width: size, borderRadius: size / 2, backgroundColor: 'white' }}
-      />
-      <View
-        style={{
-          position: 'absolute',
-          width: Math.round(size * 0.6),
-          height: Math.round(size * 0.6),
-          borderRadius: Math.round((size * 0.6) / 2),
-          left: Math.round((size - Math.round(size * 0.6)) / 2),
-          top: Math.round((size - Math.round(size * 0.6)) / 2),
-          backgroundColor: '#0055FF',
-          borderWidth: 1,
-          borderColor: 'white',
-        }}
-      />
-    </View>
+    <PressableIcon onPress={onPress} size={size}>
+      <View style={{ width: size, height: size, alignItems: 'center', justifyContent: 'center' }}>
+        <ImageRN
+          source={require('../assets/textures/snow.png')}
+          resizeMode="cover"
+          style={{ height: size, width: size, borderRadius: size / 2, backgroundColor: 'white' }}
+        />
+        {active && (
+          <View
+            style={{
+              position: 'absolute',
+              width: Math.round(size * 0.6),
+              height: Math.round(size * 0.6),
+              borderRadius: Math.round((size * 0.6) / 2),
+              left: Math.round((size - Math.round(size * 0.6)) / 2),
+              top: Math.round((size - Math.round(size * 0.6)) / 2),
+              backgroundColor: '#0055FF',
+              borderWidth: 1,
+              borderColor: 'white',
+            }}
+          />
+        )}
+      </View>
+    </PressableIcon>
   );
 };
 

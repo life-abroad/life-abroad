@@ -13,7 +13,7 @@ import { Text } from './Text';
 import { HeartIcon, ChatBubbleIcon } from './Icons';
 import Blur from './Blur';
 import Gallery from './Gallery/Gallery';
-import { User } from 'types/post';
+import { User } from 'types/user';
 
 interface ImageViewerProps {
   images: string[];
