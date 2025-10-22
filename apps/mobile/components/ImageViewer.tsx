@@ -41,6 +41,35 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
   setHideCounter,
 }) => {
   const [hideBottomBar, setHideBottomBar] = React.useState(false);
+  const fadeAnim = React.useRef(new Animated.Value(0)).current;
+
+  // Handle close with fade out animation
+  const handleClose = () => {
+    Animated.timing(fadeAnim, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => {
+      onClose();
+    });
+  };
+
+  // Handle fade in/out animation
+  React.useEffect(() => {
+    if (isVisible) {
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    } else {
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [isVisible, fadeAnim]);
 
   // Handle screen orientation - unlock when viewer opens, lock to portrait when it closes
   React.useEffect(() => {
@@ -84,13 +113,11 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
     };
   }, []);
 
-  // If not visible, don't render anything
-  if (!isVisible) {
-    return null;
-  }
-
   return (
-    <View className="elevation-50 absolute inset-0 left-0 top-0 z-40 flex-1 bg-black">
+    <Animated.View
+      className="elevation-50 absolute inset-0 left-0 top-0 z-40 flex-1 bg-black"
+      style={{ opacity: fadeAnim }}
+      pointerEvents={isVisible ? 'auto' : 'none'}>
       {/* Progress Bar */}
       {!hideProgressBar && images.length > 1 && (
         <View className="absolute left-0 right-0 top-1 z-50 h-1 flex-row px-2">
@@ -123,7 +150,7 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
       <SafeAreaView className="flex-1">
         {/* Close Button */}
         <TouchableOpacity
-          onPress={onClose}
+          onPress={handleClose}
           className="absolute right-4 top-14 z-10 h-8 w-8 items-center justify-center">
           <Text className="text-2xl font-bold text-white">✕</Text>
         </TouchableOpacity>
@@ -135,7 +162,7 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
               images={images}
               currentIndex={imageIndex}
               onIndexChange={setImageIndex}
-              onVerticalPull={onClose}
+              onVerticalPull={handleClose}
             />
           </View>
         </View>
@@ -173,6 +200,6 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
           </View>
         </View>
       </SafeAreaView>
-    </View>
+    </Animated.View>
   );
 };
