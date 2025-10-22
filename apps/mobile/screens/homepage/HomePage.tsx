@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { View, Image, Animated, FlatList, TouchableOpacity } from 'react-native';
 import { FeedPost } from '../../components/Post';
 import { posts, stories } from './mockData';
@@ -6,7 +6,7 @@ import { CameraIcon, CircleLogo } from 'components/Icons';
 import { Text } from 'components/Text';
 import Blur from 'components/Blur';
 import { ImageViewer } from 'components/ImageViewer';
-import { User } from 'types/post';
+import { User } from 'types/user';
 
 export const HomePage = () => {
   // Scroll animations
@@ -126,8 +126,8 @@ export const HomePage = () => {
               );
             })}
           </View>
-          <View className="absolute bottom-3 right-4 items-center justify-center">
-            <CameraIcon size={44} />
+          <View className="absolute bottom-5 right-4 items-center justify-center">
+            <CameraIcon size={35} />
           </View>
         </View>
       </Animated.View>
