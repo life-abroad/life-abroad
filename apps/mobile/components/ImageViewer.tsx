@@ -43,17 +43,6 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
   const [hideBottomBar, setHideBottomBar] = React.useState(false);
   const fadeAnim = React.useRef(new Animated.Value(0)).current;
 
-  // Handle close with fade out animation
-  const handleClose = () => {
-    Animated.timing(fadeAnim, {
-      toValue: 0,
-      duration: 300,
-      useNativeDriver: true,
-    }).start(() => {
-      onClose();
-    });
-  };
-
   // Handle fade in/out animation
   React.useEffect(() => {
     if (isVisible) {
@@ -150,7 +139,7 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
       <SafeAreaView className="flex-1">
         {/* Close Button */}
         <TouchableOpacity
-          onPress={handleClose}
+          onPress={onClose}
           className="absolute right-4 top-14 z-10 h-8 w-8 items-center justify-center">
           <Text className="text-2xl font-bold text-white">✕</Text>
         </TouchableOpacity>
@@ -162,7 +151,7 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
               images={images}
               currentIndex={imageIndex}
               onIndexChange={setImageIndex}
-              onVerticalPull={handleClose}
+              onVerticalPull={onClose}
             />
           </View>
         </View>
