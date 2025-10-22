@@ -1,5 +1,5 @@
 {
-  "name": "circle-app",
+  "name": "circle",
   "version": "1.0.0",
   "scripts": {
     "android": "expo run:android",

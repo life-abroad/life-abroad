@@ -17,7 +17,7 @@ function Blur({ topBar }: { topBar?: boolean }) {
       />
       {/* Background texture */}
       <ImageBackground
-        source={require('../assets/wood-grain.png')}
+        source={require('../assets/textures/wood-grain.png')}
         resizeMode="repeat"
         className={`absolute inset-0 ${topBar ? 'opacity-10' : 'opacity-15'}`}
       />

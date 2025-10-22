@@ -13,10 +13,10 @@ export const HeartIcon = ({ size }: { size: number }) => {
   return (
     <View className="items-center justify-center">
       <ImageRN
-        source={require('../assets/heart-icon.png')}
+        source={require('../assets/ui-icons/heart-icon.png')}
         resizeMode="contain"
         style={(() => {
-          const s = ImageRN.resolveAssetSource(require('../assets/heart-icon.png'));
+          const s = ImageRN.resolveAssetSource(require('../assets/ui-icons/heart-icon.png'));
           return { height: size, aspectRatio: s.width / s.height };
         })()}
       />
@@ -27,10 +27,10 @@ export const ChatBubbleIcon = ({ size }: { size: number }) => {
   return (
     <View className="items-center justify-center">
       <ImageRN
-        source={require('../assets/chat-icon.png')}
+        source={require('../assets/ui-icons/chat-icon.png')}
         resizeMode="contain"
         style={(() => {
-          const s = ImageRN.resolveAssetSource(require('../assets/chat-icon.png'));
+          const s = ImageRN.resolveAssetSource(require('../assets/ui-icons/chat-icon.png'));
           return { height: size, aspectRatio: s.width / s.height };
         })()}
       />
@@ -41,10 +41,10 @@ export const ChatBubbleIcon = ({ size }: { size: number }) => {
 export const ShareIcon = ({ size }: { size?: number }) => (
   <View className="items-center justify-center">
     <ImageRN
-      source={require('../assets/share-icon.png')}
+      source={require('../assets/ui-icons/share-icon.png')}
       resizeMode="contain"
       style={(() => {
-        const s = ImageRN.resolveAssetSource(require('../assets/share-icon.png'));
+        const s = ImageRN.resolveAssetSource(require('../assets/ui-icons/share-icon.png'));
         return { height: size, aspectRatio: s.width / s.height };
       })()}
     />
@@ -73,10 +73,10 @@ export const CameraIcon = ({ size }: { size: number }) => {
   return (
     <View className="items-center justify-center">
       <ImageRN
-        source={require('../assets/camera-icon.png')}
+        source={require('../assets/ui-icons/camera-icon.png')}
         resizeMode="contain"
         style={(() => {
-          const s = ImageRN.resolveAssetSource(require('../assets/camera-icon.png'));
+          const s = ImageRN.resolveAssetSource(require('../assets/ui-icons/camera-icon.png'));
           return { height: size, aspectRatio: s.width / s.height };
         })()}
       />
@@ -88,10 +88,10 @@ export const UserIcon = ({ size }: { size: number }) => {
   return (
     <View className="items-center justify-center">
       <ImageRN
-        source={require('../assets/user-icon.png')}
+        source={require('../assets/ui-icons/user-icon.png')}
         resizeMode="contain"
         style={(() => {
-          const s = ImageRN.resolveAssetSource(require('../assets/user-icon.png'));
+          const s = ImageRN.resolveAssetSource(require('../assets/ui-icons/user-icon.png'));
           return { height: size, aspectRatio: s.width / s.height };
         })()}
       />
@@ -104,13 +104,13 @@ export const CircleIconNav = ({ size, active }: { size: number; active: boolean 
     <View className="items-center justify-center">
       {!active ? (
         <ImageRN
-          source={require('../assets/snow.png')}
+          source={require('../assets/textures/snow.png')}
           resizeMode="cover"
           style={{ height: size, width: size, borderRadius: size / 2, backgroundColor: 'white' }}
         />
       ) : (
         <ImageRN
-          source={require('../assets/circle-logo-active.png')}
+          source={require('../assets/ui-icons/circle-logo-active.png')}
           resizeMode="cover"
           style={{ height: size, width: size }}
         />
