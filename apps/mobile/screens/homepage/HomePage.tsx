@@ -16,10 +16,16 @@ import { Text } from 'components/Text';
 import { BlurView } from 'expo-blur';
 import Blur from 'components/Blur';
 import { StoryView } from 'components/StoryView';
+import { ImageViewer } from 'components/ImageViewer';
 
 export const HomePage = () => {
   const [storyViewVisible, setStoryViewVisible] = useState(false);
   const [selectedStoryIndex, setSelectedStoryIndex] = useState(0);
+
+  // State for regular image viewer
+  const [imageViewerVisible, setImageViewerVisible] = useState(false);
+  const [selectedImages, setSelectedImages] = useState<string[]>([]);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
   const scrollY = useRef(new Animated.Value(0)).current;
   const diffClampScrollY = Animated.diffClamp(scrollY, 0, 300);
@@ -75,13 +81,34 @@ export const HomePage = () => {
     setStoryViewVisible(true);
   };
 
+  const [selectedPostUser, setSelectedPostUser] = useState<
+    | {
+        userName?: string;
+        userHandle?: string;
+        userAvatar?: string;
+      }
+    | undefined
+  >(undefined);
+
+  const handlePostImagePress = (images: string[], initialIndex = 0, user: any) => {
+    setSelectedImages(images);
+    setSelectedImageIndex(initialIndex);
+    setSelectedPostUser(user);
+    setImageViewerVisible(true);
+  };
+
   return (
     <View className="flex-1">
       {posts && posts.length > 0 ? (
         <FlatList
           data={posts}
           keyExtractor={(_, index) => index.toString()}
-          renderItem={({ item }) => <FeedPost {...item} />}
+          renderItem={({ item }) => (
+            <FeedPost
+              {...item}
+              onImagePress={(images, index) => handlePostImagePress(images, index, item.user)}
+            />
+          )}
           onScroll={(event) => {
             scrollY.setValue(event.nativeEvent.contentOffset.y);
           }}
@@ -149,6 +176,15 @@ export const HomePage = () => {
           onClose={() => setStoryViewVisible(false)}
         />
       </Animated.View>
+
+      {/* Image Viewer for Post Images */}
+      <ImageViewer
+        images={selectedImages}
+        initialIndex={selectedImageIndex}
+        isVisible={imageViewerVisible}
+        onClose={() => setImageViewerVisible(false)}
+        userInfo={selectedPostUser}
+      />
     </View>
   );
 };
