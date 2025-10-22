@@ -133,7 +133,12 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
         {/* Main Image */}
         <View className="flex-1 items-center justify-center">
           <View className="h-[100%] w-[100%]">
-            <Gallery images={images} currentIndex={currentIndex} onIndexChange={setCurrentIndex} />
+            <Gallery
+              images={images}
+              currentIndex={currentIndex}
+              onIndexChange={setCurrentIndex}
+              onVerticalPull={onClose}
+            />
           </View>
         </View>
 
