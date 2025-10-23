@@ -31,7 +31,7 @@ const user: UserProfile = {
   ],
   circles: [
     {
-      name: 'Friends',
+      name: 'Home Town Friends',
       color: '#FF5733',
       users: [
         {
@@ -51,19 +51,26 @@ const user: UserProfile = {
       ],
     },
     {
-      name: 'Family',
-      color: '#33C1FF',
+      name: 'College Friends',
+      color: '#FF5733',
       users: [
         {
-          userName: 'Maya Johnson',
-          userHandle: 'mjohnson',
+          userName: 'Nathan Baker',
+          userHandle: 'nbaker',
           userAvatar:
-            'https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTA5L3Jhd3BpeGVsX29mZmljZV8zNF9waG90b19vZl9hZnJpY2FuLWFtZXJpY2FuX3dvbWFuX2NvbXBhbnlfd29ya19kNmM4MmJhNS1iYjA2LTRkN2EtYjJlMy1hNDZhNDYyMjA0ZmZfMS5qcGc.jpg',
-          profileUrl: '/users/mjohnson',
+            'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+          profileUrl: '/users/nbaker',
+        },
+        {
+          userName: 'Lisa Wong',
+          userHandle: 'lwong',
+          userAvatar:
+            'https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+          profileUrl: '/users/lwong',
         },
       ],
     },
-    { name: 'Work', color: '#75FF33', users: [] },
+    { name: 'Colleagues', color: '#75FF33', users: [] },
   ],
   posts: [
     {
