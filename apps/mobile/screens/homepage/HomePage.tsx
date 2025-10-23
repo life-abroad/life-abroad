@@ -2,29 +2,17 @@ import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react'
 import { View, Image, Animated, FlatList, TouchableOpacity } from 'react-native';
 import { FeedPost } from '../../components/Post';
 import { posts, stories } from './mockData';
-import { CameraIcon, CircleLogo } from 'components/Icons';
+import { CameraIcon } from 'components/Icons';
 import { Text } from 'components/Text';
-import Blur from 'components/Blur';
 import { ImageViewer } from 'components/ImageViewer';
 import { User } from 'types/user';
+import Header from 'components/Header';
 
 export const HomePage = ({ setHideNav }: { setHideNav: (hide: boolean) => void }) => {
   const flatListRef = useRef<FlatList>(null);
 
   // Scroll animations
   const scrollY = useRef(new Animated.Value(0)).current;
-  const diffClampScrollY = Animated.diffClamp(scrollY, 0, 300);
-  const headerTranslateY = diffClampScrollY.interpolate({
-    inputRange: [0, 100],
-    outputRange: [0, -100],
-    extrapolate: 'clamp',
-  });
-  // Add opacity interpolation for fade effect
-  const headerOpacity = diffClampScrollY.interpolate({
-    inputRange: [0, 60, 90],
-    outputRange: [1, 0.7, 0],
-    extrapolate: 'clamp',
-  });
 
   // Image viewer meta
   const [imageViewerVisible, setImageViewerVisible] = useState(false);
@@ -39,10 +27,6 @@ export const HomePage = ({ setHideNav }: { setHideNav: (hide: boolean) => void }
   const [users, setUsers] = useState<User[]>([]);
   const [images, setImages] = useState<string[]>([]);
   const [imageIndex, setImageIndex] = useState(0);
-
-  useEffect(() => {
-    console.log('HomePage Current Index:', imageIndex);
-  }, [imageIndex]);
 
   const allStoryImages = stories.flatMap((s) => s.images ?? []);
   // Create a users array where each user is repeated for each of their images
@@ -117,16 +101,7 @@ export const HomePage = ({ setHideNav }: { setHideNav: (hide: boolean) => void }
       {feedList}
 
       {/* Stories - Floating Header */}
-      <Animated.View
-        className="absolute left-0 right-0 top-0 h-40 py-0"
-        style={{
-          transform: [{ translateY: headerTranslateY }],
-          opacity: headerOpacity,
-        }}>
-        <Blur topBar />
-        <View className="px-4 pt-14">
-          <CircleLogo size={80} />
-        </View>
+      <Header scrollY={scrollY}>
         {/* Stories row */}
         <View className="relative px-3 py-3">
           <View className="flex-row items-center gap-3">
@@ -155,7 +130,7 @@ export const HomePage = ({ setHideNav }: { setHideNav: (hide: boolean) => void }
             <CameraIcon size={35} />
           </View>
         </View>
-      </Animated.View>
+      </Header>
 
       <ImageViewer
         images={images}

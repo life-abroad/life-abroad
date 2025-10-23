@@ -1,15 +1,12 @@
 import React, { useRef } from 'react';
-import { View, Image, Animated, FlatList, TouchableOpacity, ImageBackground } from 'react-native';
-import { FeedPost } from '../../components/Post';
+import { View, Animated, Image, FlatList, TouchableOpacity, ImageBackground } from 'react-native';
 import { chats, bulletins } from './mockData';
-import { CameraIcon, ChatBubbleIcon, CircleLogo } from 'components/Icons';
+import { ChatBubbleIcon } from 'components/Icons';
 import { Text } from 'components/Text';
-import Blur from 'components/Blur';
 import ChatRow from 'components/ChatRow';
 import Header from 'components/Header';
 
-export const ChatPage = () => {
-  // Scroll animations
+export const ProfilePage = () => {
   const scrollY = useRef(new Animated.Value(0)).current;
 
   const handleChatPress = (chatItem: (typeof chats)[0]) => {
@@ -48,37 +45,8 @@ export const ChatPage = () => {
 
       {/* bulletins - Floating Header */}
       <Header scrollY={scrollY}>
-        {/* bulletins row */}
         <View className="relative px-3 py-3">
-          <View className="max-w-24 flex-row items-center gap-2 ">
-            {bulletins.map((bulletin, index) => {
-              const isGray = index >= bulletins.length - 2;
-              return (
-                <TouchableOpacity
-                  key={index}
-                  className="relative items-center"
-                  onPress={() => 0}
-                  activeOpacity={0.8}>
-                  {/* Message bubble */}
-                  <View className="z-10 -mb-3 h-[60px] w-[80px] justify-center overflow-hidden rounded-2xl bg-white px-1 py-2 shadow-md">
-                    <ImageBackground
-                      source={require('../../assets/textures/snow.png')}
-                      resizeMode="repeat"
-                      className={`absolute inset-0 opacity-100`}
-                    />
-                    <Text className="text-center text-[0.6rem] leading-tight text-gray-900">
-                      {bulletin.content}
-                    </Text>
-                  </View>
-                  {/* Avatar */}
-                  <Image
-                    source={{ uri: bulletin.user.userAvatar }}
-                    className={`h-[50] w-[50] rounded-full border-2 border-white`}
-                  />
-                </TouchableOpacity>
-              );
-            })}
-          </View>
+          <View className="max-w-24 flex-row items-center gap-2 "></View>
           <View className="absolute bottom-5 right-4 items-center justify-center">
             <ChatBubbleIcon size={35} onPress={() => {}} />
           </View>
