@@ -31,7 +31,7 @@ export const FeedList = React.forwardRef<FlatList, FeedListProps>(
           keyExtractor={(_, index) => index.toString()}
           numColumns={numColumns}
           renderItem={({ item }) => (
-            <View className={numColumns > 1 ? 'm-[0.5%] w-[49.5%]' : 'flex-1'}>
+            <View className={numColumns > 1 ? 'm-[0.3%] w-[49.7%]' : 'flex-1'}>
               <FeedPost
                 {...item}
                 onImagePress={(images, index) => onImagePress(images, index, item.user)}
