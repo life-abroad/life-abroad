@@ -26,7 +26,11 @@ export default function BottomNav({
           active={selectedTab === 'home'}
           onPress={() => setSelectedTab('home')}
         />
-        <UserIcon size={40} onPress={() => setSelectedTab('profile')} />
+        <UserIcon
+          size={40}
+          onPress={() => setSelectedTab('profile')}
+          active={selectedTab === 'profile'}
+        />
       </View>
     </View>
   );
