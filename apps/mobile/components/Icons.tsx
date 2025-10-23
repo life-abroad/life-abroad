@@ -159,6 +159,62 @@ export const UserIcon = ({
   );
 };
 
+export const FriendsIcon = ({
+  size,
+  onPress,
+  active,
+}: {
+  size: number;
+  onPress: () => void;
+  active?: boolean;
+}) => {
+  return (
+    <PressableIcon size={size} onPress={onPress}>
+      <ImageRN
+        source={
+          active
+            ? require('../assets/ui-icons/friends-filled.png')
+            : require('../assets/ui-icons/friends-outline.png')
+        }
+        resizeMode="contain"
+        style={(() => {
+          const s = ImageRN.resolveAssetSource(require('../assets/ui-icons/friends-filled.png'));
+          return { height: size, aspectRatio: s.width / s.height };
+        })()}
+      />
+      {/* {active && <ActiveCircle size={20} top={-1.5} left={7.8} />} */}
+    </PressableIcon>
+  );
+};
+
+export const PostsIcon = ({
+  size,
+  onPress,
+  active,
+}: {
+  size: number;
+  onPress: () => void;
+  active?: boolean;
+}) => {
+  return (
+    <PressableIcon size={size} onPress={onPress}>
+      <ImageRN
+        source={
+          active
+            ? require('../assets/ui-icons/posts-filled.png')
+            : require('../assets/ui-icons/posts-outline.png')
+        }
+        resizeMode="contain"
+        style={(() => {
+          const s = ImageRN.resolveAssetSource(require('../assets/ui-icons/posts-filled.png'));
+          return { height: size, aspectRatio: s.width / s.height };
+        })()}
+      />
+      {/* {active && <ActiveCircle size={20} top={-1.5} left={7.8} />} */}
+    </PressableIcon>
+  );
+};
+
 export const CircleIconNav = ({
   size,
   active,

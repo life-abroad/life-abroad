@@ -80,7 +80,7 @@ export const ChatPage = () => {
             })}
           </View>
           <View className="absolute bottom-5 right-4 items-center justify-center">
-            <ChatBubbleIcon size={35} onPress={() => {}} />
+            <ChatBubbleIcon active size={35} onPress={() => {}} />
           </View>
         </View>
       </Header>
