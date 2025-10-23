@@ -1,4 +1,4 @@
-import React, { useRef, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { View, Animated, FlatList } from 'react-native';
 import { FeedPost } from '../components/Post';
 import { Text } from '../components/Text';
@@ -10,10 +10,11 @@ interface FeedListProps {
   onImagePress: (images: string[], index: number, user: User) => void;
   paddingTop?: number;
   paddingBottom?: number;
+  numColumns?: number;
 }
 
 export const FeedList = React.forwardRef<FlatList, FeedListProps>(
-  ({ posts, scrollY, onImagePress, paddingTop = 136, paddingBottom = 70 }, ref) => {
+  ({ posts, scrollY, onImagePress, paddingTop = 136, paddingBottom = 70, numColumns = 1 }, ref) => {
     const feedList = useMemo(() => {
       if (!posts || posts.length === 0) {
         return (
@@ -28,11 +29,14 @@ export const FeedList = React.forwardRef<FlatList, FeedListProps>(
           ref={ref}
           data={posts}
           keyExtractor={(_, index) => index.toString()}
+          numColumns={numColumns}
           renderItem={({ item }) => (
-            <FeedPost
-              {...item}
-              onImagePress={(images, index) => onImagePress(images, index, item.user)}
-            />
+            <View className={numColumns > 1 ? 'm-[0.5%] w-[49.5%]' : 'flex-1'}>
+              <FeedPost
+                {...item}
+                onImagePress={(images, index) => onImagePress(images, index, item.user)}
+              />
+            </View>
           )}
           onScroll={(event) => {
             scrollY.setValue(event.nativeEvent.contentOffset.y);

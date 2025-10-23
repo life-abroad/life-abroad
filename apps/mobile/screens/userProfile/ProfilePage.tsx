@@ -35,6 +35,7 @@ export const ProfilePage = ({ setHideNav }: { setHideNav: (hide: boolean) => voi
         posts={posts}
         scrollY={scrollY}
         onImagePress={handlePostImagePress}
+        numColumns={2}
       />
 
       {/* Stories - Floating Header */}

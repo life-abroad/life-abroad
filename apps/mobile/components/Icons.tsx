@@ -24,7 +24,7 @@ const PressableIcon = ({
   );
 };
 
-const ActiveCircle = ({ size, top }: { size: number; top: number }) => {
+const ActiveCircle = ({ size, top, left }: { size: number; top: number; left: number }) => {
   return (
     <View
       style={{
@@ -32,7 +32,7 @@ const ActiveCircle = ({ size, top }: { size: number; top: number }) => {
         width: Math.round(size * 0.6),
         height: Math.round(size * 0.6),
         borderRadius: Math.round((size * 0.6) / 2),
-        left: Math.round((size - Math.round(size * 0.6)) / 2),
+        left: Math.round((size - Math.round(size * 0.6)) / 2) + left,
         top: Math.round((size - Math.round(size * 0.6)) / 2) + top,
         backgroundColor: '#0055FF',
       }}
@@ -44,10 +44,10 @@ export const HeartIcon = ({ size }: { size: number }) => {
   return (
     <View className="items-center justify-center">
       <ImageRN
-        source={require('../assets/ui-icons/heart-icon.png')}
+        source={require('../assets/ui-icons/heart-filled.png')}
         resizeMode="contain"
         style={(() => {
-          const s = ImageRN.resolveAssetSource(require('../assets/ui-icons/heart-icon.png'));
+          const s = ImageRN.resolveAssetSource(require('../assets/ui-icons/heart-filled.png'));
           return { height: size, aspectRatio: s.width / s.height };
         })()}
       />
@@ -59,10 +59,10 @@ export const CameraIcon = ({ size }: { size: number }) => {
   return (
     <View className="items-center justify-center">
       <ImageRN
-        source={require('../assets/ui-icons/camera-icon.png')}
+        source={require('../assets/ui-icons/camera-filled.png')}
         resizeMode="contain"
         style={(() => {
-          const s = ImageRN.resolveAssetSource(require('../assets/ui-icons/camera-icon.png'));
+          const s = ImageRN.resolveAssetSource(require('../assets/ui-icons/camera-filled.png'));
           return { height: size, aspectRatio: s.width / s.height };
         })()}
       />
@@ -73,10 +73,10 @@ export const CameraIcon = ({ size }: { size: number }) => {
 export const ShareIcon = ({ size }: { size?: number }) => (
   <View className="items-center justify-center">
     <ImageRN
-      source={require('../assets/ui-icons/share-icon.png')}
+      source={require('../assets/ui-icons/share.png')}
       resizeMode="contain"
       style={(() => {
-        const s = ImageRN.resolveAssetSource(require('../assets/ui-icons/share-icon.png'));
+        const s = ImageRN.resolveAssetSource(require('../assets/ui-icons/share.png'));
         return { height: size, aspectRatio: s.width / s.height };
       })()}
     />
@@ -114,14 +114,18 @@ export const ChatBubbleIcon = ({
     <PressableIcon onPress={onPress} size={size}>
       <View style={{ width: size, height: size, alignItems: 'center', justifyContent: 'center' }}>
         <ImageRN
-          source={require('../assets/ui-icons/chat-icon.png')}
+          source={
+            active
+              ? require('../assets/ui-icons/chat-filled.png')
+              : require('../assets/ui-icons/chat-outline.png')
+          }
           resizeMode="contain"
           style={(() => {
-            const s = ImageRN.resolveAssetSource(require('../assets/ui-icons/chat-icon.png'));
+            const s = ImageRN.resolveAssetSource(require('../assets/ui-icons/chat-filled.png'));
             return { height: size, aspectRatio: s.width / s.height };
           })()}
         />
-        {active && <ActiveCircle size={size} top={-3} />}
+        {/* {active && <ActiveCircle size={size} top={-3} />} */}
       </View>
     </PressableIcon>
   );
@@ -139,14 +143,18 @@ export const UserIcon = ({
   return (
     <PressableIcon size={size} onPress={onPress}>
       <ImageRN
-        source={require('../assets/ui-icons/user-icon.png')}
+        source={
+          active
+            ? require('../assets/ui-icons/user-filled.png')
+            : require('../assets/ui-icons/user-outline.png')
+        }
         resizeMode="contain"
         style={(() => {
-          const s = ImageRN.resolveAssetSource(require('../assets/ui-icons/user-icon.png'));
+          const s = ImageRN.resolveAssetSource(require('../assets/ui-icons/user-filled.png'));
           return { height: size, aspectRatio: s.width / s.height };
         })()}
       />
-      {active && <ActiveCircle size={size} top={-3} />}
+      {/* {active && <ActiveCircle size={20} top={-1.5} left={7.8} />} */}
     </PressableIcon>
   );
 };
@@ -163,12 +171,32 @@ export const CircleIconNav = ({
   return (
     <PressableIcon onPress={onPress} size={size}>
       <View style={{ width: size, height: size, alignItems: 'center', justifyContent: 'center' }}>
-        <ImageRN
-          source={require('../assets/textures/snow.png')}
-          resizeMode="cover"
-          style={{ height: size, width: size, borderRadius: size / 2, backgroundColor: 'white' }}
-        />
-        {active && <ActiveCircle size={size} />}
+        {active ? (
+          <>
+            <ImageRN
+              source={require('../assets/textures/snow.png')}
+              resizeMode="cover"
+              style={{
+                height: size,
+                width: size,
+                borderRadius: size / 2,
+                backgroundColor: 'white',
+              }}
+            />
+            {/* <ActiveCircle size={size} top={0} left={0} /> */}
+          </>
+        ) : (
+          <ImageRN
+            source={require('../assets/ui-icons/circle-outline.png')}
+            resizeMode="contain"
+            style={(() => {
+              const s = ImageRN.resolveAssetSource(
+                require('../assets/ui-icons/circle-outline.png')
+              );
+              return { height: size, aspectRatio: s.width / s.height };
+            })()}
+          />
+        )}
       </View>
     </PressableIcon>
   );
