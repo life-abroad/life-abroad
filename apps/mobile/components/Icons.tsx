@@ -127,7 +127,15 @@ export const ChatBubbleIcon = ({
   );
 };
 
-export const UserIcon = ({ size, onPress }: { size: number; onPress: () => void }) => {
+export const UserIcon = ({
+  size,
+  onPress,
+  active,
+}: {
+  size: number;
+  onPress: () => void;
+  active?: boolean;
+}) => {
   return (
     <PressableIcon size={size} onPress={onPress}>
       <ImageRN
@@ -138,6 +146,7 @@ export const UserIcon = ({ size, onPress }: { size: number; onPress: () => void 
           return { height: size, aspectRatio: s.width / s.height };
         })()}
       />
+      {active && <ActiveCircle size={size} top={-3} />}
     </PressableIcon>
   );
 };

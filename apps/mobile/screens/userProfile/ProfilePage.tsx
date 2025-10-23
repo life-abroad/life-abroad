@@ -1,57 +1,100 @@
-import React, { useRef } from 'react';
-import { View, Animated, Image, FlatList, TouchableOpacity, ImageBackground } from 'react-native';
-import { chats, bulletins } from './mockData';
-import { ChatBubbleIcon } from 'components/Icons';
+import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react';
+import { View, Animated, FlatList } from 'react-native';
+import { FeedPost } from '../../components/Post';
+import { posts } from '../homepage/mockData';
 import { Text } from 'components/Text';
-import ChatRow from 'components/ChatRow';
+import { ImageViewer } from 'components/ImageViewer';
+import { User } from 'types/user';
 import Header from 'components/Header';
 
-export const ProfilePage = () => {
+export const ProfilePage = ({ setHideNav }: { setHideNav: (hide: boolean) => void }) => {
+  const flatListRef = useRef<FlatList>(null);
+
+  // Scroll animations
   const scrollY = useRef(new Animated.Value(0)).current;
 
-  const handleChatPress = (chatItem: (typeof chats)[0]) => {
-    // Handle chat row press
-    console.log('Chat pressed:', chatItem.user.userName);
-  };
+  // Image viewer meta
+  const [imageViewerVisible, setImageViewerVisible] = useState(false);
+  const [hideProgressBar, setHideProgressBar] = useState(false);
+  const [hideCounter, setHideCounter] = useState(false);
 
-  return (
-    <View className="flex-1 bg-background-secondary">
-      {chats && chats.length > 0 ? (
-        <FlatList
-          data={chats}
-          keyExtractor={(_, index) => index.toString()}
-          renderItem={({ item }) => (
-            <ChatRow
-              user={item.user}
-              unreadCount={item.unreadCount}
-              lastMessage={item.lastMessage}
-              timestamp={item.timestamp}
-              onPress={() => handleChatPress(item)}
-            />
-          )}
-          onScroll={(event) => {
-            scrollY.setValue(event.nativeEvent.contentOffset.y);
-          }}
-          scrollEventThrottle={16}
-          className="flex-1"
-          contentContainerStyle={{ paddingTop: 190, paddingBottom: 70 }}
-          showsVerticalScrollIndicator={false}
-        />
-      ) : (
+  useEffect(() => {
+    setHideNav(imageViewerVisible);
+  }, [imageViewerVisible]);
+
+  // Image view data
+  const [users, setUsers] = useState<User[]>([]);
+  const [images, setImages] = useState<string[]>([]);
+  const [imageIndex, setImageIndex] = useState(0);
+
+  const handlePostImagePress = useCallback((images: string[], initialIndex = 0, user: any) => {
+    // Create a users array where the same user is repeated for each image
+    const usersArray = images.map(() => user);
+    setImages(images);
+    setImageIndex(initialIndex);
+    setImageViewerVisible(true);
+    setHideCounter(false);
+    setHideProgressBar(true);
+    setUsers(usersArray);
+  }, []);
+
+  const feedList = useMemo(() => {
+    if (!posts || posts.length === 0) {
+      return (
         <View className="flex-1 items-center justify-center">
           <Text>No posts available</Text>
         </View>
-      )}
+      );
+    }
 
-      {/* bulletins - Floating Header */}
+    return (
+      <FlatList
+        ref={flatListRef}
+        data={posts}
+        keyExtractor={(_, index) => index.toString()}
+        renderItem={({ item }) => (
+          <FeedPost
+            {...item}
+            onImagePress={(images, index) => handlePostImagePress(images, index, item.user)}
+          />
+        )}
+        onScroll={(event) => {
+          scrollY.setValue(event.nativeEvent.contentOffset.y);
+        }}
+        scrollEventThrottle={16}
+        className="flex-1"
+        contentContainerStyle={{ paddingTop: 136, paddingBottom: 70 }}
+        showsVerticalScrollIndicator={false}
+        maintainVisibleContentPosition={{
+          minIndexForVisible: 0,
+        }}
+      />
+    );
+  }, [posts, handlePostImagePress]);
+
+  return (
+    <View className="flex-1">
+      {feedList}
+
+      {/* Stories - Floating Header */}
       <Header scrollY={scrollY}>
-        <View className="relative px-3 py-3">
-          <View className="max-w-24 flex-row items-center gap-2 "></View>
-          <View className="absolute bottom-5 right-4 items-center justify-center">
-            <ChatBubbleIcon size={35} onPress={() => {}} />
-          </View>
-        </View>
+        <View className="flex-row items-center justify-between px-4" />
       </Header>
+
+      <ImageViewer
+        images={images}
+        imageIndex={imageIndex}
+        setImageIndex={setImageIndex}
+        users={users}
+        isVisible={imageViewerVisible}
+        onClose={() => {
+          setImageViewerVisible(false);
+        }}
+        hideProgressBar={hideProgressBar}
+        hideCounter={hideCounter}
+        setHideProgressBar={setHideProgressBar}
+        setHideCounter={setHideCounter}
+      />
     </View>
   );
 };

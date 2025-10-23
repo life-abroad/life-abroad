@@ -11,6 +11,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import BottomNav from 'components/BottomNav';
+import { ProfilePage } from 'screens/userProfile/ProfilePage';
 
 const Tab = createBottomTabNavigator();
 
@@ -74,6 +75,7 @@ export default function App() {
             )}>
             <Tab.Screen name="home">{() => <HomePage setHideNav={setHideNav} />}</Tab.Screen>
             <Tab.Screen name="chat" component={ChatPage} />
+            <Tab.Screen name="profile">{() => <ProfilePage setHideNav={setHideNav} />}</Tab.Screen>
           </Tab.Navigator>
           <StatusBar style="light" translucent />
         </View>
