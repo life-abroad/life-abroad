@@ -7,6 +7,7 @@ import {
   Animated,
   StatusBar,
   SafeAreaView,
+  ScrollView,
 } from 'react-native';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import { Text } from './Text';
@@ -188,22 +189,32 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
         {/* Reactions - Above Bottom Bar */}
         {reactions[imageIndex] && reactions[imageIndex].length > 0 && (
           <Animated.View
-            className={`absolute ${hideBottomBar ? 'bottom-[2rem]' : 'bottom-[6.5rem]'} left-4 flex-row gap-2`}
+            className={`absolute ${hideBottomBar ? 'bottom-[2rem]' : 'bottom-[6.5rem]'} left-0 right-0 h-12`}
             style={{
               opacity: bottomBarFadeAnim,
             }}
             pointerEvents={hideBars ? 'none' : 'auto'}>
-            {reactions[imageIndex].map((reaction, index) => (
-              <View key={index} className="relative h-10 w-10">
-                <Image
-                  source={{ uri: reaction.userAvatar }}
-                  className="absolute -top-1 left-0 size-10 rounded-full border border-white"
-                />
-                <Text className="text-md absolute left-5 top-3 z-10 items-center justify-center">
-                  {reaction.emoji}
-                </Text>
-              </View>
-            ))}
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{
+                paddingLeft: 8,
+                paddingRight: 16,
+                gap: 8,
+                alignItems: 'center',
+              }}>
+              {reactions[imageIndex].map((reaction, index) => (
+                <View key={index} className="relative h-10 w-10">
+                  <Image
+                    source={{ uri: reaction.userAvatar }}
+                    className="absolute left-0 top-0 size-10 rounded-full border border-white"
+                  />
+                  <Text className="text-md absolute left-5 top-3 z-10 items-center justify-center">
+                    {reaction.emoji}
+                  </Text>
+                </View>
+              ))}
+            </ScrollView>
           </Animated.View>
         )}
 
@@ -239,7 +250,7 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
             {/* Actions */}
             <View className="flex-row items-center">
               <TouchableOpacity className="mr-5">
-                <HeartIcon size={34} />
+                <HeartIcon size={30} active={false} />
               </TouchableOpacity>
               <TouchableOpacity>
                 <ChatBubbleIcon size={25} onPress={() => {}} />
