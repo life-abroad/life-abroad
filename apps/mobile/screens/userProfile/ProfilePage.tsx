@@ -37,7 +37,7 @@ export const ProfilePage = ({ setHideNav }: { setHideNav: (hide: boolean) => voi
   const [selectedCircle, setSelectedCircle] = React.useState<(typeof user.circles)[0] | null>(null);
 
   return (
-    <View className="flex-1 bg-background-secondary">
+    <View className="flex-1 bg-background">
       {activeTab === 'posts' ? (
         <FeedList
           ref={flatListRef}
