@@ -11,10 +11,24 @@ interface FeedListProps {
   paddingTop?: number;
   paddingBottom?: number;
   numColumns?: number;
+  displayPosterInfo?: boolean;
+  displayReactionControls?: boolean;
 }
 
 export const FeedList = React.forwardRef<FlatList, FeedListProps>(
-  ({ posts, scrollY, onImagePress, paddingTop = 136, paddingBottom = 70, numColumns = 1 }, ref) => {
+  (
+    {
+      posts,
+      scrollY,
+      onImagePress,
+      paddingTop = 136,
+      paddingBottom = 70,
+      numColumns = 1,
+      displayPosterInfo = true,
+      displayReactionControls = true,
+    },
+    ref
+  ) => {
     const feedList = useMemo(() => {
       if (!posts || posts.length === 0) {
         return (
@@ -31,10 +45,13 @@ export const FeedList = React.forwardRef<FlatList, FeedListProps>(
           keyExtractor={(_, index) => index.toString()}
           numColumns={numColumns}
           renderItem={({ item }) => (
-            <View className={numColumns > 1 ? 'm-[0.3%] w-[49.7%]' : 'flex-1'}>
+            <View className={numColumns > 1 ? 'm-[0.3%] w-[49.7%]' : ''}>
               <FeedPost
                 {...item}
                 onImagePress={(images, index) => onImagePress(images, index, item.user)}
+                numColumns={numColumns}
+                displayPosterInfo={displayPosterInfo}
+                displayReactionControls={displayReactionControls}
               />
             </View>
           )}
