@@ -73,7 +73,7 @@ export const ChatPage = () => {
             scrollEventThrottle={16}
             fadingEdgeLength={15}
             className="w-[100%]">
-            <View className={`flex-row items-center gap-2 px-3`}>
+            <View className={`pl- flex-row items-center gap-2 px-3`}>
               {bulletins.map((bulletin, index) => {
                 const isGray = index >= bulletins.length - 2;
                 return (
@@ -105,8 +105,8 @@ export const ChatPage = () => {
           </ScrollView>
         </View>
       </Header>
-      <View className="absolute bottom-28 right-4 items-center justify-center">
-        <ChatBubbleIcon active size={35} onPress={() => {}} />
+      <View className="absolute bottom-24 right-2 size-16 items-center justify-center rounded-2xl bg-primary">
+        <ChatBubbleIcon plus size={28} onPress={() => {}} />
       </View>
     </View>
   );

@@ -105,27 +105,34 @@ export const ChatBubbleIcon = ({
   size,
   onPress,
   active,
+  plus,
 }: {
   size: number;
   onPress: () => void;
   active?: boolean;
+  plus?: boolean;
 }) => {
   return (
     <PressableIcon onPress={onPress} size={size}>
       <View style={{ width: size, height: size, alignItems: 'center', justifyContent: 'center' }}>
-        <ImageRN
-          source={
-            active
+        {(() => {
+          const src = plus
+            ? require('../assets/ui-icons/chat-new.png')
+            : active
               ? require('../assets/ui-icons/chat-filled.png')
-              : require('../assets/ui-icons/chat-outline.png')
-          }
-          resizeMode="contain"
-          style={(() => {
-            const s = ImageRN.resolveAssetSource(require('../assets/ui-icons/chat-filled.png'));
-            return { height: size, aspectRatio: s.width / s.height };
-          })()}
-        />
-        {/* {active && <ActiveCircle size={size} top={-3} />} */}
+              : require('../assets/ui-icons/chat-outline.png');
+
+          return (
+            <ImageRN
+              source={src}
+              resizeMode="contain"
+              style={(() => {
+                const s = ImageRN.resolveAssetSource(src);
+                return { height: size, aspectRatio: s.width / s.height };
+              })()}
+            />
+          );
+        })()}
       </View>
     </PressableIcon>
   );
