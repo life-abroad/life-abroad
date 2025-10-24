@@ -1,22 +1,32 @@
-import React, { useRef } from 'react';
+import React, { useRef, useMemo } from 'react';
 import { View, Animated } from 'react-native';
 import { CircleLogo } from 'components/Icons';
 import Blur from 'components/Blur';
 
 function Header({ children, scrollY }: { children: React.ReactNode; scrollY: Animated.Value }) {
-  // Scroll animations
-  const diffClampScrollY = Animated.diffClamp(scrollY, 0, 300);
-  const headerTranslateY = diffClampScrollY.interpolate({
-    inputRange: [0, 100],
-    outputRange: [0, -100],
-    extrapolate: 'clamp',
-  });
+  // Scroll animations - use useMemo to prevent recreating on every render
+  const diffClampScrollY = useMemo(() => Animated.diffClamp(scrollY, 0, 300), [scrollY]);
+
+  const headerTranslateY = useMemo(
+    () =>
+      diffClampScrollY.interpolate({
+        inputRange: [0, 100],
+        outputRange: [0, -100],
+        extrapolate: 'clamp',
+      }),
+    [diffClampScrollY]
+  );
+
   // Add opacity interpolation for fade effect
-  const headerOpacity = diffClampScrollY.interpolate({
-    inputRange: [0, 60, 90],
-    outputRange: [1, 0.7, 0],
-    extrapolate: 'clamp',
-  });
+  const headerOpacity = useMemo(
+    () =>
+      diffClampScrollY.interpolate({
+        inputRange: [0, 60, 90],
+        outputRange: [1, 0.7, 0],
+        extrapolate: 'clamp',
+      }),
+    [diffClampScrollY]
+  );
 
   return (
     <>

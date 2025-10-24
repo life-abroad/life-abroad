@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect, useRef, useImperativeHandle } from 'react';
 import { View, Animated, FlatList, ScrollView, Image, Dimensions } from 'react-native';
 import { FeedPost } from '../components/Post';
 import { Text } from '../components/Text';
@@ -25,7 +25,11 @@ interface FeedListProps {
   displayReactionControls?: boolean;
 }
 
-export const FeedList = React.forwardRef<FlatList, FeedListProps>(
+interface FeedListHandle {
+  scrollToOffset: (params: { offset: number; animated?: boolean | null }) => void;
+}
+
+export const FeedList = React.forwardRef<FeedListHandle, FeedListProps>(
   (
     {
       posts,
@@ -39,9 +43,22 @@ export const FeedList = React.forwardRef<FlatList, FeedListProps>(
     },
     ref
   ) => {
+    const scrollViewRef = useRef<ScrollView | null>(null);
+    const flatListRef = useRef<FlatList | null>(null);
     const [imageSizes, setImageSizes] = useState<Record<string, { width: number; height: number }>>(
       {}
     );
+
+    // Expose scrollToTop method through ref
+    useImperativeHandle(ref, () => ({
+      scrollToOffset: ({ offset, animated }: { offset: number; animated?: boolean | null }) => {
+        if (numColumns > 1 && scrollViewRef.current) {
+          scrollViewRef.current.scrollTo({ y: offset, animated: animated ?? true });
+        } else if (flatListRef.current) {
+          flatListRef.current.scrollToOffset({ offset, animated: animated ?? true });
+        }
+      },
+    }));
 
     // Preload image sizes for masonry layout
     useEffect(() => {
@@ -142,6 +159,7 @@ export const FeedList = React.forwardRef<FlatList, FeedListProps>(
 
       return numColumns > 1 && masonryColumns ? (
         <Animated.ScrollView
+          ref={scrollViewRef}
           onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
             useNativeDriver: false,
           })}
@@ -178,7 +196,7 @@ export const FeedList = React.forwardRef<FlatList, FeedListProps>(
         </Animated.ScrollView>
       ) : (
         <FlatList
-          ref={ref}
+          ref={flatListRef}
           data={posts}
           keyExtractor={(_, index) => index.toString()}
           numColumns={numColumns}
