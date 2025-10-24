@@ -30,24 +30,34 @@ export const FeedPost: React.FC<FeedPostProps> = ({
     <View className="mb-1 bg-background-secondary">
       {/* Header */}
       <View className="flex-row items-center justify-between px-1 py-2">
-        {displayPosterInfo && (
-          <View className="flex-row items-center gap-2">
-            <Image
-              source={{ uri: user.userAvatar }}
-              className="h-11 w-11 rounded-full border-2 border-white"
-            />
-            <Text className="text-md px-1 font-madimi font-semibold">{user.userName}</Text>
+        {displayPosterInfo ? (
+          <>
+            <View className="flex-row items-center gap-2">
+              <Image
+                source={{ uri: user.userAvatar }}
+                className="h-11 w-11 rounded-full border-2 border-white"
+              />
+              <Text className="text-md px-1 font-madimi font-semibold">{user.userName}</Text>
+            </View>
+            <View className="flex-row items-center justify-end gap-3 px-3">
+              <View className="max-w-32">
+                <Text className="text-md text-right font-medium">{location}</Text>
+                <Text className="text-xs font-light">{timestamp}</Text>
+              </View>
+              <View className="h-7 w-5">
+                <LocationIcon />
+              </View>
+            </View>
+          </>
+        ) : (
+          <View className="w-full flex-col items-start justify-between px-1">
+            <View className="-ml-1 flex-row items-center gap-1">
+              <LocationIcon size={12} />
+              <Text className="text-md font-medium">{location}</Text>
+            </View>
+            <Text className="text-right text-xs font-light">{timestamp}</Text>
           </View>
         )}
-        <View className="flex-row items-center justify-end gap-3 px-3">
-          <View className="max-w-32">
-            <Text className="text-md text-right font-medium">{location}</Text>
-            <Text className="text-xs font-light">{timestamp}</Text>
-          </View>
-          <View className="h-7 w-5">
-            <LocationIcon />
-          </View>
-        </View>
       </View>
 
       {/* Images */}
