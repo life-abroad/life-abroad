@@ -85,7 +85,7 @@ export const HomePage = ({ setHideNav }: { setHideNav: (hide: boolean) => void }
             // onScroll={handleScroll}
             scrollEventThrottle={16}
             fadingEdgeLength={15}
-            className="w-[80%]">
+            className="w-[82%]">
             <View className="flex-row items-center gap-2.5 pl-3">
               {stories.map((story, index) => {
                 const isGray = story.seen ?? false;

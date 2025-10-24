@@ -1,7 +1,19 @@
 import React from 'react';
-import { Image as ImageRN, View } from 'react-native';
-import Svg, { Path, Defs, Pattern, Image, Use } from 'react-native-svg';
-const { ImageBackground } = require('react-native');
+import { View } from 'react-native';
+import Svg, { Path } from 'react-native-svg';
+import {
+  Heart,
+  Camera,
+  Share2,
+  MapPin,
+  MessageCircle,
+  MessageCirclePlus,
+  User,
+  Users,
+  LayoutGrid,
+  Circle as CircleIcon,
+  LucideIcon,
+} from 'lucide-react-native';
 
 type IconProps = {
   size?: number;
@@ -9,11 +21,16 @@ type IconProps = {
   height?: number;
 };
 
+type BaseIconProps = {
+  size: number;
+  active?: boolean;
+  onPress?: () => void;
+};
+
 const PressableIcon = ({
   onPress,
   children,
 }: {
-  size: number;
   onPress?: () => void;
   children: React.ReactNode;
 }) => {
@@ -24,67 +41,43 @@ const PressableIcon = ({
   );
 };
 
-const ActiveCircle = ({ size, top, left }: { size: number; top: number; left: number }) => {
-  return (
-    <View
-      style={{
-        position: 'absolute',
-        width: Math.round(size * 0.6),
-        height: Math.round(size * 0.6),
-        borderRadius: Math.round((size * 0.6) / 2),
-        left: Math.round((size - Math.round(size * 0.6)) / 2) + left,
-        top: Math.round((size - Math.round(size * 0.6)) / 2) + top,
-        backgroundColor: '#0055FF',
-      }}
-    />
-  );
-};
+// Reusable wrapper for Lucide icons
+const LucideIconWrapper = ({
+  Icon,
+  size,
+  active = false,
+  onPress,
+}: {
+  Icon: LucideIcon;
+  size: number;
+  active?: boolean;
+  onPress?: () => void;
+}) => {
+  const Wrapper = onPress ? PressableIcon : View;
+  const wrapperProps = onPress ? { onPress } : { className: 'items-center justify-center' };
 
-export const HeartIcon = ({ size, active }: { size: number; active: boolean }) => {
   return (
-    <View className="items-center justify-center">
-      <ImageRN
-        source={
-          active
-            ? require('../assets/ui-icons/heart-filled.png')
-            : require('../assets/ui-icons/heart-outline.png')
-        }
-        resizeMode="contain"
-        style={(() => {
-          const s = ImageRN.resolveAssetSource(require('../assets/ui-icons/heart-filled.png'));
-          return { height: size, aspectRatio: s.width / s.height };
-        })()}
+    <Wrapper {...wrapperProps}>
+      <Icon
+        size={size}
+        color="white"
+        fill={active ? 'white' : 'none'}
+        strokeWidth={active ? 2 : 2}
       />
-    </View>
+    </Wrapper>
   );
 };
 
-export const CameraIcon = ({ size }: { size: number }) => {
-  return (
-    <View className="items-center justify-center">
-      <ImageRN
-        source={require('../assets/ui-icons/camera-filled.png')}
-        resizeMode="contain"
-        style={(() => {
-          const s = ImageRN.resolveAssetSource(require('../assets/ui-icons/camera-filled.png'));
-          return { height: size, aspectRatio: s.width / s.height };
-        })()}
-      />
-    </View>
-  );
-};
+export const HeartIcon = ({ size, active }: { size: number; active: boolean }) => (
+  <LucideIconWrapper Icon={Heart} size={size} active={active} />
+);
 
-export const ShareIcon = ({ size }: { size?: number }) => (
-  <View className="items-center justify-center">
-    <ImageRN
-      source={require('../assets/ui-icons/share.png')}
-      resizeMode="contain"
-      style={(() => {
-        const s = ImageRN.resolveAssetSource(require('../assets/ui-icons/share.png'));
-        return { height: size, aspectRatio: s.width / s.height };
-      })()}
-    />
-  </View>
+export const CameraIcon = ({ size }: { size: number }) => (
+  <LucideIconWrapper Icon={Camera} size={size} />
+);
+
+export const ShareIcon = ({ size = 24 }: { size?: number }) => (
+  <LucideIconWrapper Icon={Share2} size={size} />
 );
 
 export const LocationIcon = ({ size, width, height }: IconProps) => {
@@ -93,138 +86,53 @@ export const LocationIcon = ({ size, width, height }: IconProps) => {
   const w = width ?? size ?? defaultW;
   const h = height ?? (size ? (size * defaultH) / defaultW : defaultH);
 
-  return (
-    <Svg width={w} height={h} viewBox="0 0 22 27" fill="none">
-      <Path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M11.2607 0.374512C14.1088 0.374512 16.8406 1.50609 18.8545 3.52002C20.8683 5.53394 22 8.26567 22 11.1138C21.9998 19.4661 11.2607 26.6255 11.2607 26.6255C11.2365 26.6093 0.52264 19.4567 0.522461 11.1138C0.522461 8.26565 1.65408 5.53395 3.66797 3.52002C5.68179 1.50628 8.41285 0.37457 11.2607 0.374512ZM11.2607 6.13623C8.32375 6.13643 5.94238 8.5175 5.94238 11.4546C5.94244 14.3916 8.32378 16.7727 11.2607 16.7729C14.1978 16.7729 16.579 14.3917 16.5791 11.4546C16.5791 8.51743 14.1978 6.13631 11.2607 6.13623Z"
-        fill="white"
-      />
-    </Svg>
-  );
+  return <MapPin size={h} color="white" />;
 };
 
 export const ChatBubbleIcon = ({
   size,
   onPress,
-  active,
-  plus,
+  active = false,
+  plus = false,
 }: {
   size: number;
   onPress: () => void;
   active?: boolean;
   plus?: boolean;
 }) => {
-  return (
-    <PressableIcon onPress={onPress} size={size}>
-      <View style={{ width: size, height: size, alignItems: 'center', justifyContent: 'center' }}>
-        {(() => {
-          const src = plus
-            ? require('../assets/ui-icons/chat-new.png')
-            : active
-              ? require('../assets/ui-icons/chat-filled.png')
-              : require('../assets/ui-icons/chat-outline.png');
-
-          return (
-            <ImageRN
-              source={src}
-              resizeMode="contain"
-              style={(() => {
-                const s = ImageRN.resolveAssetSource(src);
-                return { height: size, aspectRatio: s.width / s.height };
-              })()}
-            />
-          );
-        })()}
-      </View>
-    </PressableIcon>
-  );
+  const Icon = plus ? MessageCirclePlus : MessageCircle;
+  return <LucideIconWrapper Icon={Icon} size={size} active={active} onPress={onPress} />;
 };
 
 export const UserIcon = ({
   size,
   onPress,
-  active,
+  active = false,
 }: {
   size: number;
   onPress: () => void;
   active?: boolean;
-}) => {
-  return (
-    <PressableIcon size={size} onPress={onPress}>
-      <ImageRN
-        source={
-          active
-            ? require('../assets/ui-icons/user-filled.png')
-            : require('../assets/ui-icons/user-outline.png')
-        }
-        resizeMode="contain"
-        style={(() => {
-          const s = ImageRN.resolveAssetSource(require('../assets/ui-icons/user-filled.png'));
-          return { height: size, aspectRatio: s.width / s.height };
-        })()}
-      />
-      {/* {active && <ActiveCircle size={20} top={-1.5} left={7.8} />} */}
-    </PressableIcon>
-  );
-};
+}) => <LucideIconWrapper Icon={User} size={size} active={active} onPress={onPress} />;
 
 export const FriendsIcon = ({
   size,
   onPress,
-  active,
+  active = false,
 }: {
   size: number;
   onPress: () => void;
   active?: boolean;
-}) => {
-  return (
-    <PressableIcon size={size} onPress={onPress}>
-      <ImageRN
-        source={
-          active
-            ? require('../assets/ui-icons/friends-filled.png')
-            : require('../assets/ui-icons/friends-outline.png')
-        }
-        resizeMode="contain"
-        style={(() => {
-          const s = ImageRN.resolveAssetSource(require('../assets/ui-icons/friends-filled.png'));
-          return { height: size, aspectRatio: s.width / s.height };
-        })()}
-      />
-      {/* {active && <ActiveCircle size={20} top={-1.5} left={7.8} />} */}
-    </PressableIcon>
-  );
-};
+}) => <LucideIconWrapper Icon={Users} size={size} active={active} onPress={onPress} />;
 
 export const PostsIcon = ({
   size,
   onPress,
-  active,
+  active = false,
 }: {
   size: number;
   onPress: () => void;
   active?: boolean;
-}) => {
-  return (
-    <PressableIcon size={size} onPress={onPress}>
-      <ImageRN
-        source={
-          active
-            ? require('../assets/ui-icons/posts-filled.png')
-            : require('../assets/ui-icons/posts-outline.png')
-        }
-        resizeMode="contain"
-        style={(() => {
-          const s = ImageRN.resolveAssetSource(require('../assets/ui-icons/posts-filled.png'));
-          return { height: size, aspectRatio: s.width / s.height };
-        })()}
-      />
-      {/* {active && <ActiveCircle size={20} top={-1.5} left={7.8} />} */}
-    </PressableIcon>
-  );
-};
+}) => <LucideIconWrapper Icon={LayoutGrid} size={size} active={active} onPress={onPress} />;
 
 export const CircleIconNav = ({
   size,
@@ -234,40 +142,7 @@ export const CircleIconNav = ({
   size: number;
   active: boolean;
   onPress: () => void;
-}) => {
-  return (
-    <PressableIcon onPress={onPress} size={size}>
-      <View style={{ width: size, height: size, alignItems: 'center', justifyContent: 'center' }}>
-        {active ? (
-          <>
-            <ImageRN
-              source={require('../assets/textures/snow.png')}
-              resizeMode="cover"
-              style={{
-                height: size,
-                width: size,
-                borderRadius: size / 2,
-                backgroundColor: 'white',
-              }}
-            />
-            {/* <ActiveCircle size={size} top={0} left={0} /> */}
-          </>
-        ) : (
-          <ImageRN
-            source={require('../assets/ui-icons/circle-outline.png')}
-            resizeMode="contain"
-            style={(() => {
-              const s = ImageRN.resolveAssetSource(
-                require('../assets/ui-icons/circle-outline.png')
-              );
-              return { height: size, aspectRatio: s.width / s.height };
-            })()}
-          />
-        )}
-      </View>
-    </PressableIcon>
-  );
-};
+}) => <LucideIconWrapper Icon={CircleIcon} size={size} active={active} onPress={onPress} />;
 
 // Text Logo
 export const CircleLogo = ({ size, width, height }: IconProps) => {
