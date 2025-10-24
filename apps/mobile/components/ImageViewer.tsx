@@ -27,6 +27,7 @@ interface ImageViewerProps {
   setHideProgressBar?: (hide: boolean) => void;
   setHideCounter?: (hide: boolean) => void;
   imageMeta: Record<string, string>;
+  hideBottomBar?: boolean;
 }
 
 export const ImageViewer: React.FC<ImageViewerProps> = ({
@@ -41,6 +42,7 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
   setHideProgressBar,
   setHideCounter,
   imageMeta,
+  hideBottomBar = false,
 }) => {
   const [hideBars, setHideBars] = React.useState(true);
   const [shouldRender, setShouldRender] = React.useState(false);
@@ -181,41 +183,45 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
         </View>
 
         {/* Bottom Bar - Always show controls */}
-        <Animated.View
-          className={`absolute bottom-0 left-0 right-0 flex-row items-center justify-between bg-black/40 p-4 pb-8`}
-          style={{
-            opacity: bottomBarFadeAnim,
-          }}
-          pointerEvents={hideBars ? 'none' : 'auto'}>
-          {/* User Info */}
-          <View className="flex-row items-center">
-            {users && users[imageIndex] ? (
-              <Image
-                source={{ uri: users[imageIndex].userAvatar }}
-                className="h-12 w-12 rounded-full border-2 border-white"
-              />
-            ) : (
-              <View className="h-12 w-12 rounded-full border-2 border-white bg-gray-500" />
-            )}
-            <View className="ml-3">
+        {!hideBottomBar && (
+          <Animated.View
+            className={`absolute bottom-0 left-0 right-0 flex-row items-center justify-between bg-black/40 p-4 pb-8`}
+            style={{
+              opacity: bottomBarFadeAnim,
+            }}
+            pointerEvents={hideBars ? 'none' : 'auto'}>
+            {/* User Info */}
+            <View className="flex-row items-center">
               {users && users[imageIndex] ? (
-                <Text className="font-madimi text-lg text-white">{users[imageIndex].userName}</Text>
+                <Image
+                  source={{ uri: users[imageIndex].userAvatar }}
+                  className="h-12 w-12 rounded-full border-2 border-white"
+                />
               ) : (
-                <Text className="font-madimi text-lg text-white">Image</Text>
+                <View className="h-12 w-12 rounded-full border-2 border-white bg-gray-500" />
               )}
+              <View className="ml-3">
+                {users && users[imageIndex] ? (
+                  <Text className="font-madimi text-lg text-white">
+                    {users[imageIndex].userName}
+                  </Text>
+                ) : (
+                  <Text className="font-madimi text-lg text-white">Image</Text>
+                )}
+              </View>
             </View>
-          </View>
 
-          {/* Actions */}
-          <View className="flex-row items-center">
-            <TouchableOpacity className="mr-5">
-              <HeartIcon size={34} />
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <ChatBubbleIcon size={25} onPress={() => {}} />
-            </TouchableOpacity>
-          </View>
-        </Animated.View>
+            {/* Actions */}
+            <View className="flex-row items-center">
+              <TouchableOpacity className="mr-5">
+                <HeartIcon size={34} />
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <ChatBubbleIcon size={25} onPress={() => {}} />
+              </TouchableOpacity>
+            </View>
+          </Animated.View>
+        )}
       </SafeAreaView>
     </Animated.View>
   );
