@@ -38,7 +38,7 @@ export const ProfilePage = ({ setHideNav }: { setHideNav: (hide: boolean) => voi
   const [selectedCircle, setSelectedCircle] = React.useState<(typeof user.circles)[0] | null>(null);
 
   return (
-    <View className="flex-1 bg-background">
+    <View className="flex-1">
       {activeTab === 'posts' ? (
         <FeedList
           ref={flatListRef}
@@ -58,11 +58,11 @@ export const ProfilePage = ({ setHideNav }: { setHideNav: (hide: boolean) => voi
           renderItem={({ item }) => <FriendRow {...item} className={''} />}
           contentContainerStyle={{ paddingTop: 155, paddingBottom: 70 }}
           showsVerticalScrollIndicator={false}
-          className="pt-2"
+          className="bg-background-secondary pt-2"
         />
       ) : activeTab === 'circles' ? (
         selectedCircle ? (
-          <View className="mt-2 flex-1">
+          <View className="mt-2 flex-1 bg-background-secondary">
             {/* Back button and circle name header */}
             <View className="absolute left-0 right-0 top-[155] z-10 border-b border-gray-200/10 bg-background-secondary px-4 py-3">
               <TouchableOpacity
@@ -100,7 +100,7 @@ export const ProfilePage = ({ setHideNav }: { setHideNav: (hide: boolean) => voi
             )}
             contentContainerStyle={{ paddingTop: 155, paddingBottom: 70 }}
             showsVerticalScrollIndicator={false}
-            className="mt-2"
+            className="mt-2 bg-background-secondary"
           />
         )
       ) : (
