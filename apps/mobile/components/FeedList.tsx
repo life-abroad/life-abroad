@@ -3,7 +3,7 @@ import { View, Animated, FlatList, ScrollView, Image, Dimensions } from 'react-n
 import { FeedPost } from '../components/Post';
 import { Text } from '../components/Text';
 import { User } from 'types/user';
-import { Post } from 'types/post';
+import { Post, Reaction } from 'types/post';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -14,7 +14,8 @@ interface FeedListProps {
     images: string[],
     index: number,
     user: User,
-    imageMeta: Record<string, string>
+    imageMeta: Record<string, string>,
+    reactions?: Reaction[]
   ) => void;
   paddingTop?: number;
   paddingBottom?: number;
@@ -154,10 +155,16 @@ export const FeedList = React.forwardRef<FlatList, FeedListProps>(
                     key={`${columnIndex}-${postIndex}`}
                     {...post}
                     onImagePress={(images, index) =>
-                      onImagePress(images, index, post.user, {
-                        location: post.location,
-                        timestamp: post.timestamp,
-                      })
+                      onImagePress(
+                        images,
+                        index,
+                        post.user,
+                        {
+                          location: post.location,
+                          timestamp: post.timestamp,
+                        },
+                        post.reactions
+                      )
                     }
                     numColumns={numColumns}
                     displayPosterInfo={displayPosterInfo}
@@ -179,10 +186,16 @@ export const FeedList = React.forwardRef<FlatList, FeedListProps>(
               <FeedPost
                 {...item}
                 onImagePress={(images, index) =>
-                  onImagePress(images, index, item.user, {
-                    location: item.location,
-                    timestamp: item.timestamp,
-                  })
+                  onImagePress(
+                    images,
+                    index,
+                    item.user,
+                    {
+                      location: item.location,
+                      timestamp: item.timestamp,
+                    },
+                    item.reactions
+                  )
                 }
                 numColumns={numColumns}
                 displayPosterInfo={displayPosterInfo}
