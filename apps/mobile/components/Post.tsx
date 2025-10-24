@@ -115,9 +115,9 @@ export const FeedPost: React.FC<FeedPostProps> = ({
       </View>
 
       {/* Footer */}
-      <View className={`${numColumns > 1 ? 'gap-1' : 'gap-3'} flex-col items-center pb-4 pt-1`}>
+      <View className={`${numColumns > 1 ? 'gap-1' : 'gap-2'} flex-col items-center pb-4 pt-1`}>
         {/* Reaction controls + Reactions */}
-        <View className="h-10 flex-row items-start justify-between self-stretch py-2">
+        <View className="mt-1 h-12 flex-row items-start justify-between self-stretch">
           {/* Reaction controls */}
           {displayReactionControls && (
             <View className="w-46 flex-row items-center gap-3 rounded-lg px-2 py-0.5">
@@ -132,7 +132,7 @@ export const FeedPost: React.FC<FeedPostProps> = ({
             showsHorizontalScrollIndicator={false}
             scrollEventThrottle={16}
             fadingEdgeLength={15}
-            className="flex-1"
+            className="flex-1 pl-3"
             contentContainerStyle={{
               flexDirection: 'row',
               gap: numColumns > 1 ? 0 : 8,
@@ -144,7 +144,7 @@ export const FeedPost: React.FC<FeedPostProps> = ({
               <View key={index} className="relative size-10">
                 <Image
                   source={{ uri: reaction.userAvatar }}
-                  className={`${numColumns > 1 ? 'size-7 border' : 'size-10 border-2'} absolute -top-1 left-0 rounded-full border-white`}
+                  className={`${numColumns > 1 ? 'size-7 border' : 'size-10 border-2'} absolute left-0 rounded-full border-white`}
                 />
                 <Text
                   className={`${numColumns > 1 ? 'left-3 top-2 text-sm' : 'text-md left-5 top-3'} absolute z-10 items-center justify-center`}>
