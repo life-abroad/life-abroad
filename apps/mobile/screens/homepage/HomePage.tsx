@@ -36,6 +36,12 @@ export const HomePage = ({ setHideNav }: { setHideNav: (hide: boolean) => void }
   const allStoryImages = stories.flatMap((s) => s.images ?? []);
   const allStoryUsers = stories.flatMap((s) => (s.images ?? []).map(() => s.user));
   const allStoryReactions = stories.flatMap((s) => (s.images ?? []).map(() => s.reactions ?? []));
+  const allStoryMeta = stories.flatMap((s) =>
+    (s.images ?? []).map(() => ({
+      location: s.location,
+      timestamp: s.timestamp,
+    }))
+  );
 
   const handleStoryPress = useCallback(
     (index: number) => {
@@ -50,14 +56,14 @@ export const HomePage = ({ setHideNav }: { setHideNav: (hide: boolean) => void }
         allStoryUsers,
         initialIndex,
         {
-          hideTopBar: true,
+          hideTopBar: false,
           hideProgressBar: false,
         },
-        undefined,
+        allStoryMeta,
         allStoryReactions
       );
     },
-    [allStoryImages, allStoryUsers, allStoryReactions, openImageViewer]
+    [allStoryImages, allStoryUsers, allStoryMeta, allStoryReactions, openImageViewer]
   );
 
   return (

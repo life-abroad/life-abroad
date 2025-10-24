@@ -7,12 +7,17 @@ export interface ImageViewerConfig {
   hideProgressBar?: boolean;
 }
 
+export interface ImageMeta {
+  location: string;
+  timestamp: string;
+}
+
 export const useImageViewer = () => {
   // Image viewer meta
   const [imageViewerVisible, setImageViewerVisible] = useState(false);
   const [hideProgressBar, setHideProgressBar] = useState(false);
   const [hideTopBar, sethideTopBar] = useState(false);
-  const [imageMeta, setImageMeta] = useState<Record<string, string>>({});
+  const [imageMeta, setImageMeta] = useState<ImageMeta[]>([]);
 
   // Image view data
   const [users, setUsers] = useState<User[]>([]);
@@ -26,7 +31,7 @@ export const useImageViewer = () => {
       users: User[],
       initialIndex: number = 0,
       config?: ImageViewerConfig,
-      imageMeta?: Record<string, string>,
+      imageMeta?: ImageMeta[],
       reactions?: Reaction[][]
     ) => {
       setImages(images);
@@ -35,7 +40,7 @@ export const useImageViewer = () => {
       setImageViewerVisible(true);
       sethideTopBar(config?.hideTopBar ?? false);
       setHideProgressBar(config?.hideProgressBar ?? false);
-      setImageMeta(imageMeta ?? {});
+      setImageMeta(imageMeta ?? []);
       setReactions(reactions ?? []);
     },
     []
@@ -50,13 +55,15 @@ export const useImageViewer = () => {
       images: string[],
       initialIndex = 0,
       user: User,
-      imageMeta: Record<string, string>,
+      imageMeta: ImageMeta,
       postReactions?: Reaction[]
     ) => {
       // Create a users array where the same user is repeated for each image
       const usersArray = images.map(() => user);
       // Create reactions array - same reactions for each image in the post
       const reactionsArray = images.map(() => postReactions ?? []);
+      // Create imageMeta array - same meta for each image in the post
+      const imageMetaArray = images.map(() => imageMeta);
       openImageViewer(
         images,
         usersArray,
@@ -65,7 +72,7 @@ export const useImageViewer = () => {
           hideTopBar: false,
           hideProgressBar: true,
         },
-        imageMeta,
+        imageMetaArray,
         reactionsArray
       );
     },

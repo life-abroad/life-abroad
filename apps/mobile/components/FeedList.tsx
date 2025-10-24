@@ -4,6 +4,7 @@ import { FeedPost } from '../components/Post';
 import { Text } from '../components/Text';
 import { User } from 'types/user';
 import { Post, Reaction } from 'types/post';
+import { ImageMeta } from '../hooks/useImageViewer';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -14,7 +15,7 @@ interface FeedListProps {
     images: string[],
     index: number,
     user: User,
-    imageMeta: Record<string, string>,
+    imageMeta: ImageMeta,
     reactions?: Reaction[]
   ) => void;
   paddingTop?: number;
