@@ -37,6 +37,14 @@ export const ProfilePage = ({ setHideNav }: { setHideNav: (hide: boolean) => voi
   const [activeTab, setActiveTab] = React.useState<'posts' | 'friends' | 'circles'>('posts');
   const [selectedCircle, setSelectedCircle] = React.useState<(typeof user.circles)[0] | null>(null);
 
+  // Reset scroll position when changing tabs
+  useEffect(() => {
+    scrollY.setValue(0);
+    if (flatListRef.current) {
+      flatListRef.current.scrollToOffset?.({ offset: 0, animated: false });
+    }
+  }, [activeTab, selectedCircle]);
+
   return (
     <View className="flex-1">
       {activeTab === 'posts' ? (
@@ -46,7 +54,7 @@ export const ProfilePage = ({ setHideNav }: { setHideNav: (hide: boolean) => voi
           scrollY={scrollY}
           onImagePress={handlePostImagePress}
           numColumns={2}
-          paddingTop={159}
+          paddingTop={160}
           displayPosterInfo={false}
           displayReactionControls={false}
         />
