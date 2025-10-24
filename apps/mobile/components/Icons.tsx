@@ -40,11 +40,15 @@ const ActiveCircle = ({ size, top, left }: { size: number; top: number; left: nu
   );
 };
 
-export const HeartIcon = ({ size }: { size: number }) => {
+export const HeartIcon = ({ size, active }: { size: number; active: boolean }) => {
   return (
     <View className="items-center justify-center">
       <ImageRN
-        source={require('../assets/ui-icons/heart-filled.png')}
+        source={
+          active
+            ? require('../assets/ui-icons/heart-filled.png')
+            : require('../assets/ui-icons/heart-outline.png')
+        }
         resizeMode="contain"
         style={(() => {
           const s = ImageRN.resolveAssetSource(require('../assets/ui-icons/heart-filled.png'));

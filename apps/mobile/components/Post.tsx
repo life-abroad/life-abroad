@@ -116,9 +116,9 @@ export const FeedPost: React.FC<FeedPostProps> = ({
         <View className="h-10 flex-row items-start justify-between self-stretch py-2">
           {/* Reaction controls */}
           {displayReactionControls && (
-            <View className="w-46 flex-row items-center gap-2.5 rounded-lg px-2 py-0.5">
-              <HeartIcon size={30} />
-              <ChatBubbleIcon size={23} onPress={() => {}} />
+            <View className="w-46 flex-row items-center gap-3 rounded-lg px-2 py-0.5">
+              <HeartIcon size={30} active={false} />
+              <ChatBubbleIcon size={27} onPress={() => {}} />
               <ShareIcon size={25} />
             </View>
           )}
@@ -129,7 +129,7 @@ export const FeedPost: React.FC<FeedPostProps> = ({
               <View key={index} className="relative h-10 w-10">
                 <Image
                   source={{ uri: reaction.userAvatar }}
-                  className={`${numColumns > 1 ? 'size-7' : 'size-10'} absolute -top-1 left-0 rounded-full border border-white`}
+                  className={`${numColumns > 1 ? 'size-7' : 'size-10'} absolute -top-1 left-0 rounded-full border-2 border-white`}
                 />
                 <Text
                   className={`${numColumns > 1 ? 'left-3 top-2 text-sm' : 'text-md left-5 top-3'} absolute z-10 items-center justify-center`}>
