@@ -20,7 +20,10 @@ function ChatRow({ user, unreadCount, lastMessage, timestamp, onPress }: ChatRow
       <View className="ml-3 flex-1">
         <View className="mb-1 flex-row items-center justify-between">
           <Text className="text-base font-semibold text-foreground">{user.userName}</Text>
-          <Text className="text-xs text-foreground-muted">{timestamp}</Text>
+          <Text
+            className={`text-xs ${unreadCount > 0 ? 'font-bold text-primary' : 'text-foreground-muted'}`}>
+            {timestamp}
+          </Text>
         </View>
         <View className="flex-row items-center justify-between">
           <Text
