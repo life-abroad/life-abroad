@@ -27,7 +27,10 @@ export const FeedPost: React.FC<FeedPostProps> = ({
   displayReactionControls = true,
 }) => {
   return (
-    <View className="mb-1 bg-background-secondary">
+    <TouchableOpacity
+      className="mb-1 rounded-md bg-background-secondary"
+      onPress={() => onImagePress(images, 0)}
+      activeOpacity={0.9}>
       {/* Header */}
       <View className="flex-row items-center justify-between px-1 py-2">
         {displayPosterInfo ? (
@@ -109,7 +112,9 @@ export const FeedPost: React.FC<FeedPostProps> = ({
 
       {/* Footer */}
       <View className="flex-col items-center gap-3 pb-4 pt-1">
+        {/* Reaction controls + Reactions */}
         <View className="h-10 flex-row items-start justify-between self-stretch py-2">
+          {/* Reaction controls */}
           {displayReactionControls && (
             <View className="w-46 flex-row items-center gap-2.5 rounded-lg px-2 py-0.5">
               <HeartIcon size={30} />
@@ -117,25 +122,28 @@ export const FeedPost: React.FC<FeedPostProps> = ({
               <ShareIcon size={25} />
             </View>
           )}
+          {/* Reactions */}
           <View
-            className={`h-10 w-52 flex-row gap-2 ${displayReactionControls ? 'justify-end pr-3' : 'justify-start pl-1'} `}>
+            className={`h-10 w-52 flex-row ${numColumns > 1 ? '' : 'gap-2'} ${displayReactionControls ? 'justify-end pr-3' : 'justify-start pl-1'} `}>
             {reactions.map((reaction, index) => (
               <View key={index} className="relative h-10 w-10">
                 <Image
                   source={{ uri: reaction.userAvatar }}
-                  className="absolute -top-1 left-0 h-10 w-10 rounded-full border border-white"
+                  className={`${numColumns > 1 ? 'size-7' : 'size-10'} absolute -top-1 left-0 rounded-full border border-white`}
                 />
-                <View className="absolute left-5 top-3 z-10 h-7 w-7 items-center justify-center rounded-full">
-                  <Text className="text-md">{reaction.emoji}</Text>
-                </View>
+                <Text
+                  className={`${numColumns > 1 ? 'left-3 top-2 text-sm' : 'text-md left-5 top-3'} absolute z-10 items-center justify-center`}>
+                  {reaction.emoji}
+                </Text>
               </View>
             ))}
           </View>
         </View>
+        {/* Comments */}
         <View className="w-full px-2">
-          <Text className="text-md font-normal ">{comment}</Text>
+          <Text className={`${numColumns > 1 ? 'text-xs' : 'text-md font-normal'}`}>{comment}</Text>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };

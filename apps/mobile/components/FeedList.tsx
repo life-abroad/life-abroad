@@ -1,11 +1,14 @@
-import React, { useMemo } from 'react';
-import { View, Animated, FlatList } from 'react-native';
+import React, { useMemo, useState, useEffect } from 'react';
+import { View, Animated, FlatList, ScrollView, Image, Dimensions } from 'react-native';
 import { FeedPost } from '../components/Post';
 import { Text } from '../components/Text';
 import { User } from 'types/user';
+import { Post } from 'types/post';
+
+const screenWidth = Dimensions.get('window').width;
 
 interface FeedListProps {
-  posts: any[];
+  posts: Post[];
   scrollY: Animated.Value;
   onImagePress: (
     images: string[],
@@ -34,6 +37,98 @@ export const FeedList = React.forwardRef<FlatList, FeedListProps>(
     },
     ref
   ) => {
+    const [imageSizes, setImageSizes] = useState<Record<string, { width: number; height: number }>>(
+      {}
+    );
+
+    // Preload image sizes for masonry layout
+    useEffect(() => {
+      if (numColumns > 1) {
+        const loadImageSizes = async () => {
+          const sizes: Record<string, { width: number; height: number }> = {};
+
+          for (const post of posts) {
+            for (const image of post.images) {
+              if (!sizes[image]) {
+                try {
+                  await new Promise<void>((resolve) => {
+                    Image.getSize(
+                      image,
+                      (width, height) => {
+                        sizes[image] = { width, height };
+                        resolve();
+                      },
+                      () => {
+                        sizes[image] = { width: 1, height: 1 };
+                        resolve();
+                      }
+                    );
+                  });
+                } catch (err) {
+                  sizes[image] = { width: 1, height: 1 };
+                }
+              }
+            }
+          }
+
+          setImageSizes(sizes);
+        };
+
+        loadImageSizes();
+      }
+    }, [posts, numColumns]);
+
+    // Calculate post height based on images
+    const calculatePostHeight = (post: Post): number => {
+      let totalHeight = 0;
+
+      // Header height
+      totalHeight += displayPosterInfo ? 60 : 50;
+
+      // Images height
+      const columnWidth = screenWidth / numColumns;
+      post.images.forEach((image) => {
+        const size = imageSizes[image];
+        if (size) {
+          const imageHeight = (size.height / size.width) * columnWidth;
+          totalHeight += imageHeight + 2; // 2px gap between images
+        } else {
+          totalHeight += 200; // fallback height
+        }
+      });
+
+      // Footer height (approximate)
+      totalHeight += displayReactionControls ? 100 : 80;
+
+      // Margin
+      totalHeight += 4;
+
+      return totalHeight;
+    };
+
+    // Distribute posts into columns for masonry layout
+    const masonryColumns = useMemo(() => {
+      if (numColumns <= 1 || Object.keys(imageSizes).length === 0) {
+        return null;
+      }
+
+      const columns: Post[][] = Array.from({ length: numColumns }, () => []);
+      const columnHeights = Array(numColumns).fill(0);
+
+      posts.forEach((post) => {
+        // Find the shortest column
+        const shortestColumnIndex = columnHeights.indexOf(Math.min(...columnHeights));
+
+        // Add post to the shortest column
+        columns[shortestColumnIndex].push(post);
+
+        // Update column height
+        columnHeights[shortestColumnIndex] += calculatePostHeight(post);
+      });
+
+      return columns;
+    }, [posts, imageSizes, numColumns, displayPosterInfo, displayReactionControls]);
+
     const feedList = useMemo(() => {
       if (!posts || posts.length === 0) {
         return (
@@ -43,13 +138,43 @@ export const FeedList = React.forwardRef<FlatList, FeedListProps>(
         );
       }
 
-      return (
+      return numColumns > 1 && masonryColumns ? (
+        <Animated.ScrollView
+          onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
+            useNativeDriver: false,
+          })}
+          scrollEventThrottle={16}
+          contentContainerStyle={{ paddingTop, paddingBottom }}
+          showsVerticalScrollIndicator={false}>
+          <View className="flex-row" style={{ gap: 4 }}>
+            {masonryColumns.map((column, columnIndex) => (
+              <View key={columnIndex} className="flex-1" style={{ gap: 1 }}>
+                {column.map((post, postIndex) => (
+                  <FeedPost
+                    key={`${columnIndex}-${postIndex}`}
+                    {...post}
+                    onImagePress={(images, index) =>
+                      onImagePress(images, index, post.user, {
+                        location: post.location,
+                        timestamp: post.timestamp,
+                      })
+                    }
+                    numColumns={numColumns}
+                    displayPosterInfo={displayPosterInfo}
+                    displayReactionControls={displayReactionControls}
+                  />
+                ))}
+              </View>
+            ))}
+          </View>
+        </Animated.ScrollView>
+      ) : (
         <FlatList
           ref={ref}
           data={posts}
           keyExtractor={(_, index) => index.toString()}
           numColumns={numColumns}
-          renderItem={({ item }) => (
+          renderItem={({ item }: { item: Post }) => (
             <View className={numColumns > 1 ? 'm-[0.3%] w-[49.7%]' : ''}>
               <FeedPost
                 {...item}
@@ -77,7 +202,18 @@ export const FeedList = React.forwardRef<FlatList, FeedListProps>(
           }}
         />
       );
-    }, [posts, onImagePress, scrollY, paddingTop, paddingBottom, ref]);
+    }, [
+      posts,
+      onImagePress,
+      scrollY,
+      paddingTop,
+      paddingBottom,
+      ref,
+      numColumns,
+      displayPosterInfo,
+      displayReactionControls,
+      masonryColumns,
+    ]);
 
     return <>{feedList}</>;
   }
