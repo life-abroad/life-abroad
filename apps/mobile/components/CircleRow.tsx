@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, Image, ImageBackground } from 'react-native';
 import { Text } from './Text';
 
 interface Circle {
@@ -20,14 +20,44 @@ interface CircleRowProps {
 }
 
 export default function CircleRow({ circle, onPress, className }: CircleRowProps) {
+  // Get up to 4 users to display in the grid
+  const displayUsers = circle.users.slice(0, 4);
+
   return (
     <TouchableOpacity
       onPress={onPress}
       className={`flex-row items-center justify-between bg-background-secondary px-4 py-4 ${className}`}
       activeOpacity={0.8}>
-      {/* Circle indicator */}
+      {/* Circle indicator with member grid */}
       <View className="flex-row items-center gap-3">
-        <View className="h-12 w-12 rounded-full" style={{ backgroundColor: circle.color }} />
+        <View
+          className="h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-white"
+          style={{ borderWidth: 2, borderColor: circle.color }}>
+          <ImageBackground
+            source={require('../assets/textures/snow.png')}
+            resizeMode="cover"
+            className={`absolute inset-0 opacity-100`}
+          />
+          {displayUsers.length > 0 && (
+            <View className="h-full w-full flex-row flex-wrap">
+              {displayUsers.map((user, index) => (
+                <View
+                  key={index}
+                  className="items-center justify-center"
+                  style={{
+                    width: displayUsers.length === 1 ? '100%' : '50%',
+                    height: displayUsers.length === 1 || displayUsers.length === 2 ? '100%' : '50%',
+                  }}>
+                  <Image
+                    source={{ uri: user.userAvatar }}
+                    className="h-full w-full"
+                    style={{ resizeMode: 'cover' }}
+                  />
+                </View>
+              ))}
+            </View>
+          )}
+        </View>
 
         {/* Content */}
         <View className="flex-1">
