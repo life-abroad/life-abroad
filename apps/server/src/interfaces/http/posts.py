@@ -94,21 +94,35 @@ async def create_post(
     """Create a new post for the authenticated user"""
     if not current_user.id:
         raise HTTPException(status_code=500, detail="User ID not found")
+    
+    # Filter audience_ids to only include those owned by the current user
+    filtered_audience_ids = None
+    if post.audience_ids:
+        user_audiences = await post_service.get_audiences_by_user(current_user.id, session)
+        user_audience_ids = {audience.id for audience in user_audiences if audience.id is not None}
+        filtered_audience_ids = [audience_id for audience_id in post.audience_ids if audience_id in user_audience_ids]
+        
+        # If user provided audience_ids but none are valid (owned by user), reject the request
+        if not filtered_audience_ids:
+            raise HTTPException(
+                status_code=400, 
+                detail="Invalid audience IDs provided"
+            )
+    
     try:
         created_post = await post_service.create_post(
             post.description, 
             current_user.id,
             session, 
-            post.audience_ids
+            filtered_audience_ids
         )
         
         # Send notifications through domain service
-        if post.audience_ids:
-            await notification_service.notify_audiences_of_new_post(
-                created_post.id or 0, 
-                post.audience_ids, 
-                session
-            )
+        await notification_service.notify_audiences_of_new_post(
+            created_post.id or 0, 
+            filtered_audience_ids, 
+            session
+        )
         return created_post
     except UserNotFoundError as e:
         raise HTTPException(status_code=404, detail=str(e))
@@ -126,13 +140,27 @@ async def update_post(
     if not current_user.id:
         raise HTTPException(status_code=500, detail="User ID not found")
     
+    # Filter audience_ids to only include those owned by the current user
+    filtered_audience_ids = None
+    if post.audience_ids:
+        user_audiences = await post_service.get_audiences_by_user(current_user.id, session)
+        user_audience_ids = {audience.id for audience in user_audiences if audience.id is not None}
+        filtered_audience_ids = [audience_id for audience_id in post.audience_ids if audience_id in user_audience_ids]
+        
+        # If user provided audience_ids but none are valid (owned by user), reject the request
+        if not filtered_audience_ids:
+            raise HTTPException(
+                status_code=400, 
+                detail="Invalid audience IDs provided"
+            )
+    
     try:
         # Check if current_user owns this post
         existing_post, _, _, _ = await post_service.get_post_with_user_and_audiences(post_id, session)
         if existing_post.user_id != current_user.id:
             raise HTTPException(status_code=403, detail="Not authorized to update this post")
         
-        return await post_service.update_post(post_id, session, post.description, post.audience_ids)
+        return await post_service.update_post(post_id, session, post.description, filtered_audience_ids)
     except PostNotFoundError as e:
         raise HTTPException(status_code=404, detail=str(e))
     except AudienceNotFoundError as e:

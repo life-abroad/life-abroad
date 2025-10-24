@@ -85,6 +85,10 @@ class PostService:
         
         return await self.repository.get_posts_by_user(user_id, session)
 
+    async def get_audiences_by_user(self, user_id: int, session: AsyncSession) -> Sequence[Audience]:
+        """Get all audiences owned by a specific user"""
+        return await self.audience_repository.get_audiences_by_user(user_id, session)
+
     async def get_post_with_user_and_audiences(self, post_id: int, session: AsyncSession) -> tuple[Post, User, Sequence[Audience], Sequence[MediaItem]]:
         post = await self.repository.get_post_by_id(post_id, session)
         if not post:
