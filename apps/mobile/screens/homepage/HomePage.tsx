@@ -18,6 +18,7 @@ export const HomePage = ({ setHideNav }: { setHideNav: (hide: boolean) => void }
     users,
     images,
     imageIndex,
+    location,
     setImageIndex,
     setHideProgressBar,
     setHideCounter,
@@ -101,6 +102,7 @@ export const HomePage = ({ setHideNav }: { setHideNav: (hide: boolean) => void }
         hideCounter={hideCounter}
         setHideProgressBar={setHideProgressBar}
         setHideCounter={setHideCounter}
+        location={location}
       />
     </View>
   );
