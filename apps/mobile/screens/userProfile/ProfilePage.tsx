@@ -157,6 +157,7 @@ export const ProfilePage = ({ setHideNav }: { setHideNav: (hide: boolean) => voi
         setHideProgressBar={setHideProgressBar}
         setHideCounter={setHideCounter}
         imageMeta={imageMeta}
+        hideBottomBar={true}
       />
     </View>
   );
