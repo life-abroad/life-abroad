@@ -48,6 +48,13 @@ const user: UserProfile = {
             'https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
           profileUrl: '/users/lwong',
         },
+        {
+          userName: 'Maya Johnson',
+          userHandle: 'mjohnson',
+          userAvatar:
+            'https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTA5L3Jhd3BpeGVsX29mZmljZV8zNF9waG90b19vZl9hZnJpY2FuLWFtZXJpY2FuX3dvbWFuX2NvbXBhbnlfd29ya19kNmM4MmJhNS1iYjA2LTRkN2EtYjJlMy1hNDZhNDYyMjA0ZmZfMS5qcGc.jpg',
+          profileUrl: '/users/mjohnson',
+        },
       ],
     },
     {

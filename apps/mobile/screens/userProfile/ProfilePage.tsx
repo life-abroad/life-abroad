@@ -37,6 +37,11 @@ export const ProfilePage = ({ setHideNav }: { setHideNav: (hide: boolean) => voi
 
   return (
     <View className="flex-1 bg-background-secondary">
+      {/* <ImageBackground
+        source={require('../../assets/textures/snow.png')}
+        resizeMode="cover"
+        className={`absolute inset-0 opacity-100`}
+      /> */}
       {activeTab === 'posts' ? (
         <FeedList
           ref={flatListRef}
