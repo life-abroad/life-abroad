@@ -28,7 +28,7 @@ export const FeedPost: React.FC<FeedPostProps> = ({
   displayReactionControls = true,
 }) => {
   return (
-    <View className="mb-1 rounded-md bg-background-secondary">
+    <View className="mb-1 rounded-sm bg-background-secondary">
       {/* Header */}
       <View className="flex-row items-center justify-between px-1 py-2">
         {displayPosterInfo ? (
@@ -54,13 +54,13 @@ export const FeedPost: React.FC<FeedPostProps> = ({
             </TouchableOpacity>
           </>
         ) : (
-          <View className="w-full flex-col items-center justify-between px-1">
+          <View className="w-full flex-col items-start justify-between px-3">
             <TouchableOpacity
               onPress={() => onImagePress(images, 0)}
               activeOpacity={0.7}
-              className="-ml-1 flex-row items-center gap-1">
+              className="-ml-1 flex-row items-center gap-2">
               <LocationIcon size={12} />
-              <Text className="text-md font-medium">{location}</Text>
+              <Text className="text-sm font-medium">{location}</Text>
             </TouchableOpacity>
             <Text className="text-right text-xs font-light">{timestamp}</Text>
           </View>
@@ -115,9 +115,9 @@ export const FeedPost: React.FC<FeedPostProps> = ({
       </View>
 
       {/* Footer */}
-      <View className={`${numColumns > 1 ? 'gap-1' : 'gap-2'} flex-col items-center pb-4 pt-1`}>
+      <View className={`${numColumns > 1 ? 'gap-0' : 'gap-2'} flex-col items-center pb-4 pt-1`}>
         {/* Reaction controls + Reactions */}
-        <View className="mt-1 h-12 flex-row items-start justify-between self-stretch">
+        <View className="mt-1 flex-row items-start justify-between self-stretch">
           {/* Reaction controls */}
           {displayReactionControls && (
             <View className="w-46 flex-row items-center gap-3 rounded-lg px-2 py-0.5">
@@ -132,7 +132,7 @@ export const FeedPost: React.FC<FeedPostProps> = ({
             showsHorizontalScrollIndicator={false}
             scrollEventThrottle={16}
             fadingEdgeLength={15}
-            className="flex-1 pl-3"
+            className={`${displayReactionControls ? 'pl-3' : 'pl-0.5'} flex-1`}
             contentContainerStyle={{
               flexDirection: 'row',
               gap: numColumns > 1 ? 0 : 8,
@@ -155,7 +155,7 @@ export const FeedPost: React.FC<FeedPostProps> = ({
           </ScrollView>
         </View>
         {/* Comments */}
-        <View className="w-full px-2">
+        <View className={`${numColumns > 1 ? 'px-2' : 'px-2'} w-full`}>
           <Text className={`${numColumns > 1 ? 'text-xs' : 'text-sm'}`}>
             <Text className="font-semibold">{user.userName}: </Text>
             {comment}
