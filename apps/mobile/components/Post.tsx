@@ -141,7 +141,10 @@ export const FeedPost: React.FC<FeedPostProps> = ({
         </View>
         {/* Comments */}
         <View className="w-full px-2">
-          <Text className={`${numColumns > 1 ? 'text-xs' : 'text-md font-normal'}`}>{comment}</Text>
+          <Text className={`${numColumns > 1 ? 'text-xs' : 'text-sm'}`}>
+            <Text className="font-semibold">{user.userName}: </Text>
+            {comment}
+          </Text>
         </View>
       </View>
     </TouchableOpacity>

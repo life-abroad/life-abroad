@@ -18,7 +18,7 @@ const posts: Post[] = [
       'https://i.pinimg.com/564x/b1/3e/12/b13e1235906241a0f61923da76ade35d.jpg',
     ],
     // caption: 'View from Tokyo Tower',
-    comment: 'Thomas Brown: Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     reactions: [
       {
         userAvatar:
@@ -43,7 +43,7 @@ const posts: Post[] = [
       'https://dianathemama.com/wp-content/uploads/2018/02/fuji-proposal.jpg',
     ],
     // caption: 'View from Tokyo Tower',
-    comment: 'Nathan Baker: Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     reactions: [
       {
         userAvatar:
@@ -70,7 +70,7 @@ const posts: Post[] = [
     images: [
       'https://www.holysmithereens.com/wp-content/uploads/2019/08/IMG_20190823_183442_979-1024x822.jpg',
     ],
-    comment: 'Karen Lefoo: Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     reactions: [
       {
         userAvatar:
@@ -103,7 +103,7 @@ const stories: Post[] = [
     location: 'Tokyo, Japan',
     timestamp: 'Yesterday, 10:01am',
     images: ['https://miro.medium.com/v2/resize:fit:960/1*UsE3NwWmZRZKY0qx_1RJeA.jpeg'],
-    comment: 'Karen Lefoo: Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     reactions: [
       {
         userAvatar:
@@ -133,7 +133,7 @@ const stories: Post[] = [
     location: 'Tokyo, Japan',
     timestamp: 'Yesterday, 10:01am',
     images: ['https://routinelynomadic.com/wp-content/uploads/2024/09/IMG_9755.jpg'],
-    comment: 'Karen Lefoo: Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     reactions: [
       {
         userAvatar:
@@ -163,7 +163,7 @@ const stories: Post[] = [
     location: 'Tokyo, Japan',
     timestamp: 'Yesterday, 10:01am',
     images: ['https://c.stocksy.com/a/6CaM00/z9/5382350.jpg'],
-    comment: 'Karen Lefoo: Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     reactions: [
       {
         userAvatar:
@@ -193,7 +193,7 @@ const stories: Post[] = [
     location: 'Tokyo, Japan',
     timestamp: 'Yesterday, 10:01am',
     images: ['https://c.stocksy.com/a/4O7M00/z9/5271616.jpg'],
-    comment: 'Karen Lefoo: Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     reactions: [
       {
         userAvatar:
