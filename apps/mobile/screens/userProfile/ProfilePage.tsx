@@ -50,6 +50,8 @@ export const ProfilePage = ({ setHideNav }: { setHideNav: (hide: boolean) => voi
           onImagePress={handlePostImagePress}
           numColumns={2}
           paddingTop={155}
+          displayPosterInfo={false}
+          displayReactionControls={false}
         />
       ) : activeTab === 'friends' ? (
         <FlatList
