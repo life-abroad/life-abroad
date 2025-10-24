@@ -18,7 +18,7 @@ export const ChatPage = () => {
   };
 
   return (
-    <View className="flex-1 bg-background-secondary">
+    <View className="flex-1 bg-background">
       {chats && chats.length > 0 ? (
         <FlatList
           data={chats}

@@ -111,7 +111,7 @@ export const FeedPost: React.FC<FeedPostProps> = ({
       </View>
 
       {/* Footer */}
-      <View className="flex-col items-center gap-3 pb-4 pt-1">
+      <View className={`${numColumns > 1 ? 'gap-1' : 'gap-3'} flex-col items-center pb-4 pt-1`}>
         {/* Reaction controls + Reactions */}
         <View className="h-10 flex-row items-start justify-between self-stretch py-2">
           {/* Reaction controls */}
