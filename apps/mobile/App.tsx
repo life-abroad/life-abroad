@@ -2,8 +2,8 @@ import { HomePage } from 'screens/homepage/HomePage';
 import { ChatPage } from 'screens/chatList/ChatPage';
 import { StatusBar } from 'expo-status-bar';
 import './global.css';
-import { View } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { View, BackHandler, Alert } from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
 import { useFonts } from 'expo-font';
 import { MadimiOne_400Regular } from '@expo-google-fonts/madimi-one';
@@ -19,6 +19,8 @@ SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const [hideNav, setHideNav] = useState(false);
+  const navigationRef = useRef<any>(null);
+  const [currentRoute, setCurrentRoute] = useState('home');
 
   const [fontsLoaded] = useFonts({
     MadimiOne_400Regular,
@@ -30,6 +32,40 @@ export default function App() {
     }
   }, [fontsLoaded]);
 
+  // Handle Android back button
+  useEffect(() => {
+    const backAction = () => {
+      // If not on home tab, navigate to home
+      if (currentRoute !== 'home' || hideNav) {
+        navigationRef.current?.navigate('home');
+        return true; // Prevent default behavior (app exit)
+      }
+
+      // If on home tab, show confirmation dialog
+      Alert.alert(
+        'Exit App',
+        'Are you sure you want to exit?',
+        [
+          {
+            text: 'Cancel',
+            onPress: () => null,
+            style: 'cancel',
+          },
+          {
+            text: 'Exit',
+            onPress: () => BackHandler.exitApp(),
+          },
+        ],
+        { cancelable: true }
+      );
+      return true; // Prevent default behavior
+    };
+
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
+
+    return () => backHandler.remove();
+  }, [currentRoute, hideNav]);
+
   if (!fontsLoaded) {
     return null;
   }
@@ -37,6 +73,13 @@ export default function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1, backgroundColor: 'black' }}>
       <NavigationContainer
+        ref={navigationRef}
+        onStateChange={() => {
+          const route = navigationRef.current?.getCurrentRoute();
+          if (route) {
+            setCurrentRoute(route.name);
+          }
+        }}
         theme={{
           dark: true,
           colors: {
