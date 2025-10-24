@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { View, Animated, FlatList, Image, TouchableOpacity, ImageBackground } from 'react-native';
+import { View, Animated, FlatList, Image, TouchableOpacity } from 'react-native';
 import { posts } from '../homepage/mockData';
 import { ImageViewer } from 'components/ImageViewer';
 import Header from 'components/Header';
@@ -21,6 +21,7 @@ export const ProfilePage = ({ setHideNav }: { setHideNav: (hide: boolean) => voi
     users,
     images,
     imageIndex,
+    imageMeta,
     setImageIndex,
     setHideProgressBar,
     setHideCounter,
@@ -37,11 +38,6 @@ export const ProfilePage = ({ setHideNav }: { setHideNav: (hide: boolean) => voi
 
   return (
     <View className="flex-1 bg-background-secondary">
-      {/* <ImageBackground
-        source={require('../../assets/textures/snow.png')}
-        resizeMode="cover"
-        className={`absolute inset-0 opacity-100`}
-      /> */}
       {activeTab === 'posts' ? (
         <FeedList
           ref={flatListRef}
@@ -49,7 +45,7 @@ export const ProfilePage = ({ setHideNav }: { setHideNav: (hide: boolean) => voi
           scrollY={scrollY}
           onImagePress={handlePostImagePress}
           numColumns={2}
-          paddingTop={155}
+          paddingTop={160}
           displayPosterInfo={false}
           displayReactionControls={false}
         />
@@ -160,6 +156,7 @@ export const ProfilePage = ({ setHideNav }: { setHideNav: (hide: boolean) => voi
         hideCounter={hideCounter}
         setHideProgressBar={setHideProgressBar}
         setHideCounter={setHideCounter}
+        imageMeta={imageMeta}
       />
     </View>
   );
