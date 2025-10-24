@@ -46,7 +46,7 @@ export const ProfilePage = ({ setHideNav }: { setHideNav: (hide: boolean) => voi
           scrollY={scrollY}
           onImagePress={handlePostImagePress}
           numColumns={2}
-          paddingTop={160}
+          paddingTop={159}
           displayPosterInfo={false}
           displayReactionControls={false}
         />
@@ -110,7 +110,7 @@ export const ProfilePage = ({ setHideNav }: { setHideNav: (hide: boolean) => voi
       )}
 
       <Header scrollY={scrollY}>
-        <View className="my-3 flex-row justify-between px-4">
+        <View className="flex-row justify-between px-4 py-3">
           <View className="mt-3 flex-row items-center gap-3">
             <TouchableOpacity
               className="flex-col gap-2"
