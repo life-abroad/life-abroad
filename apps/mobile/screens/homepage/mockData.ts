@@ -175,6 +175,46 @@ const stories: Post[] = [
           'https://api.builder.io/api/v1/image/assets/TEMP/a96e7f494de538eb263c3d497afd80c0a995b298?width=92',
         emoji: '👏',
       },
+      {
+        userAvatar:
+          'https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+        emoji: '👍',
+      },
+      {
+        userAvatar:
+          'https://api.builder.io/api/v1/image/assets/TEMP/e32a4adcef70ff364c7d655c7db4f440f66c7279?width=92',
+        emoji: '❤️',
+      },
+      {
+        userAvatar:
+          'https://api.builder.io/api/v1/image/assets/TEMP/63d02802283446d3398286f440a78cb464c0c420?width=92',
+        emoji: '😂',
+      },
+      {
+        userAvatar:
+          'https://api.builder.io/api/v1/image/assets/TEMP/a96e7f494de538eb263c3d497afd80c0a995b298?width=92',
+        emoji: '👏',
+      },
+      {
+        userAvatar:
+          'https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+        emoji: '👍',
+      },
+      {
+        userAvatar:
+          'https://img.freepik.com/free-photo/business-man-by-skyscraper_1303-13655.jpg?semt=ais_hybrid&w=740&q=80',
+        emoji: '❤️',
+      },
+      {
+        userAvatar:
+          'https://img.freepik.com/free-photo/business-man-by-skyscraper_1303-13655.jpg?semt=ais_hybrid&w=740&q=80',
+        emoji: '😂',
+      },
+      {
+        userAvatar:
+          'https://img.freepik.com/free-photo/business-man-by-skyscraper_1303-13655.jpg?semt=ais_hybrid&w=740&q=80',
+        emoji: '👏',
+      },
     ],
     seen: false,
   },
