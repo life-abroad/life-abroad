@@ -156,7 +156,11 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
             {imageIndex + 1} / {images.length}
           </Text>
           <View className="max-w-32 items-start">
-            <Text className="text-md text-left font-medium">{imageMeta[imageIndex]?.location}</Text>
+            {imageMeta[imageIndex]?.location && (
+              <Text className="text-md text-left font-medium">
+                {imageMeta[imageIndex]?.location}
+              </Text>
+            )}
             <Text className="text-xs font-light">{imageMeta[imageIndex]?.timestamp}</Text>
           </View>
         </View>

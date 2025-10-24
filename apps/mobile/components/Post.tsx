@@ -1,10 +1,18 @@
 import React, { useState } from 'react';
 import { View, Image, TouchableOpacity } from 'react-native';
 import { Post } from 'types/post';
-import { ChatBubbleIcon, LocationIcon, HeartIcon, ShareIcon } from 'components/Icons';
+import {
+  ChatBubbleIcon,
+  LocationIcon,
+  HeartIcon,
+  ShareIcon,
+  CircleIconNav,
+} from 'components/Icons';
 import { Text } from 'components/Text';
 import { ImageViewer } from './ImageViewer';
 import { ScrollView } from 'react-native-gesture-handler';
+import { Ellipsis, EllipsisVertical, NotebookPen, Pencil, PencilIcon } from 'lucide-react-native';
+import { Ellipse } from 'react-native-svg';
 const screenWidth = require('react-native').Dimensions.get('window').width;
 
 interface FeedPostProps extends Post {
@@ -54,21 +62,32 @@ export const FeedPost: React.FC<FeedPostProps> = ({
             </TouchableOpacity>
           </>
         ) : (
-          <View className="w-full flex-col items-start justify-between px-3">
+          <View className="flex-row items-center pl-1">
+            <View className="flex-1 flex-row items-center">
+              {/* <LocationIcon size={10} /> */}
+              <TouchableOpacity
+                onPress={() => onImagePress(images, 0)}
+                activeOpacity={0.7}
+                className="ml-1 flex-1">
+                <View className="flex-col">
+                  <Text className="text-sm font-medium">{location}</Text>
+                  <Text className="text-xs font-light">{timestamp}</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
             <TouchableOpacity
-              onPress={() => onImagePress(images, 0)}
+              onPress={() => {}}
               activeOpacity={0.7}
-              className="-ml-1 flex-row items-center gap-2">
-              <LocationIcon size={12} />
-              <Text className="text-sm font-medium">{location}</Text>
+              accessibilityLabel="More options"
+              className="size-9 items-center justify-center rounded-full">
+              <EllipsisVertical size={25} color="white" />
             </TouchableOpacity>
-            <Text className="text-right text-xs font-light">{timestamp}</Text>
           </View>
         )}
       </View>
 
       {/* Images */}
-      <View className="flex-col gap-[2]">
+      <View className={`flex-col ${numColumns > 1 ? 'gap-[0]' : 'gap-[2]'}`}>
         {images.map((image, index) => (
           <TouchableOpacity
             key={index}
@@ -155,7 +174,7 @@ export const FeedPost: React.FC<FeedPostProps> = ({
           </ScrollView>
         </View>
         {/* Comments */}
-        <View className={`${numColumns > 1 ? 'px-2' : 'px-2'} w-full`}>
+        <View className={`${numColumns > 1 ? 'pl-3 pr-2' : 'px-2'} w-full`}>
           <Text className={`${numColumns > 1 ? 'text-xs' : 'text-sm'}`}>
             <Text className="font-semibold">{user.userName}: </Text>
             {comment}

@@ -21,7 +21,7 @@ function ChatRow({ user, unreadCount, lastMessage, timestamp, onPress }: ChatRow
         <View className="mb-1 flex-row items-center justify-between">
           <Text className="text-base font-semibold text-foreground">{user.userName}</Text>
           <Text
-            className={`text-xs ${unreadCount > 0 ? 'font-bold text-primary' : 'text-foreground-muted'}`}>
+            className={`text-xs ${unreadCount > 0 ? 'font-bold text-foreground' : 'text-foreground-muted'}`}>
             {timestamp}
           </Text>
         </View>
