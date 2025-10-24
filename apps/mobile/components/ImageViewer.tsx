@@ -144,7 +144,7 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
 
       {/* Top Bar */}
       {!hideCounter && images.length > 1 && !hideBars && (
-        <View className="absolute left-3 top-14 z-50 gap-2 rounded-full bg-black/50 px-3 py-1">
+        <View className="absolute left-3 top-14 z-50 gap-2 px-3 py-1">
           <Text className="text-white">
             {imageIndex + 1} / {images.length}
           </Text>
