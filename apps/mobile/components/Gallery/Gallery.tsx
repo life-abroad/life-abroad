@@ -9,13 +9,13 @@ const Gallery = ({
   currentIndex,
   onIndexChange,
   onVerticalPull,
-  setHideBottomBar,
+  setHideBars,
 }: {
   images: string[];
   currentIndex: number;
   onIndexChange: (index: number) => void;
   onVerticalPull: () => void;
-  setHideBottomBar?: (hide: boolean) => void;
+  setHideBars?: (hide: boolean) => void;
 }) => {
   const ref = useRef<GalleryType>(null);
   const prevIndexRef = useRef<number>(currentIndex);
@@ -31,7 +31,7 @@ const Gallery = ({
 
   const onTap = useCallback((e: TapGestureEvent, index: number) => {
     // console.log(`Tapped on index ${index}`);
-    setHideBottomBar?.((prev) => !prev);
+    setHideBars?.((prev) => !prev);
   }, []);
 
   const customTransition = (state: any) => {
