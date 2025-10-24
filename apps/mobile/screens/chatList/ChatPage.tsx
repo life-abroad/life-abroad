@@ -13,25 +13,25 @@ import { LinearGradient } from 'expo-linear-gradient';
 export const ChatPage = () => {
   // Scroll animations
   const scrollY = useRef(new Animated.Value(0)).current;
-  const [showLeftGradient, setShowLeftGradient] = useState(false);
-  const [showRightGradient, setShowRightGradient] = useState(true);
+  // const [showLeftGradient, setShowLeftGradient] = useState(false);
+  // const [showRightGradient, setShowRightGradient] = useState(true);
 
   const handleChatPress = (chatItem: (typeof chats)[0]) => {
     // Handle chat row press
     console.log('Chat pressed:', chatItem.user.userName);
   };
 
-  const handleScroll = (event: any) => {
-    const { contentOffset, contentSize, layoutMeasurement } = event.nativeEvent;
-    const scrollX = contentOffset.x;
-    const maxScrollX = contentSize.width - layoutMeasurement.width;
+  // const handleScroll = (event: any) => {
+  //   const { contentOffset, contentSize, layoutMeasurement } = event.nativeEvent;
+  //   const scrollX = contentOffset.x;
+  //   const maxScrollX = contentSize.width - layoutMeasurement.width;
 
-    // Show left gradient if scrolled right (not at the start)
-    setShowLeftGradient(scrollX > 5);
+  //   // Show left gradient if scrolled right (not at the start)
+  //   setShowLeftGradient(scrollX > 5);
 
-    // Show right gradient if not at the end
-    setShowRightGradient(scrollX < maxScrollX - 5);
-  };
+  //   // Show right gradient if not at the end
+  //   setShowRightGradient(scrollX < maxScrollX - 5);
+  // };
 
   return (
     <View className="flex-1 bg-background-secondary">
@@ -69,7 +69,7 @@ export const ChatPage = () => {
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
-            onScroll={handleScroll}
+            // onScroll={handleScroll}
             scrollEventThrottle={16}
             fadingEdgeLength={15}
             className="w-[100%]">

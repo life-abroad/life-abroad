@@ -6,6 +6,7 @@ import { ImageViewer } from 'components/ImageViewer';
 import Header from 'components/Header';
 import { FeedList } from 'components/FeedList';
 import { useImageViewer } from '../../hooks/useImageViewer';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export const HomePage = ({ setHideNav }: { setHideNav: (hide: boolean) => void }) => {
   const flatListRef = useRef<FlatList>(null);
@@ -63,29 +64,37 @@ export const HomePage = ({ setHideNav }: { setHideNav: (hide: boolean) => void }
       {/* Stories - Floating Header */}
       <Header scrollY={scrollY}>
         {/* Stories row */}
-        <View className="relative px-3 py-3">
-          <View className="flex-row items-center gap-3">
-            {stories.map((story, index) => {
-              const isGray = index >= stories.length - 2;
-              return (
-                <TouchableOpacity
-                  key={index}
-                  className="relative"
-                  onPress={() => handleStoryPress(index)}>
-                  <Image
-                    source={{ uri: story.user.userAvatar }}
-                    className={`h-[50] w-[50] rounded-full ${index < 2 ? 'border-2 border-white' : ''} ${isGray ? 'opacity-100' : ''}`}
-                  />
-                  {isGray && (
-                    <View
-                      pointerEvents="none"
-                      className="absolute inset-0 rounded-full bg-[rgba(0,0,0,0.4)]"
+        <View className="relative py-3">
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            // onScroll={handleScroll}
+            scrollEventThrottle={16}
+            fadingEdgeLength={15}
+            className="w-[80%]">
+            <View className="flex-row items-center gap-2.5 pl-3">
+              {stories.map((story, index) => {
+                const isGray = story.seen ?? false;
+                return (
+                  <TouchableOpacity
+                    key={index}
+                    className="relative"
+                    onPress={() => handleStoryPress(index)}>
+                    <Image
+                      source={{ uri: story.user.userAvatar }}
+                      className={`h-[50] w-[50] rounded-full ${index < 2 ? 'border-2 border-white' : ''} ${isGray ? 'opacity-100' : ''}`}
                     />
-                  )}
-                </TouchableOpacity>
-              );
-            })}
-          </View>
+                    {isGray && (
+                      <View
+                        pointerEvents="none"
+                        className="absolute inset-0 rounded-full bg-[rgba(0,0,0,0.4)]"
+                      />
+                    )}
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+          </ScrollView>
           <View className="absolute bottom-5 right-4 items-center justify-center">
             <CameraIcon size={35} />
           </View>

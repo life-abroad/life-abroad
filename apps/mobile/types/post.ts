@@ -1,3 +1,5 @@
+import { User } from './user';
+
 export interface Reaction {
   userAvatar: string;
   emoji: string;
@@ -11,4 +13,5 @@ export interface Post {
   caption?: string;
   comment: string;
   reactions: Reaction[];
+  seen?: boolean;
 }
