@@ -11,6 +11,7 @@ export const useImageViewer = () => {
   const [imageViewerVisible, setImageViewerVisible] = useState(false);
   const [hideProgressBar, setHideProgressBar] = useState(false);
   const [hideCounter, setHideCounter] = useState(false);
+  const [location, setLocation] = useState<string>('hi');
 
   // Image view data
   const [users, setUsers] = useState<User[]>([]);
@@ -18,13 +19,20 @@ export const useImageViewer = () => {
   const [imageIndex, setImageIndex] = useState(0);
 
   const openImageViewer = useCallback(
-    (images: string[], users: User[], initialIndex: number = 0, config?: ImageViewerConfig) => {
+    (
+      images: string[],
+      users: User[],
+      initialIndex: number = 0,
+      config?: ImageViewerConfig,
+      location?: string
+    ) => {
       setImages(images);
       setUsers(users);
       setImageIndex(initialIndex);
       setImageViewerVisible(true);
       setHideCounter(config?.hideCounter ?? false);
       setHideProgressBar(config?.hideProgressBar ?? false);
+      setLocation(location || '');
     },
     []
   );
@@ -34,13 +42,19 @@ export const useImageViewer = () => {
   }, []);
 
   const handlePostImagePress = useCallback(
-    (images: string[], initialIndex = 0, user: User) => {
+    (images: string[], initialIndex = 0, user: User, location: string) => {
       // Create a users array where the same user is repeated for each image
       const usersArray = images.map(() => user);
-      openImageViewer(images, usersArray, initialIndex, {
-        hideCounter: false,
-        hideProgressBar: true,
-      });
+      openImageViewer(
+        images,
+        usersArray,
+        initialIndex,
+        {
+          hideCounter: false,
+          hideProgressBar: true,
+        },
+        location
+      );
     },
     [openImageViewer]
   );
@@ -53,10 +67,12 @@ export const useImageViewer = () => {
     users,
     images,
     imageIndex,
+    location,
     // Setters
     setImageIndex,
     setHideProgressBar,
     setHideCounter,
+    setLocation,
     // Methods
     openImageViewer,
     closeImageViewer,

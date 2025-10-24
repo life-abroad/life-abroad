@@ -7,7 +7,7 @@ import { User } from 'types/user';
 interface FeedListProps {
   posts: any[];
   scrollY: Animated.Value;
-  onImagePress: (images: string[], index: number, user: User) => void;
+  onImagePress: (images: string[], index: number, user: User, location: string) => void;
   paddingTop?: number;
   paddingBottom?: number;
   numColumns?: number;
@@ -48,7 +48,9 @@ export const FeedList = React.forwardRef<FlatList, FeedListProps>(
             <View className={numColumns > 1 ? 'm-[0.3%] w-[49.7%]' : ''}>
               <FeedPost
                 {...item}
-                onImagePress={(images, index) => onImagePress(images, index, item.user)}
+                onImagePress={(images, index) =>
+                  onImagePress(images, index, item.user, item.location)
+                }
                 numColumns={numColumns}
                 displayPosterInfo={displayPosterInfo}
                 displayReactionControls={displayReactionControls}

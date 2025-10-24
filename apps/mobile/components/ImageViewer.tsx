@@ -26,6 +26,7 @@ interface ImageViewerProps {
   hideCounter?: boolean;
   setHideProgressBar?: (hide: boolean) => void;
   setHideCounter?: (hide: boolean) => void;
+  location?: string;
 }
 
 export const ImageViewer: React.FC<ImageViewerProps> = ({
@@ -39,6 +40,7 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
   hideCounter,
   setHideProgressBar,
   setHideCounter,
+  location,
 }) => {
   const [hideBottomBar, setHideBottomBar] = React.useState(true);
   const [shouldRender, setShouldRender] = React.useState(false);
@@ -142,10 +144,11 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
 
       {/* Image counter for multiple images */}
       {!hideCounter && images.length > 1 && (
-        <View className="absolute left-3 top-14 z-50 rounded-full bg-black/50 px-3 py-1">
+        <View className="absolute left-3 top-14 z-50 gap-2 rounded-full bg-black/50 px-3 py-1">
           <Text className="text-white">
             {imageIndex + 1} / {images.length}
           </Text>
+          <Text className="text-white">{location ? `${location}` : ''} </Text>
         </View>
       )}
 
