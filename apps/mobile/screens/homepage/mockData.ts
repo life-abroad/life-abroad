@@ -121,6 +121,7 @@ const stories: Post[] = [
         emoji: '👏',
       },
     ],
+    seen: false,
   },
   {
     user: {
@@ -151,6 +152,7 @@ const stories: Post[] = [
         emoji: '👏',
       },
     ],
+    seen: false,
   },
   {
     user: {
@@ -181,6 +183,7 @@ const stories: Post[] = [
         emoji: '👏',
       },
     ],
+    seen: true,
   },
   {
     user: {
@@ -211,6 +214,73 @@ const stories: Post[] = [
         emoji: '👏',
       },
     ],
+    seen: true,
+  },
+  {
+    user: {
+      userName: 'David Lee',
+      userHandle: 'dlee',
+      userAvatar:
+        'https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+      profileUrl: '/users/dlee',
+    },
+    location: 'Tokyo, Japan',
+    timestamp: 'Yesterday, 10:01am',
+    images: [
+      'https://media.istockphoto.com/id/1308888226/photo/tokyo-japan-cityscape-at-twilight-with-mount-fuji-in-background.jpg?s=612x612&w=0&k=20&c=1Yk2X1rH3KX1c1j8Z0n-LU5l9f9p3Z2V6vE1f1jvG5o=',
+    ],
+    comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    reactions: [
+      {
+        userAvatar:
+          'https://api.builder.io/api/v1/image/assets/TEMP/e32a4adcef70ff364c7d655c7db4f440f66c7279?width=92',
+        emoji: '❤️',
+      },
+      {
+        userAvatar:
+          'https://api.builder.io/api/v1/image/assets/TEMP/63d02802283446d3398286f440a78cb464c0c420?width=92',
+        emoji: '😂',
+      },
+      {
+        userAvatar:
+          'https://img.freepik.com/free-photo/business-man-by-skyscraper_1303-13655.jpg?semt=ais_hybrid&w=740&q=80',
+        emoji: '👏',
+      },
+    ],
+    seen: true,
+  },
+  {
+    user: {
+      userName: 'Sophia Martinez',
+      userHandle: 'smartinez',
+      userAvatar:
+        'https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTA5L3Jhd3BpeGVsX29mZmljZV8zNF9waG90b19vZl9hZnJpY2FuLWFtZXJpY2FuX3dvbWFuX2NvbXBhbnlfd29ya19kNmM4MmJhNS1iYjA2LTRkN2EtYjJlMy1hNDZhNDYyMjA0ZmZfMS5qcGc.jpg',
+      profileUrl: '/users/smartinez',
+    },
+    location: 'Tokyo, Japan',
+    timestamp: 'Yesterday, 10:01am',
+    images: [
+      'https://media.istockphoto.com/id/1308888226/photo/tokyo-japan-cityscape-at-twilight-with-mount-fuji-in-background.jpg?s=612x612&w=0&k=20&c=1Yk2X1rH3KX1c1j8Z0n-LU5l9f9p3Z2V6vE1f1jvG5o=',
+    ],
+    comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    reactions: [
+      {
+        userAvatar:
+          'https://api.builder.io/api/v1/image/assets/TEMP/e32a4adcef70ff364c7d655c7db4f440f66c7279?width=92',
+        emoji: '❤️',
+      },
+      {
+        userAvatar:
+          'https://api.builder.io/api/v1/image/assets/TEMP/63d02802283446d3398286f440a78cb464c0c420?width=92',
+        emoji: '😂',
+      },
+      {
+        userAvatar:
+          'https://img.freepik.com/free-photo/business-man-by-skyscraper_1303-13655.jpg?semt=ais_hybrid&w=740&q=80',
+        emoji: '👏',
+      },
+    ],
+    seen: true,
   },
 ];
 
