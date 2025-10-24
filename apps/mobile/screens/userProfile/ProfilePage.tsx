@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { View, Animated, FlatList, Image, TouchableOpacity } from 'react-native';
+import { View, Animated, FlatList, Image, TouchableOpacity, ImageBackground } from 'react-native';
 import { posts } from '../homepage/mockData';
 import { ImageViewer } from 'components/ImageViewer';
 import Header from 'components/Header';
@@ -10,6 +10,7 @@ import { Text } from 'components/Text';
 import { CircleIconNav, FriendsIcon, PostsIcon } from 'components/Icons';
 import FriendRow from 'components/FriendRow';
 import CircleRow from 'components/CircleRow';
+import Blur from 'components/Blur';
 
 export const ProfilePage = ({ setHideNav }: { setHideNav: (hide: boolean) => void }) => {
   const flatListRef = useRef<FlatList>(null);
@@ -47,6 +48,11 @@ export const ProfilePage = ({ setHideNav }: { setHideNav: (hide: boolean) => voi
 
   return (
     <View className="flex-1">
+      {/* <ImageBackground
+        source={require('../../assets/textures/circle.png')}
+        resizeMode="repeat"
+        className={`absolute inset-0 opacity-100`}
+      /> */}
       {activeTab === 'posts' ? (
         <FeedList
           ref={flatListRef}
@@ -116,7 +122,6 @@ export const ProfilePage = ({ setHideNav }: { setHideNav: (hide: boolean) => voi
           <Text className="text-lg">No {activeTab} to display</Text>
         </View>
       )}
-
       <Header scrollY={scrollY}>
         <View className="flex-row justify-between px-4 py-3">
           <View className="mt-3 flex-row items-center gap-3">
@@ -153,7 +158,6 @@ export const ProfilePage = ({ setHideNav }: { setHideNav: (hide: boolean) => voi
           </View>
         </View>
       </Header>
-
       <ImageViewer
         images={images}
         imageIndex={imageIndex}

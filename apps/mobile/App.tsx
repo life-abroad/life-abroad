@@ -76,7 +76,7 @@ export default function App() {
   }
 
   return (
-    <GestureHandlerRootView style={{ flex: 1, backgroundColor: 'black' }}>
+    <GestureHandlerRootView style={{ flex: 1 }}>
       <NavigationContainer
         ref={navigationRef}
         onStateChange={() => {
@@ -102,7 +102,7 @@ export default function App() {
             heavy: { fontFamily: 'System', fontWeight: '900' },
           },
         }}>
-        <View className="flex-1 bg-background">
+        <View className="flex-1">
           <Tab.Navigator
             screenOptions={{
               headerShown: false,
