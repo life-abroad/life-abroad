@@ -22,8 +22,38 @@ const posts: Post[] = [
     reactions: [
       {
         userAvatar:
-          'https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+          'https://api.builder.io/api/v1/image/assets/TEMP/e32a4adcef70ff364c7d655c7db4f440f66c7279?width=92',
         emoji: '❤️',
+      },
+      {
+        userAvatar:
+          'https://api.builder.io/api/v1/image/assets/TEMP/63d02802283446d3398286f440a78cb464c0c420?width=92',
+        emoji: '😂',
+      },
+      {
+        userAvatar:
+          'https://api.builder.io/api/v1/image/assets/TEMP/a96e7f494de538eb263c3d497afd80c0a995b298?width=92',
+        emoji: '👏',
+      },
+      {
+        userAvatar:
+          'https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+        emoji: '👍',
+      },
+      {
+        userAvatar:
+          'https://img.freepik.com/free-photo/business-man-by-skyscraper_1303-13655.jpg?semt=ais_hybrid&w=740&q=80',
+        emoji: '❤️',
+      },
+      {
+        userAvatar:
+          'https://img.freepik.com/free-photo/business-man-by-skyscraper_1303-13655.jpg?semt=ais_hybrid&w=740&q=80',
+        emoji: '😂',
+      },
+      {
+        userAvatar:
+          'https://img.freepik.com/free-photo/business-man-by-skyscraper_1303-13655.jpg?semt=ais_hybrid&w=740&q=80',
+        emoji: '👏',
       },
     ],
   },
@@ -85,6 +115,36 @@ const posts: Post[] = [
       {
         userAvatar:
           'https://img.freepik.com/free-photo/business-man-by-skyscraper_1303-13655.jpg?semt=ais_hybrid&w=740&q=80',
+        emoji: '👏',
+      },
+    ],
+  },
+  {
+    user: {
+      userName: 'John Smith',
+      userHandle: 'jsmith',
+      userAvatar:
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFA9bLSF5x5jPFcYFikCLaNrFel6C8FfJpeyQYhmG-Xuc3yhuTYprL3iQApDAoc-5nZ28&usqp=CAU',
+      profileUrl: '/users/jsmith',
+    },
+    location: 'Tokyo, Japan',
+    timestamp: 'Yesterday, 10:01am',
+    images: ['https://routinelynomadic.com/wp-content/uploads/2024/09/IMG_9755.jpg'],
+    comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    reactions: [
+      {
+        userAvatar:
+          'https://api.builder.io/api/v1/image/assets/TEMP/e32a4adcef70ff364c7d655c7db4f440f66c7279?width=92',
+        emoji: '❤️',
+      },
+      {
+        userAvatar:
+          'https://api.builder.io/api/v1/image/assets/TEMP/63d02802283446d3398286f440a78cb464c0c420?width=92',
+        emoji: '😂',
+      },
+      {
+        userAvatar:
+          'https://api.builder.io/api/v1/image/assets/TEMP/a96e7f494de538eb263c3d497afd80c0a995b298?width=92',
         emoji: '👏',
       },
     ],

@@ -4,6 +4,7 @@ import { Post } from 'types/post';
 import { ChatBubbleIcon, LocationIcon, HeartIcon, ShareIcon } from 'components/Icons';
 import { Text } from 'components/Text';
 import { ImageViewer } from './ImageViewer';
+import { ScrollView } from 'react-native-gesture-handler';
 const screenWidth = require('react-native').Dimensions.get('window').width;
 
 interface FeedPostProps extends Post {
@@ -27,10 +28,7 @@ export const FeedPost: React.FC<FeedPostProps> = ({
   displayReactionControls = true,
 }) => {
   return (
-    <TouchableOpacity
-      className="mb-1 rounded-md bg-background-secondary"
-      onPress={() => onImagePress(images, 0)}
-      activeOpacity={0.9}>
+    <View className="mb-1 rounded-md bg-background-secondary">
       {/* Header */}
       <View className="flex-row items-center justify-between px-1 py-2">
         {displayPosterInfo ? (
@@ -42,7 +40,10 @@ export const FeedPost: React.FC<FeedPostProps> = ({
               />
               <Text className="text-md px-1 font-madimi font-semibold">{user.userName}</Text>
             </View>
-            <View className="flex-row items-center justify-end gap-3 px-3">
+            <TouchableOpacity
+              onPress={() => onImagePress(images, 0)}
+              className="flex-row items-center justify-end gap-3 px-3"
+              activeOpacity={0.7}>
               <View className="max-w-32">
                 <Text className="text-md text-right font-medium">{location}</Text>
                 <Text className="text-xs font-light">{timestamp}</Text>
@@ -50,14 +51,17 @@ export const FeedPost: React.FC<FeedPostProps> = ({
               <View className="h-7 w-5">
                 <LocationIcon />
               </View>
-            </View>
+            </TouchableOpacity>
           </>
         ) : (
-          <View className="w-full flex-col items-start justify-between px-1">
-            <View className="-ml-1 flex-row items-center gap-1">
+          <View className="w-full flex-col items-center justify-between px-1">
+            <TouchableOpacity
+              onPress={() => onImagePress(images, 0)}
+              activeOpacity={0.7}
+              className="-ml-1 flex-row items-center gap-1">
               <LocationIcon size={12} />
               <Text className="text-md font-medium">{location}</Text>
-            </View>
+            </TouchableOpacity>
             <Text className="text-right text-xs font-light">{timestamp}</Text>
           </View>
         )}
@@ -123,13 +127,24 @@ export const FeedPost: React.FC<FeedPostProps> = ({
             </View>
           )}
           {/* Reactions */}
-          <View
-            className={`h-10 w-52 flex-row ${numColumns > 1 ? '' : 'gap-2'} ${displayReactionControls ? 'justify-end pr-3' : 'justify-start pl-1'} `}>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            scrollEventThrottle={16}
+            fadingEdgeLength={15}
+            className="flex-1"
+            contentContainerStyle={{
+              flexDirection: 'row',
+              gap: numColumns > 1 ? 0 : 8,
+              paddingRight: displayReactionControls ? 12 : 4,
+              paddingLeft: displayReactionControls ? 0 : 4,
+              alignItems: 'center',
+            }}>
             {reactions.map((reaction, index) => (
-              <View key={index} className="relative h-10 w-10">
+              <View key={index} className="relative size-10">
                 <Image
                   source={{ uri: reaction.userAvatar }}
-                  className={`${numColumns > 1 ? 'size-7' : 'size-10'} absolute -top-1 left-0 rounded-full border-2 border-white`}
+                  className={`${numColumns > 1 ? 'size-7 border' : 'size-10 border-2'} absolute -top-1 left-0 rounded-full border-white`}
                 />
                 <Text
                   className={`${numColumns > 1 ? 'left-3 top-2 text-sm' : 'text-md left-5 top-3'} absolute z-10 items-center justify-center`}>
@@ -137,7 +152,7 @@ export const FeedPost: React.FC<FeedPostProps> = ({
                 </Text>
               </View>
             ))}
-          </View>
+          </ScrollView>
         </View>
         {/* Comments */}
         <View className="w-full px-2">
@@ -147,6 +162,6 @@ export const FeedPost: React.FC<FeedPostProps> = ({
           </Text>
         </View>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 };

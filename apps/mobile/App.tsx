@@ -35,8 +35,13 @@ export default function App() {
   // Handle Android back button
   useEffect(() => {
     const backAction = () => {
+      if (hideNav) {
+        // dont do anything if nav is hidden
+        return true;
+      }
+
       // If not on home tab, navigate to home
-      if (currentRoute !== 'home' || hideNav) {
+      if (currentRoute !== 'home') {
         navigationRef.current?.navigate('home');
         return true; // Prevent default behavior (app exit)
       }
