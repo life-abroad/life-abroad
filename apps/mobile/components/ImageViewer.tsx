@@ -26,7 +26,7 @@ interface ImageViewerProps {
   hideCounter?: boolean;
   setHideProgressBar?: (hide: boolean) => void;
   setHideCounter?: (hide: boolean) => void;
-  location?: string;
+  imageMeta: Record<string, string>;
 }
 
 export const ImageViewer: React.FC<ImageViewerProps> = ({
@@ -40,24 +40,24 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
   hideCounter,
   setHideProgressBar,
   setHideCounter,
-  location,
+  imageMeta,
 }) => {
-  const [hideBottomBar, setHideBottomBar] = React.useState(true);
+  const [hideBars, setHideBars] = React.useState(true);
   const [shouldRender, setShouldRender] = React.useState(false);
   const fadeAnim = React.useRef(new Animated.Value(0)).current;
   const bottomBarFadeAnim = React.useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
-    setHideBottomBar(false);
+    setHideBars(false);
   }, [isVisible]);
 
   React.useEffect(() => {
     Animated.timing(bottomBarFadeAnim, {
-      toValue: hideBottomBar ? 0 : 1,
+      toValue: hideBars ? 0 : 1,
       duration: 100,
       useNativeDriver: true,
     }).start();
-  }, [hideBottomBar, bottomBarFadeAnim]);
+  }, [hideBars, bottomBarFadeAnim]);
 
   // Handle fade in/out animation
   React.useEffect(() => {
@@ -108,10 +108,10 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
         orientationInfo.orientation === ScreenOrientation.Orientation.LANDSCAPE_LEFT ||
         orientationInfo.orientation === ScreenOrientation.Orientation.LANDSCAPE_RIGHT
       ) {
-        setHideBottomBar(true);
+        setHideBars(true);
         setHideProgressBar && setHideProgressBar(true);
       } else {
-        setHideBottomBar(false);
+        setHideBars(false);
         setHideProgressBar && setHideProgressBar(false);
       }
     });
@@ -142,13 +142,16 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
         </View>
       )}
 
-      {/* Image counter for multiple images */}
-      {!hideCounter && images.length > 1 && (
+      {/* Top Bar */}
+      {!hideCounter && images.length > 1 && !hideBars && (
         <View className="absolute left-3 top-14 z-50 gap-2 rounded-full bg-black/50 px-3 py-1">
           <Text className="text-white">
             {imageIndex + 1} / {images.length}
           </Text>
-          <Text className="text-white">{location ? `${location}` : ''} </Text>
+          <View className="max-w-32 items-start">
+            <Text className="text-md text-right font-medium">{imageMeta.location}</Text>
+            <Text className="text-xs font-light">{imageMeta.timestamp}</Text>
+          </View>
         </View>
       )}
 
@@ -172,7 +175,7 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
               currentIndex={imageIndex}
               onIndexChange={setImageIndex}
               onVerticalPull={onClose}
-              setHideBottomBar={setHideBottomBar}
+              setHideBars={setHideBars}
             />
           </View>
         </View>
@@ -183,7 +186,7 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
           style={{
             opacity: bottomBarFadeAnim,
           }}
-          pointerEvents={hideBottomBar ? 'none' : 'auto'}>
+          pointerEvents={hideBars ? 'none' : 'auto'}>
           {/* User Info */}
           <View className="flex-row items-center">
             {users && users[imageIndex] ? (

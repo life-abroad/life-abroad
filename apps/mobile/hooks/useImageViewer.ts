@@ -11,7 +11,7 @@ export const useImageViewer = () => {
   const [imageViewerVisible, setImageViewerVisible] = useState(false);
   const [hideProgressBar, setHideProgressBar] = useState(false);
   const [hideCounter, setHideCounter] = useState(false);
-  const [location, setLocation] = useState<string>('hi');
+  const [imageMeta, setImageMeta] = useState<Record<string, string>>({});
 
   // Image view data
   const [users, setUsers] = useState<User[]>([]);
@@ -24,7 +24,7 @@ export const useImageViewer = () => {
       users: User[],
       initialIndex: number = 0,
       config?: ImageViewerConfig,
-      location?: string
+      imageMeta?: Record<string, string>
     ) => {
       setImages(images);
       setUsers(users);
@@ -32,7 +32,7 @@ export const useImageViewer = () => {
       setImageViewerVisible(true);
       setHideCounter(config?.hideCounter ?? false);
       setHideProgressBar(config?.hideProgressBar ?? false);
-      setLocation(location || '');
+      setImageMeta(imageMeta ?? {});
     },
     []
   );
@@ -42,7 +42,7 @@ export const useImageViewer = () => {
   }, []);
 
   const handlePostImagePress = useCallback(
-    (images: string[], initialIndex = 0, user: User, location: string) => {
+    (images: string[], initialIndex = 0, user: User, imageMeta: Record<string, string>) => {
       // Create a users array where the same user is repeated for each image
       const usersArray = images.map(() => user);
       openImageViewer(
@@ -53,7 +53,7 @@ export const useImageViewer = () => {
           hideCounter: false,
           hideProgressBar: true,
         },
-        location
+        imageMeta
       );
     },
     [openImageViewer]
@@ -67,12 +67,12 @@ export const useImageViewer = () => {
     users,
     images,
     imageIndex,
-    location,
+    imageMeta,
     // Setters
     setImageIndex,
     setHideProgressBar,
     setHideCounter,
-    setLocation,
+    setImageMeta,
     // Methods
     openImageViewer,
     closeImageViewer,
