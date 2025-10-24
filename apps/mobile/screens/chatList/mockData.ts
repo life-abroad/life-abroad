@@ -85,6 +85,28 @@ const bulletins: Bulletin[] = [
     timestamp: 'Yesterday, 8:45am',
     content: 'Tips for studying abroad in Europe?',
   },
+  {
+    user: {
+      userName: 'Michael Brown',
+      userHandle: 'mbrown',
+      userAvatar:
+        'https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTA5L3Jhd3BpeGVsX29mZmljZV8zNF9waG90b19vZl9hZnJpY2FuLWFtZXJpY2FuX3dvbWFuX2NvbXBhbnlfd29ya19kNmM4MmJhNS1iYjA2LTRkN2EtYjJlMy1hNDZhNDYyMjA0ZmZfMS5qcGc.jpg',
+      profileUrl: '/users/mbrown',
+    },
+    timestamp: 'Yesterday, 8:00am',
+    content: 'Best local restaurants?',
+  },
+  {
+    user: {
+      userName: 'Sophia Garcia',
+      userHandle: 'sgarcia',
+      userAvatar:
+        'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+      profileUrl: '/users/sgarcia',
+    },
+    timestamp: 'Yesterday, 7:30am',
+    content: 'Anyone up for a language exchange?',
+  },
 ];
 
 export { chats, bulletins };

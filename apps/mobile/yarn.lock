@@ -1964,6 +1964,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-community/masked-view@npm:^0.1.11":
+  version: 0.1.11
+  resolution: "@react-native-community/masked-view@npm:0.1.11"
+  peerDependencies:
+    react: ">=16.0"
+    react-native: ">=0.57"
+  checksum: 10c0/439ca5f790641536a0de498a1cbcf69af53466cbf32aa851bcbb8c4b5240e46e77857625e3340777f6f0ec969f8851becf51dfe22d36713786be8426d98f9a64
+  languageName: node
+  linkType: hard
+
 "@react-native/assets-registry@npm:0.81.4":
   version: 0.81.4
   resolution: "@react-native/assets-registry@npm:0.81.4"
@@ -3571,6 +3581,7 @@ __metadata:
     "@babel/core": "npm:^7.20.0"
     "@expo-google-fonts/madimi-one": "npm:^0.4.0"
     "@react-native-community/blur": "npm:^4.4.1"
+    "@react-native-community/masked-view": "npm:^0.1.11"
     "@react-navigation/bottom-tabs": "npm:^7.5.0"
     "@react-navigation/native": "npm:^7.1.18"
     "@sbaiahmed1/react-native-blur": "npm:^3.2.0"
