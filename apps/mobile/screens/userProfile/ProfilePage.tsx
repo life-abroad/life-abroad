@@ -17,14 +17,15 @@ export const ProfilePage = ({ setHideNav }: { setHideNav: (hide: boolean) => voi
   const {
     imageViewerVisible,
     hideProgressBar,
-    hideCounter,
+    hideTopBar,
     users,
     images,
     imageIndex,
     imageMeta,
+    reactions,
     setImageIndex,
     setHideProgressBar,
-    setHideCounter,
+    sethideTopBar,
     closeImageViewer,
     handlePostImagePress,
   } = useImageViewer();
@@ -153,11 +154,12 @@ export const ProfilePage = ({ setHideNav }: { setHideNav: (hide: boolean) => voi
         isVisible={imageViewerVisible}
         onClose={closeImageViewer}
         hideProgressBar={hideProgressBar}
-        hideCounter={hideCounter}
+        hideTopBar={hideTopBar}
         setHideProgressBar={setHideProgressBar}
-        setHideCounter={setHideCounter}
+        sethideTopBar={sethideTopBar}
         imageMeta={imageMeta}
         hideBottomBar={true}
+        reactions={reactions}
       />
     </View>
   );

@@ -14,6 +14,7 @@ import { HeartIcon, ChatBubbleIcon } from './Icons';
 import Blur from './Blur';
 import Gallery from './Gallery/Gallery';
 import { User } from 'types/user';
+import { Reaction } from 'types/post';
 
 interface ImageViewerProps {
   images: string[];
@@ -23,11 +24,12 @@ interface ImageViewerProps {
   isVisible: boolean;
   onClose: () => void;
   hideProgressBar?: boolean;
-  hideCounter?: boolean;
+  hideTopBar?: boolean;
   setHideProgressBar?: (hide: boolean) => void;
-  setHideCounter?: (hide: boolean) => void;
+  sethideTopBar?: (hide: boolean) => void;
   imageMeta: Record<string, string>;
   hideBottomBar?: boolean;
+  reactions?: Reaction[][];
 }
 
 export const ImageViewer: React.FC<ImageViewerProps> = ({
@@ -38,11 +40,12 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
   isVisible,
   onClose,
   hideProgressBar,
-  hideCounter,
+  hideTopBar,
   setHideProgressBar,
-  setHideCounter,
+  sethideTopBar,
   imageMeta,
   hideBottomBar = false,
+  reactions = [],
 }) => {
   const [hideBars, setHideBars] = React.useState(true);
   const [shouldRender, setShouldRender] = React.useState(false);
@@ -145,7 +148,7 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
       )}
 
       {/* Top Bar */}
-      {!hideCounter && images.length > 1 && !hideBars && (
+      {!hideTopBar && images.length > 1 && !hideBars && (
         <View className="absolute left-3 top-14 z-50 gap-2 px-3 py-1">
           <Text className="text-white">
             {imageIndex + 1} / {images.length}
@@ -181,6 +184,28 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
             />
           </View>
         </View>
+
+        {/* Reactions - Above Bottom Bar */}
+        {!hideTopBar && reactions[imageIndex] && reactions[imageIndex].length > 0 && (
+          <Animated.View
+            className={`absolute ${hideBottomBar ? 'bottom-[2rem]' : 'bottom-[6.5rem]'} left-4 flex-row gap-2`}
+            style={{
+              opacity: bottomBarFadeAnim,
+            }}
+            pointerEvents={hideBars ? 'none' : 'auto'}>
+            {reactions[imageIndex].map((reaction, index) => (
+              <View key={index} className="relative h-10 w-10">
+                <Image
+                  source={{ uri: reaction.userAvatar }}
+                  className="absolute -top-1 left-0 size-10 rounded-full border border-white"
+                />
+                <Text className="text-md absolute left-5 top-3 z-10 items-center justify-center">
+                  {reaction.emoji}
+                </Text>
+              </View>
+            ))}
+          </Animated.View>
+        )}
 
         {/* Bottom Bar - Always show controls */}
         {!hideBottomBar && (

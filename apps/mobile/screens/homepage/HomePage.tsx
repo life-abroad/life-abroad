@@ -14,14 +14,15 @@ export const HomePage = ({ setHideNav }: { setHideNav: (hide: boolean) => void }
   const {
     imageViewerVisible,
     hideProgressBar,
-    hideCounter,
+    hideTopBar,
     users,
     images,
     imageIndex,
     imageMeta,
+    reactions,
     setImageIndex,
     setHideProgressBar,
-    setHideCounter,
+    sethideTopBar,
     openImageViewer,
     closeImageViewer,
     handlePostImagePress,
@@ -43,7 +44,7 @@ export const HomePage = ({ setHideNav }: { setHideNav: (hide: boolean) => void }
       console.log('initialIndex', initialIndex);
 
       openImageViewer(allStoryImages, allStoryUsers, initialIndex, {
-        hideCounter: true,
+        hideTopBar: true,
         hideProgressBar: false,
       });
     },
@@ -99,10 +100,11 @@ export const HomePage = ({ setHideNav }: { setHideNav: (hide: boolean) => void }
         isVisible={imageViewerVisible}
         onClose={closeImageViewer}
         hideProgressBar={hideProgressBar}
-        hideCounter={hideCounter}
+        hideTopBar={hideTopBar}
         setHideProgressBar={setHideProgressBar}
-        setHideCounter={setHideCounter}
+        sethideTopBar={sethideTopBar}
         imageMeta={imageMeta}
+        reactions={reactions}
       />
     </View>
   );
