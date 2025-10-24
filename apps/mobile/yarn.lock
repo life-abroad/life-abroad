@@ -3584,6 +3584,7 @@ __metadata:
     expo-screen-orientation: "npm:~9.0.7"
     expo-splash-screen: "npm:^31.0.10"
     expo-status-bar: "npm:~3.0.8"
+    lucide-react-native: "npm:^0.547.0"
     nativewind: "npm:latest"
     prettier: "npm:^3.2.5"
     prettier-plugin-tailwindcss: "npm:^0.5.11"
@@ -6541,6 +6542,17 @@ __metadata:
   dependencies:
     yallist: "npm:^3.0.2"
   checksum: 10c0/89b2ef2ef45f543011e38737b8a8622a2f8998cddf0e5437174ef8f1f70a8b9d14a918ab3e232cb3ba343b7abddffa667f0b59075b2b80e6b4d63c3de6127482
+  languageName: node
+  linkType: hard
+
+"lucide-react-native@npm:^0.547.0":
+  version: 0.547.0
+  resolution: "lucide-react-native@npm:0.547.0"
+  peerDependencies:
+    react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
+    react-native: "*"
+    react-native-svg: ^12.0.0 || ^13.0.0 || ^14.0.0 || ^15.0.0
+  checksum: 10c0/bea96cd5dc6b2f66cc49068f5ad8af2c45da688ae3941281d605f922eccc2eeb38522929529b1c3524a3943d1802805a0cfa31a927a7aac8a31a6b84e2ae2481
   languageName: node
   linkType: hard
 

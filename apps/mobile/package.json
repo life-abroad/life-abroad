@@ -22,6 +22,7 @@
     "expo-screen-orientation": "~9.0.7",
     "expo-splash-screen": "^31.0.10",
     "expo-status-bar": "~3.0.8",
+    "lucide-react-native": "^0.547.0",
     "nativewind": "latest",
     "react": "19.1.0",
     "react-native": "0.81.4",

@@ -302,7 +302,7 @@ const stories: Post[] = [
     location: 'Tokyo, Japan',
     timestamp: 'Yesterday, 10:01am',
     images: [
-      'https://media.istockphoto.com/id/1308888226/photo/tokyo-japan-cityscape-at-twilight-with-mount-fuji-in-background.jpg?s=612x612&w=0&k=20&c=1Yk2X1rH3KX1c1j8Z0n-LU5l9f9p3Z2V6vE1f1jvG5o=',
+      'https://www.shutterstock.com/image-photo/handsome-caucasican-guy-taking-selfie-600nw-1802109742.jpg',
     ],
     comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     reactions: [
@@ -332,10 +332,10 @@ const stories: Post[] = [
         'https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTA5L3Jhd3BpeGVsX29mZmljZV8zNF9waG90b19vZl9hZnJpY2FuLWFtZXJpY2FuX3dvbWFuX2NvbXBhbnlfd29ya19kNmM4MmJhNS1iYjA2LTRkN2EtYjJlMy1hNDZhNDYyMjA0ZmZfMS5qcGc.jpg',
       profileUrl: '/users/smartinez',
     },
-    location: 'Tokyo, Japan',
+    location: '',
     timestamp: 'Yesterday, 10:01am',
     images: [
-      'https://media.istockphoto.com/id/1308888226/photo/tokyo-japan-cityscape-at-twilight-with-mount-fuji-in-background.jpg?s=612x612&w=0&k=20&c=1Yk2X1rH3KX1c1j8Z0n-LU5l9f9p3Z2V6vE1f1jvG5o=',
+      'https://img.freepik.com/free-photo/man-having-video-call-with-his-family_23-2149120895.jpg?semt=ais_hybrid&w=740&q=80',
     ],
     comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     reactions: [
