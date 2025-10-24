@@ -186,7 +186,7 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
         </View>
 
         {/* Reactions - Above Bottom Bar */}
-        {!hideTopBar && reactions[imageIndex] && reactions[imageIndex].length > 0 && (
+        {reactions[imageIndex] && reactions[imageIndex].length > 0 && (
           <Animated.View
             className={`absolute ${hideBottomBar ? 'bottom-[2rem]' : 'bottom-[6.5rem]'} left-4 flex-row gap-2`}
             style={{
