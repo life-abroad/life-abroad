@@ -160,7 +160,7 @@ const stories: Post[] = [
         'https://img.freepik.com/free-photo/business-man-by-skyscraper_1303-13655.jpg?semt=ais_hybrid&w=740&q=80',
       profileUrl: '/users/kfoo',
     },
-    location: 'Tokyo, Japan',
+    location: 'Yokohama, Japan',
     timestamp: 'Yesterday, 10:01am',
     images: ['https://miro.medium.com/v2/resize:fit:960/1*UsE3NwWmZRZKY0qx_1RJeA.jpeg'],
     comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',

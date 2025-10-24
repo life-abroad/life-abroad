@@ -16,6 +16,7 @@ import Blur from './Blur';
 import Gallery from './Gallery/Gallery';
 import { User } from 'types/user';
 import { Reaction } from 'types/post';
+import { ImageMeta } from '../hooks/useImageViewer';
 
 interface ImageViewerProps {
   images: string[];
@@ -28,7 +29,7 @@ interface ImageViewerProps {
   hideTopBar?: boolean;
   setHideProgressBar?: (hide: boolean) => void;
   sethideTopBar?: (hide: boolean) => void;
-  imageMeta: Record<string, string>;
+  imageMeta: ImageMeta[];
   hideBottomBar?: boolean;
   reactions?: Reaction[][];
 }
@@ -155,8 +156,8 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
             {imageIndex + 1} / {images.length}
           </Text>
           <View className="max-w-32 items-start">
-            <Text className="text-md text-right font-medium">{imageMeta.location}</Text>
-            <Text className="text-xs font-light">{imageMeta.timestamp}</Text>
+            <Text className="text-md text-left font-medium">{imageMeta[imageIndex]?.location}</Text>
+            <Text className="text-xs font-light">{imageMeta[imageIndex]?.timestamp}</Text>
           </View>
         </View>
       )}
