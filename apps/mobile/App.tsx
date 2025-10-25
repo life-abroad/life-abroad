@@ -116,7 +116,7 @@ function AppContent() {
           {/* Desktop Right Header - Show when desktop and nav not hidden */}
           {!hideNav && isDesktop && (
             <View className="absolute right-0 top-0 z-30">
-              <RightHeader className="w-80">{rightHeaderContent}</RightHeader>
+              <RightHeader className="">{rightHeaderContent}</RightHeader>
             </View>
           )}
 
@@ -142,18 +142,20 @@ function AppContent() {
                   />
                 </View>
                 {/* Left Nav - Hide on mobile/tablet, show on desktop lg+ */}
-                <View
-                  className={`absolute left-0 top-0 z-30 hidden web:lg:block ${hideNav ? 'hidden' : ''}`}>
-                  <LeftNav
-                    selectedTab={props.state.routes[props.state.index].name}
-                    setSelectedTab={(tab) => {
-                      const route = props.state.routes.find((r) => r.name === tab);
-                      if (route) {
-                        props.navigation.navigate(route.name);
-                      }
-                    }}
-                  />
-                </View>
+                {!hideNav && isDesktop && (
+                  <View
+                    className={`absolute left-0 top-0 z-30 hidden web:lg:block ${hideNav ? 'hidden' : ''}`}>
+                    <LeftNav
+                      selectedTab={props.state.routes[props.state.index].name}
+                      setSelectedTab={(tab) => {
+                        const route = props.state.routes.find((r) => r.name === tab);
+                        if (route) {
+                          props.navigation.navigate(route.name);
+                        }
+                      }}
+                    />
+                  </View>
+                )}
               </>
             )}>
             <Tab.Screen name="home">
