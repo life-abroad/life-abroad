@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import {
   Heart,
@@ -34,10 +34,14 @@ const PressableIcon = ({
   onPress?: () => void;
   children: React.ReactNode;
 }) => {
+  if (!onPress) {
+    return <View className="items-center justify-center">{children}</View>;
+  }
+
   return (
-    <View className="items-center justify-center" onTouchEnd={onPress}>
+    <TouchableOpacity onPress={onPress} activeOpacity={0.7} className="items-center justify-center">
       {children}
-    </View>
+    </TouchableOpacity>
   );
 };
 

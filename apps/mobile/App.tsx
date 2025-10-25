@@ -138,7 +138,7 @@ function AppContent() {
 
           {/* Main Content Area - takes remaining space */}
           <View className="relative flex-1">
-            {/* Mobile/Tablet Header - Show when not desktop and nav not hidden */}
+            {/* Mobile/Tablet dynamic Header - optional, not actually using this right now */}
             {!hideNav && !isDesktop && (
               <View className="absolute left-0 right-0 top-0 z-30">{headerContent}</View>
             )}
