@@ -2,7 +2,7 @@ import { HomePage } from 'screens/homepage/HomePage';
 import { ChatPage } from 'screens/chatList/ChatPage';
 import { StatusBar } from 'expo-status-bar';
 import './global.css';
-import { View, BackHandler, Alert } from 'react-native';
+import { View, BackHandler, Alert, Platform, useWindowDimensions } from 'react-native';
 import React, { useEffect, useState, useRef } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
 import { useFonts } from 'expo-font';
@@ -13,15 +13,20 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import BottomNav from 'components/Bars/BottomNav';
 import { ProfilePage } from 'screens/userProfile/ProfilePage';
 import LeftNav from 'components/Bars/LeftNav';
+import RightHeader from 'components/Bars/RightHeader';
+import { HeaderProvider, useHeader } from './contexts/HeaderContext';
 
 const Tab = createBottomTabNavigator();
 
 SplashScreen.preventAutoHideAsync();
 
-export default function App() {
+function AppContent() {
   const [hideNav, setHideNav] = useState(false);
   const navigationRef = useRef<any>(null);
   const [currentRoute, setCurrentRoute] = useState('home');
+  const { headerContent, rightHeaderContent } = useHeader();
+  const { width } = useWindowDimensions();
+  const isDesktop = Platform.OS === 'web' && width >= 1024;
 
   const [fontsLoaded] = useFonts({
     MadimiOne_400Regular,
@@ -105,6 +110,16 @@ export default function App() {
           },
         }}>
         <View className="relative flex-1">
+          {/* Mobile/Tablet Header - Show when not desktop and nav not hidden */}
+          {!hideNav && !isDesktop && headerContent}
+
+          {/* Desktop Right Header - Show when desktop and nav not hidden */}
+          {!hideNav && isDesktop && (
+            <View className="absolute right-0 top-0 z-30">
+              <RightHeader className="w-80">{rightHeaderContent}</RightHeader>
+            </View>
+          )}
+
           <Tab.Navigator
             screenOptions={{
               headerShown: false,
@@ -156,6 +171,16 @@ export default function App() {
           <StatusBar style="light" translucent />
         </View>
       </NavigationContainer>
+    </GestureHandlerRootView>
+  );
+}
+
+export default function App() {
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <HeaderProvider>
+        <AppContent />
+      </HeaderProvider>
     </GestureHandlerRootView>
   );
 }
