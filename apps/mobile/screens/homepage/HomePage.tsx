@@ -86,40 +86,6 @@ export const HomePage = ({
     setHeaderHeight(height);
   }, []);
 
-  // Set mobile/tablet header content
-  useEffect(() => {
-    setHeaderContent(
-      <Header scrollY={scrollY} onHeightChange={handleHeaderHeightChange}>
-        {/* Stories row */}
-        <View className="relative py-3">
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={Platform.OS === 'web'}
-            scrollEventThrottle={16}
-            fadingEdgeLength={15}
-            className="w-[82%]">
-            <View className="flex-row items-center gap-2.5 pl-3">
-              {stories.map((story, index) => (
-                <StoryItem
-                  key={index}
-                  story={story}
-                  index={index}
-                  onPress={handleStoryPress}
-                  size={50}
-                  showUsername={false}
-                />
-              ))}
-            </View>
-          </ScrollView>
-          <View className="absolute bottom-5 right-4 items-center justify-center">
-            <CameraIcon size={35} />
-          </View>
-        </View>
-      </Header>
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stories]);
-
   // Set desktop right header content
   useEffect(() => {
     setRightHeaderContent(
@@ -151,6 +117,34 @@ export const HomePage = ({
 
   return (
     <View className={`relative flex-1 ${className}`}>
+      <Header scrollY={scrollY} onHeightChange={handleHeaderHeightChange}>
+        {/* Stories row */}
+        <View className="relative py-3">
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={Platform.OS === 'web'}
+            scrollEventThrottle={16}
+            fadingEdgeLength={15}
+            className="w-[82%]">
+            <View className="flex-row items-center gap-2.5 pl-3">
+              {stories.map((story, index) => (
+                <StoryItem
+                  key={index}
+                  story={story}
+                  index={index}
+                  onPress={handleStoryPress}
+                  size={50}
+                  showUsername={false}
+                />
+              ))}
+            </View>
+          </ScrollView>
+          <View className="absolute bottom-5 right-4 items-center justify-center">
+            <CameraIcon size={35} />
+          </View>
+        </View>
+      </Header>
+
       <FeedList
         ref={flatListRef}
         posts={posts}

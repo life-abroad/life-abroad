@@ -101,7 +101,7 @@ export const FeedPost: React.FC<FeedPostProps> = ({
       </View>
 
       {/* Images */}
-      <View className={`flex-col ${numColumns > 1 ? 'gap-[0]' : 'gap-[2]'}`}>
+      <View className={`flex-col gap-[2]`}>
         {containerWidth > 0 &&
           images.map((image, index) => {
             const availableWidth = containerWidth / numColumns;
@@ -123,7 +123,7 @@ export const FeedPost: React.FC<FeedPostProps> = ({
                 }>
                 <Image
                   source={{ uri: image.url }}
-                  style={{ width: availableWidth - padding, height }}
+                  style={{ width: availableWidth - padding - numColumns, height }}
                   resizeMode="cover"
                 />
                 {index === 0 && caption && (

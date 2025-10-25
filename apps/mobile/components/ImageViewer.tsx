@@ -55,7 +55,7 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
   const [shouldRender, setShouldRender] = React.useState(false);
   const fadeAnim = React.useRef(new Animated.Value(0)).current;
   const bottomBarFadeAnim = React.useRef(new Animated.Value(1)).current;
-  const { isWeb } = useResponsive();
+  const { isWeb, isDesktop } = useResponsive();
 
   useEffect(() => {
     setHideBars(false);
@@ -204,13 +204,12 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
         {/* Reactions - Above Bottom Bar */}
         {reactions[imageIndex] && reactions[imageIndex].length > 0 && (
           <Animated.View
-            className={`absolute ${hideBottomBar ? 'bottom-[2rem]' : 'bottom-[6.5rem]'} left-0 right-0 h-12`}
             style={{
               opacity: bottomBarFadeAnim,
               position: 'absolute',
               left: 3,
               right: 0,
-              bottom: isWeb ? 120 : 70,
+              bottom: hideBottomBar ? 40 : isWeb ? 120 : 80,
             }}
             pointerEvents={hideBars ? 'none' : 'auto'}>
             <ScrollView
@@ -245,7 +244,7 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
               opacity: bottomBarFadeAnim,
               position: 'absolute',
               bottom: 0,
-              left: 10,
+              left: isDesktop ? 10 : 0,
               right: 0,
               gap: 10,
               paddingBottom: 20,
