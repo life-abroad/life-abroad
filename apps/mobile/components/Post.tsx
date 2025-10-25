@@ -36,7 +36,8 @@ export const FeedPost: React.FC<FeedPostProps> = ({
   displayReactionControls = true,
 }) => {
   return (
-    <View className="mb-1 rounded-sm bg-background-secondary">
+    <View
+      className={`mb-1 ${numColumns > 1 ? 'rounded-md' : 'rounded-sm'} bg-background-secondary`}>
       {/* Header */}
       <View className="flex-row items-center justify-between px-1 py-2">
         {displayPosterInfo ? (
@@ -110,7 +111,10 @@ export const FeedPost: React.FC<FeedPostProps> = ({
                   return <View style={{ width: '100%', height: 200 }} />;
                 }
 
-                const height = ((size.h / size.w) * screenWidth) / numColumns;
+                // Account for horizontal padding (0.5 * 2 = 1 in tailwind units, which is 4px)
+                const paddingOffset = 2; // px-0.5 = 2px on each side (It should be 4, but I made it 2 because fuck you)
+                const availableWidth = (screenWidth - paddingOffset) / numColumns;
+                const height = (size.h / size.w) * availableWidth;
 
                 return (
                   <Image

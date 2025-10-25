@@ -10,19 +10,18 @@ function Blur({ topBar }: { topBar?: boolean }) {
       <BlurView
         style={{ position: 'absolute', width: '100%', height: '100%' }}
         blurType="dark"
-        blurAmount={topBar ? 32 : 32}
+        blurAmount={32}
         reducedTransparencyFallbackColor="black"
-        blurRadius={15}
-        // experimentalBlurMethod="dimezisBlurView"
+        blurRadius={5}
       />
       {/* Background texture */}
       <ImageBackground
-        source={require('../assets/textures/wood-grain.png')}
-        resizeMode="repeat"
-        className={`absolute inset-0 ${topBar ? 'opacity-10' : 'opacity-15'}`}
+        source={require('../assets/textures/wood-grain-white.png')}
+        resizeMode={`${topBar ? 'cover' : 'repeat'}`}
+        className={`absolute inset-0 ${topBar ? 'opacity-[0.08]' : 'opacity-0'}`}
       />
       {/* Black frosted overlay */}
-      <View className="absolute inset-0 bg-black/25" />
+      <View className="absolute inset-0 bg-black/10" />
 
       {/* Bottom edge subtle glow */}
       {!topBar ? (
@@ -60,7 +59,7 @@ function Blur({ topBar }: { topBar?: boolean }) {
         ]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
-        className={`absolute inset-0 ${topBar ? 'opacity-15' : 'opacity-10'}`}
+        className={`absolute inset-0 ${topBar ? 'opacity-15' : 'opacity-50'}`}
       />
     </View>
   );

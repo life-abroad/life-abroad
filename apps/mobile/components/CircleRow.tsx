@@ -33,11 +33,6 @@ export default function CircleRow({ circle, onPress, className }: CircleRowProps
         <View
           className="h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-white"
           style={{ borderWidth: 2, borderColor: circle.color }}>
-          <ImageBackground
-            source={require('../assets/textures/snow.png')}
-            resizeMode="cover"
-            className={`absolute inset-0 opacity-100`}
-          />
           {displayUsers.length > 0 && (
             <View className="h-full w-full flex-row flex-wrap">
               {displayUsers.map((user, index) => (
