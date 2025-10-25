@@ -1,0 +1,31 @@
+// This is an optional configuration file used primarily for debugging purposes when reporting issues.
+// It is safe to delete this file as it does not affect the functionality of your application.
+{
+  "cesVersion": "2.20.1",
+  "projectName": "circle",
+  "packages": [
+    {
+      "name": "nativewind",
+      "type": "styling",
+    },
+  ],
+  "flags": {
+    "noGit": false,
+    "noInstall": false,
+    "overwrite": false,
+    "importAlias": true,
+    "packageManager": "yarn",
+    "eas": false,
+    "publish": false,
+  },
+  "packageManager": {
+    "type": "yarn",
+    "version": "1.22.22",
+  },
+  "os": {
+    "type": "Linux",
+    "platform": "linux",
+    "arch": "x64",
+    "kernelVersion": "6.14.0-33-generic",
+  },
+}

@@ -7,19 +7,19 @@ A simple React frontend for viewing authenticated posts and media.
 1. Install dependencies:
 
 ```bash
-npm install
+yarn install
 ```
 
 1. Start development server:
 
 ```bash
-npm run dev
+yarn dev
 ```
 
 1. Build for production:
 
 ```bash
-npm run build
+yarn build
 ```
 
 ## Usage

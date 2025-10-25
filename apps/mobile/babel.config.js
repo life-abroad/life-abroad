@@ -1,6 +1,12 @@
-module.exports = {
-  presets: ['module:@react-native/babel-preset'],
-  plugins: [
-    ["module:react-native-dotenv"]
-  ]
+module.exports = function (api) {
+  api.cache(true);
+  let plugins = [];
+
+  plugins.push('react-native-worklets/plugin');
+
+  return {
+    presets: [['babel-preset-expo', { jsxImportSource: 'nativewind' }], 'nativewind/babel'],
+
+    plugins,
+  };
 };
