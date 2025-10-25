@@ -11,9 +11,11 @@ import { ScrollView } from 'react-native-gesture-handler';
 export const HomePage = ({
   hideNav,
   setHideNav,
+  className,
 }: {
   hideNav: boolean;
   setHideNav: (hide: boolean) => void;
+  className?: string;
 }) => {
   const flatListRef = useRef<FlatList>(null);
   const scrollY = useRef(new Animated.Value(0)).current;
@@ -74,7 +76,7 @@ export const HomePage = ({
   );
 
   return (
-    <View className="relative flex-1">
+    <View className={`relative flex-1 ${className}`}>
       {/* Stories - Floating Header */}
       {!hideNav && (
         <Header scrollY={scrollY} onHeightChange={setHeaderHeight}>

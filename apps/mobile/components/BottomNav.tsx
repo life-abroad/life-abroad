@@ -1,6 +1,6 @@
 import React from 'react';
 import { ChatBubbleIcon, CircleIconNav, UserIcon } from 'components/Icons';
-import { View } from 'react-native';
+import { Platform, View } from 'react-native';
 import Blur from './Blur';
 
 export default function BottomNav({
@@ -11,23 +11,23 @@ export default function BottomNav({
   setSelectedTab: (tab: string) => void;
 }) {
   return (
-    <View className="h-20">
+    <View className="native:h-20 web:h-12">
       <Blur />
       <View className="android:pb-5 h-full w-full flex-row items-center justify-center gap-12 px-2">
         <View className="mt-1">
           <ChatBubbleIcon
-            size={36}
+            size={Platform.OS === 'web' ? 30 : 40}
             onPress={() => setSelectedTab('chat')}
             active={selectedTab === 'chat'}
           />
         </View>
         <CircleIconNav
-          size={40}
+          size={Platform.OS === 'web' ? 30 : 40}
           active={selectedTab === 'home'}
           onPress={() => setSelectedTab('home')}
         />
         <UserIcon
-          size={40}
+          size={Platform.OS === 'web' ? 30 : 40}
           onPress={() => setSelectedTab('profile')}
           active={selectedTab === 'profile'}
         />

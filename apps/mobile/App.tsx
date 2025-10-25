@@ -76,7 +76,7 @@ export default function App() {
   }
 
   return (
-    <GestureHandlerRootView style={{ flex: 1, backgroundColor: 'red' }}>
+    <GestureHandlerRootView style={{ flex: 1 }}>
       <NavigationContainer
         ref={navigationRef}
         onStateChange={() => {
@@ -89,7 +89,7 @@ export default function App() {
           dark: true,
           colors: {
             primary: 'rgb(255, 255, 255)',
-            background: 'rgb(0, 0, 0)',
+            background: '#191919',
             card: 'rgb(0, 0, 0)',
             text: 'rgb(255, 255, 255)',
             border: 'rgb(0, 0, 0)',
@@ -102,7 +102,7 @@ export default function App() {
             heavy: { fontFamily: 'System', fontWeight: '900' },
           },
         }}>
-        <View className="relative flex-1 web:mx-auto web:w-1/2">
+        <View className="relative flex-1">
           <Tab.Navigator
             screenOptions={{
               headerShown: false,
@@ -122,7 +122,13 @@ export default function App() {
               </View>
             )}>
             <Tab.Screen name="home">
-              {() => <HomePage hideNav={hideNav} setHideNav={setHideNav} />}
+              {() => (
+                <HomePage
+                  hideNav={hideNav}
+                  setHideNav={setHideNav}
+                  className="native:w-full web:mx-auto web:w-2/3"
+                />
+              )}
             </Tab.Screen>
             <Tab.Screen name="chat" component={ChatPage} />
             <Tab.Screen name="profile">{() => <ProfilePage setHideNav={setHideNav} />}</Tab.Screen>

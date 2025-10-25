@@ -58,7 +58,7 @@ function Header({ children, scrollY, onHeightChange }: HeaderProps) {
         }}
         pointerEvents="box-none">
         <Blur topBar />
-        <View className="native:pt-14 px-4 web:pt-8" pointerEvents="box-none">
+        <View className="native:pt-14 px-4 web:pt-4" pointerEvents="box-none">
           <CircleLogo size={80} />
         </View>
         {children}
