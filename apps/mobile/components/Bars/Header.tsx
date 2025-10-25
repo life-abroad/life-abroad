@@ -56,7 +56,8 @@ function Header({ children, scrollY, onHeightChange }: HeaderProps) {
           transform: [{ translateY: headerTranslateY }],
           opacity: headerOpacity,
         }}
-        pointerEvents="box-none">
+        pointerEvents="box-none"
+        className="web:lg:hidden">
         <Blur topBar />
         <View className="native:pt-14 px-4 web:pt-4" pointerEvents="box-none">
           <CircleLogo size={80} />

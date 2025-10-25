@@ -1,12 +1,22 @@
 import React, { useEffect, useRef, useCallback, useState } from 'react';
-import { View, Image, Animated, FlatList, TouchableOpacity, Platform } from 'react-native';
+import {
+  View,
+  Image,
+  Animated,
+  FlatList,
+  TouchableOpacity,
+  Platform,
+  useWindowDimensions,
+} from 'react-native';
 import { posts, stories } from './mockData';
 import { CameraIcon } from 'components/Icons';
 import { ImageViewer } from 'components/ImageViewer';
 import Header from 'components/Bars/Header';
+import RightHeader from 'components/Bars/RightHeader';
 import { FeedList } from 'components/FeedList';
 import { useImageViewer } from '../../hooks/useImageViewer';
 import { ScrollView } from 'react-native-gesture-handler';
+import { Text } from 'components/Text';
 
 export const HomePage = ({
   hideNav,
@@ -75,10 +85,13 @@ export const HomePage = ({
     [allStoryImages, allStoryUsers, allStoryMeta, allStoryReactions, openImageViewer]
   );
 
+  const { width } = useWindowDimensions();
+  const isDesktop = Platform.OS === 'web' && width >= 1024; // lg breakpoint is 1024px
+
   return (
     <View className={`relative flex-1 bg-black ${className}`}>
-      {/* Stories - Floating Header */}
-      {!hideNav && (
+      {/* Stories - Floating Header for mobile/tablet */}
+      {!hideNav && !isDesktop && (
         <Header scrollY={scrollY} onHeightChange={setHeaderHeight}>
           {/* Stories row */}
           <View className="relative py-3">
@@ -118,12 +131,47 @@ export const HomePage = ({
         </Header>
       )}
 
+      {/* Right Header for desktop - Stories in sidebar */}
+      {!hideNav && isDesktop && (
+        <View className="absolute right-0 top-0 z-30 hidden web:lg:block">
+          <RightHeader className="w-80">
+            <View className="py-4">
+              <View className="flex-col gap-3">
+                {stories.map((story, index) => {
+                  const isGray = story.seen ?? false;
+                  return (
+                    <TouchableOpacity
+                      key={index}
+                      className="relative flex-row items-center gap-3"
+                      onPress={() => handleStoryPress(index)}>
+                      <Image
+                        source={{ uri: story.user.userAvatar }}
+                        className={`h-[60] w-[60] rounded-full ${index < 2 ? 'border-2 border-white' : ''} ${isGray ? 'opacity-100' : ''}`}
+                      />
+                      {isGray && (
+                        <View
+                          pointerEvents="none"
+                          className="absolute inset-0 h-[60] w-[60] rounded-full bg-[rgba(0,0,0,0.4)]"
+                        />
+                      )}
+                      <View className="flex-1">
+                        <Text className="text-base font-semibold">{story.user.userName}</Text>
+                      </View>
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
+            </View>
+          </RightHeader>
+        </View>
+      )}
+
       <FeedList
         ref={flatListRef}
         posts={posts}
         scrollY={scrollY}
         onImagePress={handlePostImagePress}
-        paddingTop={headerHeight + 5}
+        paddingTop={isDesktop ? 5 : headerHeight}
       />
 
       <ImageViewer
