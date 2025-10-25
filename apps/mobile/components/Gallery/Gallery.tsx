@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import { Gallery as GalleryIm, type GalleryType, TapGestureEvent } from 'react-native-zoom-toolkit';
-
 import GalleryImage from './GalleryImage';
 import { withTiming } from 'react-native-reanimated';
 
