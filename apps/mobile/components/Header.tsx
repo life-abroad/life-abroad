@@ -38,7 +38,7 @@ function Header({ children, scrollY }: { children: React.ReactNode; scrollY: Ani
         }}
         pointerEvents="box-none">
         <Blur topBar />
-        <View className="px-4 pt-14" pointerEvents="box-none">
+        <View className="native:pt-14 px-4 web:pt-8" pointerEvents="box-none">
           <CircleLogo size={80} />
         </View>
         {children}

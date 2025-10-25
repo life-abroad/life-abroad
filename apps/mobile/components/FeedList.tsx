@@ -160,13 +160,12 @@ export const FeedList = React.forwardRef<FeedListHandle, FeedListProps>(
       return numColumns > 1 && masonryColumns ? (
         <Animated.ScrollView
           ref={scrollViewRef}
-          onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
-            useNativeDriver: false,
-          })}
+          // onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
+          //   useNativeDriver: false,
+          // })}
           scrollEventThrottle={16}
           contentContainerStyle={{ paddingTop, paddingBottom }}
-          showsVerticalScrollIndicator={false}
-          removeClippedSubviews={Platform.OS !== 'web'}>
+          showsVerticalScrollIndicator={Platform.OS === 'web'}>
           <View className="flex-row" style={{ gap: 3 }}>
             {masonryColumns.map((column, columnIndex) => (
               <View key={columnIndex} className="flex-1" style={{ gap: 1 }}>
