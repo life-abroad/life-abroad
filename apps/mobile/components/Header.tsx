@@ -51,7 +51,7 @@ function Header({ children, scrollY, onHeightChange }: HeaderProps) {
           right: 0,
           top: 0,
           width: '100%',
-          zIndex: 20,
+          zIndex: 10,
           paddingVertical: 0,
           transform: [{ translateY: headerTranslateY }],
           opacity: headerOpacity,

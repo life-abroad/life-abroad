@@ -121,7 +121,9 @@ export default function App() {
                 />
               </View>
             )}>
-            <Tab.Screen name="home">{() => <HomePage setHideNav={setHideNav} />}</Tab.Screen>
+            <Tab.Screen name="home">
+              {() => <HomePage hideNav={hideNav} setHideNav={setHideNav} />}
+            </Tab.Screen>
             <Tab.Screen name="chat" component={ChatPage} />
             <Tab.Screen name="profile">{() => <ProfilePage setHideNav={setHideNav} />}</Tab.Screen>
           </Tab.Navigator>

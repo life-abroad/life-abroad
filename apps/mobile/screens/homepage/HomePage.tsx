@@ -8,7 +8,13 @@ import { FeedList } from 'components/FeedList';
 import { useImageViewer } from '../../hooks/useImageViewer';
 import { ScrollView } from 'react-native-gesture-handler';
 
-export const HomePage = ({ setHideNav }: { setHideNav: (hide: boolean) => void }) => {
+export const HomePage = ({
+  hideNav,
+  setHideNav,
+}: {
+  hideNav: boolean;
+  setHideNav: (hide: boolean) => void;
+}) => {
   const flatListRef = useRef<FlatList>(null);
   const scrollY = useRef(new Animated.Value(0)).current;
   const [headerHeight, setHeaderHeight] = useState<number>(136); // Default fallback
@@ -70,43 +76,45 @@ export const HomePage = ({ setHideNav }: { setHideNav: (hide: boolean) => void }
   return (
     <View className="relative flex-1">
       {/* Stories - Floating Header */}
-      <Header scrollY={scrollY} onHeightChange={setHeaderHeight}>
-        {/* Stories row */}
-        <View className="relative py-3">
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={Platform.OS === 'web'}
-            scrollEventThrottle={16}
-            fadingEdgeLength={15}
-            className="w-[82%]">
-            <View className="flex-row items-center gap-2.5 pl-3">
-              {stories.map((story, index) => {
-                const isGray = story.seen ?? false;
-                return (
-                  <TouchableOpacity
-                    key={index}
-                    className="relative"
-                    onPress={() => handleStoryPress(index)}>
-                    <Image
-                      source={{ uri: story.user.userAvatar }}
-                      className={`h-[50] w-[50] rounded-full ${index < 2 ? 'border-2 border-white' : ''} ${isGray ? 'opacity-100' : ''}`}
-                    />
-                    {isGray && (
-                      <View
-                        pointerEvents="none"
-                        className="absolute inset-0 rounded-full bg-[rgba(0,0,0,0.4)]"
+      {!hideNav && (
+        <Header scrollY={scrollY} onHeightChange={setHeaderHeight}>
+          {/* Stories row */}
+          <View className="relative py-3">
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={Platform.OS === 'web'}
+              scrollEventThrottle={16}
+              fadingEdgeLength={15}
+              className="w-[82%]">
+              <View className="flex-row items-center gap-2.5 pl-3">
+                {stories.map((story, index) => {
+                  const isGray = story.seen ?? false;
+                  return (
+                    <TouchableOpacity
+                      key={index}
+                      className="relative"
+                      onPress={() => handleStoryPress(index)}>
+                      <Image
+                        source={{ uri: story.user.userAvatar }}
+                        className={`h-[50] w-[50] rounded-full ${index < 2 ? 'border-2 border-white' : ''} ${isGray ? 'opacity-100' : ''}`}
                       />
-                    )}
-                  </TouchableOpacity>
-                );
-              })}
+                      {isGray && (
+                        <View
+                          pointerEvents="none"
+                          className="absolute inset-0 rounded-full bg-[rgba(0,0,0,0.4)]"
+                        />
+                      )}
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
+            </ScrollView>
+            <View className="absolute bottom-5 right-4 items-center justify-center">
+              <CameraIcon size={35} />
             </View>
-          </ScrollView>
-          <View className="absolute bottom-5 right-4 items-center justify-center">
-            <CameraIcon size={35} />
           </View>
-        </View>
-      </Header>
+        </Header>
+      )}
 
       <FeedList
         ref={flatListRef}
