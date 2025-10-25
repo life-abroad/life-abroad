@@ -13,11 +13,6 @@ const posts: Post[] = [
     timestamp: 'Yesterday, 10:01am',
     images: [
       {
-        url: 'https://career-advice.jobs.ac.uk/wp-content/uploads/Japan-e1634207070862.jpg.optimal.jpg',
-        width: 1200,
-        height: 800,
-      },
-      {
         url: 'https://preview.redd.it/fopp0b1xu2151.jpg?width=640&crop=smart&auto=webp&s=b5aa6b1ccb57b53d4422adfcec2c24477a81df84',
         width: 640,
         height: 960,

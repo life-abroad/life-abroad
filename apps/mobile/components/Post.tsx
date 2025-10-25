@@ -104,6 +104,7 @@ export const FeedPost: React.FC<FeedPostProps> = ({
       <View className={`flex-col gap-[2]`}>
         {containerWidth > 0 &&
           images.map((image, index) => {
+            if (index > 0 && numColumns > 1) return null; // only show first image in grid view
             const availableWidth = containerWidth / numColumns;
             const aspectRatio = image.width / image.height;
             const height = availableWidth / aspectRatio;

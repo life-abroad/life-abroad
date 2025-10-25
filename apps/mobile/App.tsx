@@ -118,7 +118,7 @@ function AppContent() {
               position: 'absolute',
               width: '100%',
               height: '100%',
-              opacity: isDesktop ? 0.06 : 0.07,
+              opacity: isDesktop ? 0.06 : 0.09,
             }}
             className={`absolute inset-0 `}
           />
