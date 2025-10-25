@@ -34,7 +34,13 @@ export const ChatPage = () => {
   // };
 
   return (
-    <View className="flex-1 bg-background-secondary">
+    <View className="flex-1">
+      <ImageBackground
+        source={require('../../assets/textures/wood-grain-white.png')}
+        resizeMode={'repeat'}
+        className={`opacity-[0.07 ] absolute
+          inset-0`}
+      />
       {chats && chats.length > 0 ? (
         <FlatList
           data={chats}
@@ -84,11 +90,6 @@ export const ChatPage = () => {
                     activeOpacity={0.8}>
                     {/* Message bubble */}
                     <View className="z-10 -mb-3 h-[60px] w-[80px] justify-center overflow-hidden rounded-2xl bg-white px-1 py-2 shadow-md">
-                      <ImageBackground
-                        source={require('../../assets/textures/snow.png')}
-                        resizeMode="repeat"
-                        className={`absolute inset-0 opacity-100`}
-                      />
                       <Text className="text-center text-[0.6rem] leading-tight text-gray-900">
                         {bulletin.content}
                       </Text>
