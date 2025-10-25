@@ -159,7 +159,7 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
 
       {/* Top Bar */}
       {!hideTopBar && images.length > 1 && !hideBars && (
-        <View className="absolute left-3 top-14 z-50 gap-2 px-3 py-1">
+        <View className="absolute left-3 top-14 z-50 gap-2 px-3 py-1 web:top-5">
           <Text className="text-white">
             {imageIndex + 1} / {images.length}
           </Text>
@@ -178,11 +178,11 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
       {/* Black overlay */}
       <View className="absolute inset-0 bg-black/50" />
 
-      <SafeAreaView className="flex-1">
+      <View className="flex-1">
         {/* Close Button */}
         <TouchableOpacity
           onPress={onClose}
-          className="absolute right-4 top-14 z-10 h-8 w-8 items-center justify-center">
+          className="absolute right-4 top-14 z-10 h-8 w-8 items-center justify-center web:top-5">
           <Text className="text-2xl font-bold text-white">✕</Text>
         </TouchableOpacity>
 
@@ -205,6 +205,10 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
             className={`absolute ${hideBottomBar ? 'bottom-[2rem]' : 'bottom-[6.5rem]'} left-0 right-0 h-12`}
             style={{
               opacity: bottomBarFadeAnim,
+              position: 'absolute',
+              left: 3,
+              right: 0,
+              bottom: hideBottomBar ? 32 : 120,
             }}
             pointerEvents={hideBars ? 'none' : 'auto'}>
             <ScrollView
@@ -212,7 +216,7 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={{
                 paddingLeft: 8,
-                paddingRight: 16,
+                paddingRight: 13,
                 gap: 8,
                 alignItems: 'center',
               }}>
@@ -234,9 +238,15 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
         {/* Bottom Bar - Always show controls */}
         {!hideBottomBar && (
           <Animated.View
-            className={`absolute bottom-0 left-0 right-0 flex-row items-center justify-between bg-black/40 p-4 pb-8`}
+            className="absolute bottom-0 left-0 right-0 flex-row items-center justify-between bg-black/40 p-4 pb-8 web:lg:pb-4"
             style={{
               opacity: bottomBarFadeAnim,
+              position: 'absolute',
+              bottom: 0,
+              left: 10,
+              right: 0,
+              gap: 10,
+              paddingBottom: 20,
             }}
             pointerEvents={hideBars ? 'none' : 'auto'}>
             {/* User Info */}
@@ -261,7 +271,7 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
             </View>
 
             {/* Actions */}
-            <View className="flex-row items-center">
+            <View className="flex-row items-center pl-2">
               <TouchableOpacity className="mr-5">
                 <HeartIcon size={30} active={false} />
               </TouchableOpacity>
@@ -271,7 +281,7 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
             </View>
           </Animated.View>
         )}
-      </SafeAreaView>
+      </View>
     </Animated.View>
   );
 };

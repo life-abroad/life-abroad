@@ -2,8 +2,11 @@ import React from 'react';
 import { ImageBackground, View, Platform } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
+import { useResponsive } from 'contexts/ResponsiveContext';
 
 function Blur({ topBar }: { topBar?: boolean }) {
+  const { isDesktop } = useResponsive();
+
   return (
     <View style={{ position: 'absolute', width: '100%', height: '100%', overflow: 'hidden' }}>
       {/* Frosted glass blur */}
@@ -14,10 +17,14 @@ function Blur({ topBar }: { topBar?: boolean }) {
       />
       {/* Background texture */}
       <ImageBackground
-        source={require('../assets/textures/wood-grain-white.png')}
+        source={
+          !isDesktop && !topBar
+            ? require('../assets/textures/circle.png')
+            : require('../assets/textures/wood-grain-white.png')
+        }
         resizeMode={`${topBar ? 'cover' : 'repeat'}`}
         style={Platform.select({ web: { position: 'absolute', width: '100%', height: '100%' } })}
-        className={`absolute inset-0 ${topBar ? 'opacity-[0.08]' : 'opacity-5'}`}
+        className={`absolute inset-0 ${topBar ? 'opacity-[0.08]' : Platform.OS === 'web' ? 'opacity-15' : 'opacity-5'}`}
       />
       {/* Black frosted overlay */}
       <View className="absolute inset-0 bg-black/10" />

@@ -2,14 +2,7 @@ import { HomePage } from 'screens/homepage/HomePage';
 import { ChatPage } from 'screens/chatList/ChatPage';
 import { StatusBar } from 'expo-status-bar';
 import './global.css';
-import {
-  View,
-  BackHandler,
-  Alert,
-  Platform,
-  useWindowDimensions,
-  ImageBackground,
-} from 'react-native';
+import { View, BackHandler, Alert, Platform, ImageBackground } from 'react-native';
 import React, { useEffect, useState, useRef } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
 import { useFonts } from 'expo-font';
@@ -22,6 +15,7 @@ import { ProfilePage } from 'screens/userProfile/ProfilePage';
 import LeftNav from 'components/Bars/LeftNav';
 import RightHeader from 'components/Bars/RightHeader';
 import { HeaderProvider, useHeader } from './contexts/HeaderContext';
+import { ResponsiveProvider, useResponsive } from './contexts/ResponsiveContext';
 
 const Tab = createBottomTabNavigator();
 
@@ -32,8 +26,7 @@ function AppContent() {
   const navigationRef = useRef<any>(null);
   const [currentRoute, setCurrentRoute] = useState('home');
   const { headerContent, rightHeaderContent } = useHeader();
-  const { width } = useWindowDimensions();
-  const isDesktop = Platform.OS === 'web' && width >= 1024;
+  const { isDesktop } = useResponsive();
 
   const [fontsLoaded] = useFonts({
     MadimiOne_400Regular,
@@ -202,9 +195,11 @@ function AppContent() {
 export default function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <HeaderProvider>
-        <AppContent />
-      </HeaderProvider>
+      <ResponsiveProvider>
+        <HeaderProvider>
+          <AppContent />
+        </HeaderProvider>
+      </ResponsiveProvider>
     </GestureHandlerRootView>
   );
 }

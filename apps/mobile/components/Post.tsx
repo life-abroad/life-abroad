@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Image, TouchableOpacity } from 'react-native';
+import { View, Image, TouchableOpacity, Platform, useWindowDimensions } from 'react-native';
 import { Post } from 'types/post';
 import {
   ChatBubbleIcon,
@@ -13,6 +13,7 @@ import { ImageViewer } from './ImageViewer';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Ellipsis, EllipsisVertical, NotebookPen, Pencil, PencilIcon } from 'lucide-react-native';
 import { Ellipse } from 'react-native-svg';
+import { useResponsive } from 'contexts/ResponsiveContext';
 const screenWidth = require('react-native').Dimensions.get('window').width;
 
 interface FeedPostProps extends Post {
@@ -39,7 +40,7 @@ export const FeedPost: React.FC<FeedPostProps> = ({
 }) => {
   return (
     <View
-      className={`mb-1 ${numColumns > 1 ? 'rounded-md' : 'rounded-sm'} bg-background-secondary web:lg:rounded-md web:lg:border-[1px] web:lg:border-white/10  web:lg:bg-background`}>
+      className={`mb-1 ${numColumns > 1 ? 'rounded-md' : 'rounded-sm'} bg-background-secondary web:lg:rounded-md web:lg:border-[1px] web:lg:border-white/10  web:lg:bg-background web:lg:px-1`}>
       {/* Header */}
       <View className="flex-row items-center justify-between px-2 py-2 web:lg:px-4">
         {displayPosterInfo ? (
@@ -106,6 +107,8 @@ export const FeedPost: React.FC<FeedPostProps> = ({
             const availableWidth = containerWidth / numColumns;
             const aspectRatio = image.width / image.height;
             const height = availableWidth / aspectRatio;
+            const { isDesktop } = useResponsive();
+            const padding = isDesktop ? 10 : 0;
 
             return (
               <TouchableOpacity
@@ -120,7 +123,7 @@ export const FeedPost: React.FC<FeedPostProps> = ({
                 }>
                 <Image
                   source={{ uri: image.url }}
-                  style={{ width: availableWidth, height }}
+                  style={{ width: availableWidth - padding, height }}
                   resizeMode="cover"
                 />
                 {index === 0 && caption && (

@@ -1,13 +1,5 @@
 import React, { useEffect, useRef, useCallback, useState } from 'react';
-import {
-  View,
-  Image,
-  Animated,
-  FlatList,
-  TouchableOpacity,
-  Platform,
-  useWindowDimensions,
-} from 'react-native';
+import { View, Image, Animated, FlatList, TouchableOpacity, Platform } from 'react-native';
 import { posts, stories } from './mockData';
 import { CameraIcon } from 'components/Icons';
 import { ImageViewer } from 'components/ImageViewer';
@@ -18,6 +10,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { Text } from 'components/Text';
 import { useHeader } from '../../contexts/HeaderContext';
 import { StoryItem } from 'components/StoryItem';
+import { useResponsive } from '../../contexts/ResponsiveContext';
 
 export const HomePage = ({
   hideNav,
@@ -32,8 +25,7 @@ export const HomePage = ({
   const scrollY = useRef(new Animated.Value(0)).current;
   const [headerHeight, setHeaderHeight] = useState<number>(136); // Default fallback
   const { setHeaderContent, setRightHeaderContent } = useHeader();
-  const { width } = useWindowDimensions();
-  const isDesktop = Platform.OS === 'web' && width >= 1024;
+  const { isDesktop } = useResponsive();
 
   const {
     imageViewerVisible,
