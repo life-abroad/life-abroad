@@ -50,7 +50,12 @@ export const FeedPost: React.FC<FeedPostProps> = ({
               <Text className="text-md px-1 font-madimi font-semibold">{user.userName}</Text>
             </View>
             <TouchableOpacity
-              onPress={() => onImagePress(images, 0)}
+              onPress={() =>
+                onImagePress(
+                  images.map((img) => img.url),
+                  0
+                )
+              }
               className="flex-row items-center justify-end gap-3 px-3"
               activeOpacity={0.7}>
               <View className="max-w-32">
@@ -67,7 +72,12 @@ export const FeedPost: React.FC<FeedPostProps> = ({
             <View className="flex-1 flex-row items-center">
               {/* <LocationIcon size={10} /> */}
               <TouchableOpacity
-                onPress={() => onImagePress(images, 0)}
+                onPress={() =>
+                  onImagePress(
+                    images.map((img) => img.url),
+                    0
+                  )
+                }
                 activeOpacity={0.7}
                 className="ml-1 flex-1">
                 <View className="flex-col">
@@ -89,52 +99,39 @@ export const FeedPost: React.FC<FeedPostProps> = ({
 
       {/* Images */}
       <View className={`flex-col ${numColumns > 1 ? 'gap-[0]' : 'gap-[2]'}`}>
-        {images.map((image, index) => (
-          <TouchableOpacity
-            key={index}
-            className="relative"
-            activeOpacity={1}
-            onPress={() => onImagePress(images, index)}>
-            {(() => {
-              const IntrinsicImage: React.FC = () => {
-                const [size, setSize] = React.useState<{ w: number; h: number } | null>(null);
+        {images.map((image, index) => {
+          // Account for horizontal padding (0.5 * 2 = 1 in tailwind units, which is 4px)
+          const paddingOffset = 2; // px-0.5 = 2px on each side (It should be 4, but I made it 2 because fuck you)
+          const availableWidth = (screenWidth - paddingOffset) / numColumns;
 
-                React.useEffect(() => {
-                  Image.getSize(
-                    image,
-                    (w, h) => setSize({ w, h }),
-                    () => setSize({ w: 1, h: 1 }) // fallback
-                  );
-                }, [image]);
+          // Calculate height using image dimensions, fallback to 4:3 aspect ratio
+          const height = (image.height / image.width) * availableWidth;
 
-                if (!size) {
-                  return <View style={{ width: '100%', height: 200 }} />;
-                }
-
-                // Account for horizontal padding (0.5 * 2 = 1 in tailwind units, which is 4px)
-                const paddingOffset = 2; // px-0.5 = 2px on each side (It should be 4, but I made it 2 because fuck you)
-                const availableWidth = (screenWidth - paddingOffset) / numColumns;
-                const height = (size.h / size.w) * availableWidth;
-
-                return (
-                  <Image
-                    source={{ uri: image }}
-                    className="w-full"
-                    style={{ width: '100%', height: height }}
-                    resizeMode="contain"
-                  />
-                );
-              };
-
-              return <IntrinsicImage />;
-            })()}
-            {index === 0 && caption && (
-              <View className="absolute bottom-2 left-2 px-0 py-2">
-                <Text className="text-sm ">{caption}</Text>
-              </View>
-            )}
-          </TouchableOpacity>
-        ))}
+          return (
+            <TouchableOpacity
+              key={index}
+              className="relative"
+              activeOpacity={1}
+              onPress={() =>
+                onImagePress(
+                  images.map((img) => img.url),
+                  index
+                )
+              }>
+              <Image
+                source={{ uri: image.url }}
+                className="w-full"
+                style={{ width: '100%', height }}
+                resizeMode="contain"
+              />
+              {index === 0 && caption && (
+                <View className="absolute bottom-2 left-2 px-0 py-2">
+                  <Text className="text-sm ">{caption}</Text>
+                </View>
+              )}
+            </TouchableOpacity>
+          );
+        })}
       </View>
 
       {/* Footer */}

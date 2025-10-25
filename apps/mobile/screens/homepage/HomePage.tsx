@@ -33,7 +33,7 @@ export const HomePage = ({ setHideNav }: { setHideNav: (hide: boolean) => void }
     setHideNav(imageViewerVisible);
   }, [imageViewerVisible]);
 
-  const allStoryImages = stories.flatMap((s) => s.images ?? []);
+  const allStoryImages = stories.flatMap((s) => (s.images ?? []).map((img) => img.url));
   const allStoryUsers = stories.flatMap((s) => (s.images ?? []).map(() => s.user));
   const allStoryReactions = stories.flatMap((s) => (s.images ?? []).map(() => s.reactions ?? []));
   const allStoryMeta = stories.flatMap((s) =>

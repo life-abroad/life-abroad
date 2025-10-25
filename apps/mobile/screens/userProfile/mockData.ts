@@ -91,10 +91,26 @@ const user: UserProfile = {
       location: 'Nara, Japan',
       timestamp: 'Yesterday, 10:01am',
       images: [
-        'https://career-advice.jobs.ac.uk/wp-content/uploads/Japan-e1634207070862.jpg.optimal.jpg',
-        'https://preview.redd.it/fopp0b1xu2151.jpg?width=640&crop=smart&auto=webp&s=b5aa6b1ccb57b53d4422adfcec2c24477a81df84',
-        'https://121clicks.com/wp-content/uploads/2024/07/discover-japan-hisa-matsumura-01.jpg',
-        'https://i.pinimg.com/564x/b1/3e/12/b13e1235906241a0f61923da76ade35d.jpg',
+        {
+          url: 'https://career-advice.jobs.ac.uk/wp-content/uploads/Japan-e1634207070862.jpg.optimal.jpg',
+          width: 1200,
+          height: 800,
+        },
+        {
+          url: 'https://preview.redd.it/fopp0b1xu2151.jpg?width=640&crop=smart&auto=webp&s=b5aa6b1ccb57b53d4422adfcec2c24477a81df84',
+          width: 640,
+          height: 853,
+        },
+        {
+          url: 'https://121clicks.com/wp-content/uploads/2024/07/discover-japan-hisa-matsumura-01.jpg',
+          width: 1200,
+          height: 800,
+        },
+        {
+          url: 'https://i.pinimg.com/564x/b1/3e/12/b13e1235906241a0f61923da76ade35d.jpg',
+          width: 564,
+          height: 752,
+        },
       ],
       // caption: 'View from Tokyo Tower',
       comment: 'Thomas Brown: Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
@@ -117,9 +133,21 @@ const user: UserProfile = {
       location: 'Tokyo, Japan',
       timestamp: 'Yesterday, 10:01am',
       images: [
-        'https://www.gotokyo.org/en/destinations/southern-tokyo/roppongi/images/81_0154_1.jpg',
-        'https://yotsuya.hotelkeihan.co.jp/wp-content/uploads/sites/394/2019/02/Tokyo-Tower.jpg',
-        'https://dianathemama.com/wp-content/uploads/2018/02/fuji-proposal.jpg',
+        {
+          url: 'https://www.gotokyo.org/en/destinations/southern-tokyo/roppongi/images/81_0154_1.jpg',
+          width: 1280,
+          height: 853,
+        },
+        {
+          url: 'https://yotsuya.hotelkeihan.co.jp/wp-content/uploads/sites/394/2019/02/Tokyo-Tower.jpg',
+          width: 1200,
+          height: 900,
+        },
+        {
+          url: 'https://dianathemama.com/wp-content/uploads/2018/02/fuji-proposal.jpg',
+          width: 1200,
+          height: 800,
+        },
       ],
       // caption: 'View from Tokyo Tower',
       comment: 'Nathan Baker: Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
@@ -147,7 +175,11 @@ const user: UserProfile = {
       location: 'Tokyo, Japan',
       timestamp: 'Yesterday, 10:01am',
       images: [
-        'https://www.holysmithereens.com/wp-content/uploads/2019/08/IMG_20190823_183442_979-1024x822.jpg',
+        {
+          url: 'https://www.holysmithereens.com/wp-content/uploads/2019/08/IMG_20190823_183442_979-1024x822.jpg',
+          width: 1024,
+          height: 822,
+        },
       ],
       comment: 'Karen Lefoo: Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
       reactions: [

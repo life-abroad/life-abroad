@@ -68,24 +68,9 @@ export const FeedList = React.forwardRef<FeedListHandle, FeedListProps>(
 
           for (const post of posts) {
             for (const image of post.images) {
-              if (!sizes[image]) {
-                try {
-                  await new Promise<void>((resolve) => {
-                    Image.getSize(
-                      image,
-                      (width, height) => {
-                        sizes[image] = { width, height };
-                        resolve();
-                      },
-                      () => {
-                        sizes[image] = { width: 1, height: 1 };
-                        resolve();
-                      }
-                    );
-                  });
-                } catch (err) {
-                  sizes[image] = { width: 1, height: 1 };
-                }
+              if (!sizes[image.url]) {
+                // Use dimensions from the Image interface directly
+                sizes[image.url] = { width: image.width, height: image.height };
               }
             }
           }
@@ -107,12 +92,14 @@ export const FeedList = React.forwardRef<FeedListHandle, FeedListProps>(
       // Images height
       const columnWidth = screenWidth / numColumns;
       post.images.forEach((image) => {
-        const size = imageSizes[image];
+        const size = imageSizes[image.url];
         if (size) {
           const imageHeight = (size.height / size.width) * columnWidth;
           totalHeight += imageHeight + 2; // 2px gap between images
         } else {
-          totalHeight += 200; // fallback height
+          // Fallback using image dimensions directly
+          const imageHeight = (image.height / image.width) * columnWidth;
+          totalHeight += imageHeight + 2;
         }
       });
 
@@ -160,12 +147,12 @@ export const FeedList = React.forwardRef<FeedListHandle, FeedListProps>(
       return numColumns > 1 && masonryColumns ? (
         <Animated.ScrollView
           ref={scrollViewRef}
-          // onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
-          //   useNativeDriver: false,
-          // })}
+          onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
+            useNativeDriver: false,
+          })}
           scrollEventThrottle={16}
           contentContainerStyle={{ paddingTop, paddingBottom }}
-          showsVerticalScrollIndicator={Platform.OS === 'web'}>
+          showsVerticalScrollIndicator={false}>
           <View className="flex-row" style={{ gap: 3 }}>
             {masonryColumns.map((column, columnIndex) => (
               <View key={columnIndex} className="flex-1" style={{ gap: 1 }}>
@@ -198,43 +185,39 @@ export const FeedList = React.forwardRef<FeedListHandle, FeedListProps>(
         <FlatList
           ref={flatListRef}
           data={posts}
-          keyExtractor={(_, index) => index.toString()}
-          numColumns={numColumns}
+          keyExtractor={(item, index) => `${item.user.userName}-${item.timestamp}-${index}`}
+          numColumns={1}
           renderItem={({ item }: { item: Post }) => (
-            <View className={numColumns > 1 ? 'm-[0.3%] w-[49.7%]' : ''}>
-              <FeedPost
-                {...item}
-                onImagePress={(images, index) =>
-                  onImagePress(
-                    images,
-                    index,
-                    item.user,
-                    {
-                      location: item.location,
-                      timestamp: item.timestamp,
-                    },
-                    item.reactions
-                  )
-                }
-                numColumns={numColumns}
-                displayPosterInfo={displayPosterInfo}
-                displayReactionControls={displayReactionControls}
-              />
-            </View>
+            <FeedPost
+              {...item}
+              onImagePress={(images, index) =>
+                onImagePress(
+                  images,
+                  index,
+                  item.user,
+                  {
+                    location: item.location,
+                    timestamp: item.timestamp,
+                  },
+                  item.reactions
+                )
+              }
+              numColumns={1}
+              displayPosterInfo={displayPosterInfo}
+              displayReactionControls={displayReactionControls}
+            />
           )}
+          removeClippedSubviews={Platform.OS !== 'web'}
+          windowSize={Platform.OS === 'web' ? 10 : 21}
+          maxToRenderPerBatch={Platform.OS === 'web' ? 5 : 10}
+          updateCellsBatchingPeriod={Platform.OS === 'web' ? 100 : 50}
+          initialNumToRender={5}
           onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
             useNativeDriver: false,
           })}
           scrollEventThrottle={16}
-          className="flex-1"
           contentContainerStyle={{ paddingTop, paddingBottom }}
-          showsVerticalScrollIndicator={false}
-          removeClippedSubviews={Platform.OS !== 'web'}
-          {...(Platform.OS !== 'web' && {
-            maintainVisibleContentPosition: {
-              minIndexForVisible: 0,
-            },
-          })}
+          showsVerticalScrollIndicator={Platform.OS === 'web'}
         />
       );
     }, [
