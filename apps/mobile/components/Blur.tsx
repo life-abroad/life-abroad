@@ -4,8 +4,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
 import { useResponsive } from 'contexts/ResponsiveContext';
 
-function Blur({ topBar }: { topBar?: boolean }) {
-  const { isDesktop } = useResponsive();
+function Blur({ topBar = false }: { topBar?: boolean }) {
+  const { isDesktop, isWeb } = useResponsive();
 
   return (
     <View style={{ position: 'absolute', width: '100%', height: '100%', overflow: 'hidden' }}>
@@ -18,13 +18,13 @@ function Blur({ topBar }: { topBar?: boolean }) {
       {/* Background texture */}
       <ImageBackground
         source={
-          !isDesktop && !topBar
+          isWeb && !topBar
             ? require('../assets/textures/circle.png')
             : require('../assets/textures/wood-grain-white.png')
         }
         resizeMode={`${topBar ? 'cover' : 'repeat'}`}
         style={Platform.select({ web: { position: 'absolute', width: '100%', height: '100%' } })}
-        className={`absolute inset-0 ${topBar ? 'opacity-[0.08]' : Platform.OS === 'web' ? 'opacity-15' : 'opacity-5'}`}
+        className={`absolute inset-0 ${topBar ? 'opacity-[0.05]' : isWeb ? 'opacity-10' : 'opacity-5'}`}
       />
       {/* Black frosted overlay */}
       <View className="absolute inset-0 bg-black/10" />

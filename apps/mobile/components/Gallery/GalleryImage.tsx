@@ -24,7 +24,7 @@ const GalleryImage: React.FC<GalleryImageProps> = ({ uri, index }) => {
       source={{ uri }}
       style={size}
       resizeMethod={'scale'}
-      resizeMode={'cover'}
+      resizeMode={'contain'}
       onLoad={(e) => {
         setResolution({
           width: e.nativeEvent.source.width,

@@ -188,7 +188,7 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
 
         {/* Main Image */}
         <View className="flex-1 items-center justify-center">
-          <View className="h-[100%] w-[100%]">
+          <View className="size-full bg-red-500">
             <Gallery
               images={images}
               currentIndex={imageIndex}
