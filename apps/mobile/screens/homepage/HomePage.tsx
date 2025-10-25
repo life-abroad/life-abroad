@@ -89,10 +89,15 @@ export const HomePage = ({
     [allStoryImages, allStoryUsers, allStoryMeta, allStoryReactions, openImageViewer]
   );
 
+  // Memoize header height callback to prevent re-renders
+  const handleHeaderHeightChange = useCallback((height: number) => {
+    setHeaderHeight(height);
+  }, []);
+
   // Set mobile/tablet header content
   useEffect(() => {
     setHeaderContent(
-      <Header scrollY={scrollY} onHeightChange={setHeaderHeight}>
+      <Header scrollY={scrollY} onHeightChange={handleHeaderHeightChange}>
         {/* Stories row */}
         <View className="relative py-3">
           <ScrollView
@@ -120,7 +125,8 @@ export const HomePage = ({
         </View>
       </Header>
     );
-  }, [stories, handleStoryPress, scrollY, setHeaderContent]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stories]);
 
   // Set desktop right header content
   useEffect(() => {
@@ -140,7 +146,8 @@ export const HomePage = ({
         </View>
       </View>
     );
-  }, [stories, handleStoryPress, setRightHeaderContent]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stories]);
 
   // Clear header content when component unmounts
   useEffect(() => {
@@ -148,7 +155,7 @@ export const HomePage = ({
       setHeaderContent(null);
       setRightHeaderContent(null);
     };
-  }, [setHeaderContent, setRightHeaderContent]);
+  }, []);
 
   return (
     <View className={`relative flex-1 bg-black ${className}`}>
