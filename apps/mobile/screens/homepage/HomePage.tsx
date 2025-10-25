@@ -67,14 +67,7 @@ export const HomePage = ({ setHideNav }: { setHideNav: (hide: boolean) => void }
   );
 
   return (
-    <View className="flex-1">
-      <FeedList
-        ref={flatListRef}
-        posts={posts}
-        scrollY={scrollY}
-        onImagePress={handlePostImagePress}
-      />
-
+    <View className="relative flex-1">
       {/* Stories - Floating Header */}
       <Header scrollY={scrollY}>
         {/* Stories row */}
@@ -113,6 +106,13 @@ export const HomePage = ({ setHideNav }: { setHideNav: (hide: boolean) => void }
           </View>
         </View>
       </Header>
+
+      <FeedList
+        ref={flatListRef}
+        posts={posts}
+        scrollY={scrollY}
+        onImagePress={handlePostImagePress}
+      />
 
       <ImageViewer
         images={images}

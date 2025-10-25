@@ -31,13 +31,14 @@ function Header({ children, scrollY }: { children: React.ReactNode; scrollY: Ani
   return (
     <>
       <Animated.View
-        className="absolute left-0 right-0 top-0 py-0"
+        className="absolute left-0 right-0 top-0 z-20 py-0"
         style={{
           transform: [{ translateY: headerTranslateY }],
           opacity: headerOpacity,
-        }}>
+        }}
+        pointerEvents="box-none">
         <Blur topBar />
-        <View className="px-4 pt-14">
+        <View className="px-4 pt-14" pointerEvents="box-none">
           <CircleLogo size={80} />
         </View>
         {children}

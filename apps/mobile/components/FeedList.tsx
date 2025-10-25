@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useEffect, useRef, useImperativeHandle } from 'react';
-import { View, Animated, FlatList, ScrollView, Image, Dimensions } from 'react-native';
+import { View, Animated, FlatList, ScrollView, Image, Dimensions, Platform } from 'react-native';
 import { FeedPost } from '../components/Post';
 import { Text } from '../components/Text';
 import { User } from 'types/user';
@@ -165,7 +165,8 @@ export const FeedList = React.forwardRef<FeedListHandle, FeedListProps>(
           })}
           scrollEventThrottle={16}
           contentContainerStyle={{ paddingTop, paddingBottom }}
-          showsVerticalScrollIndicator={false}>
+          showsVerticalScrollIndicator={false}
+          removeClippedSubviews={Platform.OS !== 'web'}>
           <View className="flex-row" style={{ gap: 3 }}>
             {masonryColumns.map((column, columnIndex) => (
               <View key={columnIndex} className="flex-1" style={{ gap: 1 }}>
@@ -222,16 +223,19 @@ export const FeedList = React.forwardRef<FeedListHandle, FeedListProps>(
               />
             </View>
           )}
-          onScroll={(event) => {
-            scrollY.setValue(event.nativeEvent.contentOffset.y);
-          }}
+          onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
+            useNativeDriver: false,
+          })}
           scrollEventThrottle={16}
           className="flex-1"
           contentContainerStyle={{ paddingTop, paddingBottom }}
           showsVerticalScrollIndicator={false}
-          maintainVisibleContentPosition={{
-            minIndexForVisible: 0,
-          }}
+          removeClippedSubviews={Platform.OS !== 'web'}
+          {...(Platform.OS !== 'web' && {
+            maintainVisibleContentPosition: {
+              minIndexForVisible: 0,
+            },
+          })}
         />
       );
     }, [

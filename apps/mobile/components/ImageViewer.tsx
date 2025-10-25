@@ -8,6 +8,7 @@ import {
   StatusBar,
   SafeAreaView,
   ScrollView,
+  Platform,
 } from 'react-native';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import { Text } from './Text';
@@ -130,8 +131,15 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
 
   return (
     <Animated.View
-      className="elevation-50 absolute inset-0 left-0 top-0 z-40 flex-1 bg-black"
-      style={{ opacity: fadeAnim }}
+      className="elevation-50 z-50 flex-1 bg-black"
+      style={{
+        position: Platform.OS === 'web' ? ('fixed' as any) : 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        opacity: fadeAnim,
+      }}
       pointerEvents={isVisible ? 'auto' : 'none'}>
       {/* Progress Bar */}
       {!hideProgressBar && images.length > 1 && (
