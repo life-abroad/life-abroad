@@ -123,7 +123,7 @@ export const HomePage = ({
         posts={posts}
         scrollY={scrollY}
         onImagePress={handlePostImagePress}
-        paddingTop={headerHeight}
+        paddingTop={headerHeight + 5}
       />
 
       <ImageViewer

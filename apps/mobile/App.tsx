@@ -12,6 +12,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import BottomNav from 'components/BottomNav';
 import { ProfilePage } from 'screens/userProfile/ProfilePage';
+import LeftNav from 'components/LeftNav';
 
 const Tab = createBottomTabNavigator();
 
@@ -110,18 +111,36 @@ export default function App() {
               tabBarStyle: { display: 'none' },
             }}
             tabBar={(props) => (
-              <View className={`absolute bottom-0 left-0 right-0 z-30 ${hideNav ? 'hidden' : ''}`}>
-                <BottomNav
-                  selectedTab={props.state.routes[props.state.index].name}
-                  setSelectedTab={(tab) => {
-                    const route = props.state.routes.find((r) => r.name === tab);
-                    if (route) {
-                      props.navigation.navigate(route.name);
-                    }
-                  }}
-                  className="native:h-20 web:lg:mx-auto web:lg:h-12 web:lg:w-2/3 "
-                />
-              </View>
+              <>
+                {/* Bottom Nav - Show on mobile/tablet, hide on desktop lg+ */}
+                <View
+                  className={`absolute bottom-0 left-0 right-0 z-30 web:lg:hidden ${hideNav ? 'hidden' : ''}`}>
+                  <BottomNav
+                    selectedTab={props.state.routes[props.state.index].name}
+                    setSelectedTab={(tab) => {
+                      const route = props.state.routes.find((r) => r.name === tab);
+                      if (route) {
+                        props.navigation.navigate(route.name);
+                      }
+                    }}
+                    className="native:h-20 web:h-16"
+                  />
+                </View>
+                {/* Left Nav - Hide on mobile/tablet, show on desktop lg+ */}
+                <View
+                  className={`absolute left-0 top-0 z-30 hidden web:lg:block ${hideNav ? 'hidden' : ''}`}>
+                  <LeftNav
+                    selectedTab={props.state.routes[props.state.index].name}
+                    setSelectedTab={(tab) => {
+                      const route = props.state.routes.find((r) => r.name === tab);
+                      if (route) {
+                        props.navigation.navigate(route.name);
+                      }
+                    }}
+                    className="h-screen w-20"
+                  />
+                </View>
+              </>
             )}>
             <Tab.Screen name="home">
               {() => (
