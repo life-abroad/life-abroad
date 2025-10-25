@@ -48,6 +48,7 @@ export const FeedList = React.forwardRef<FeedListHandle, FeedListProps>(
     const [imageSizes, setImageSizes] = useState<Record<string, { width: number; height: number }>>(
       {}
     );
+    const [containerWidth, setContainerWidth] = useState<number>(screenWidth);
 
     // Expose scrollToTop method through ref
     useImperativeHandle(ref, () => ({
@@ -59,6 +60,11 @@ export const FeedList = React.forwardRef<FeedListHandle, FeedListProps>(
         }
       },
     }));
+
+    const handleLayout = (event: { nativeEvent: { layout: { width: number } } }) => {
+      const { width } = event.nativeEvent.layout;
+      setContainerWidth(width);
+    };
 
     // Preload image sizes for masonry layout
     useEffect(() => {
@@ -160,6 +166,7 @@ export const FeedList = React.forwardRef<FeedListHandle, FeedListProps>(
                   <FeedPost
                     key={`${columnIndex}-${postIndex}`}
                     {...post}
+                    containerWidth={containerWidth}
                     onImagePress={(images, index) =>
                       onImagePress(
                         images,
@@ -190,6 +197,7 @@ export const FeedList = React.forwardRef<FeedListHandle, FeedListProps>(
           renderItem={({ item }: { item: Post }) => (
             <FeedPost
               {...item}
+              containerWidth={containerWidth}
               onImagePress={(images, index) =>
                 onImagePress(
                   images,
@@ -231,9 +239,14 @@ export const FeedList = React.forwardRef<FeedListHandle, FeedListProps>(
       displayPosterInfo,
       displayReactionControls,
       masonryColumns,
+      containerWidth,
     ]);
 
-    return <>{feedList}</>;
+    return (
+      <View style={{ flex: 1 }} onLayout={handleLayout}>
+        {feedList}
+      </View>
+    );
   }
 );
 

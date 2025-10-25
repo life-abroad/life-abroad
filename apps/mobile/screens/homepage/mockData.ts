@@ -20,17 +20,17 @@ const posts: Post[] = [
       {
         url: 'https://preview.redd.it/fopp0b1xu2151.jpg?width=640&crop=smart&auto=webp&s=b5aa6b1ccb57b53d4422adfcec2c24477a81df84',
         width: 640,
-        height: 853,
+        height: 960,
       },
       {
         url: 'https://121clicks.com/wp-content/uploads/2024/07/discover-japan-hisa-matsumura-01.jpg',
-        width: 1200,
-        height: 800,
+        width: 800,
+        height: 1000,
       },
       {
         url: 'https://i.pinimg.com/564x/b1/3e/12/b13e1235906241a0f61923da76ade35d.jpg',
         width: 564,
-        height: 752,
+        height: 1200,
       },
     ],
     // caption: 'View from Tokyo Tower',

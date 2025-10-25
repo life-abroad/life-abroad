@@ -102,7 +102,7 @@ export default function App() {
             heavy: { fontFamily: 'System', fontWeight: '900' },
           },
         }}>
-        <View className="relative flex-1">
+        <View className="relative flex-1 web:mx-auto web:w-1/2">
           <Tab.Navigator
             screenOptions={{
               headerShown: false,

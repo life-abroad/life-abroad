@@ -20,6 +20,7 @@ interface FeedPostProps extends Post {
   numColumns?: number;
   displayPosterInfo?: boolean;
   displayReactionControls?: boolean;
+  containerWidth?: number;
 }
 
 export const FeedPost: React.FC<FeedPostProps> = ({
@@ -34,6 +35,7 @@ export const FeedPost: React.FC<FeedPostProps> = ({
   numColumns = 1,
   displayPosterInfo = true,
   displayReactionControls = true,
+  containerWidth = 0,
 }) => {
   return (
     <View
@@ -98,39 +100,37 @@ export const FeedPost: React.FC<FeedPostProps> = ({
       </View>
 
       {/* Images */}
-      <View className={`flex-col bg-red-500 ${numColumns > 1 ? 'gap-[0]' : 'gap-[2]'}`}>
-        {images.map((image, index) => {
-          // Account for horizontal padding (0.5 * 2 = 1 in tailwind units, which is 4px)
-          const paddingOffset = 2; // px-0.5 = 2px on each side (It should be 4, but I made it 2 because fuck you)
-          const availableWidth = (screenWidth - paddingOffset) / numColumns;
+      <View className={`flex-col ${numColumns > 1 ? 'gap-[0]' : 'gap-[2]'}`}>
+        {containerWidth > 0 &&
+          images.map((image, index) => {
+            const availableWidth = containerWidth / numColumns;
+            const aspectRatio = image.width / image.height;
+            const height = availableWidth / aspectRatio;
 
-          // Calculate height using image dimensions, fallback to 4:3 aspect ratio
-          const height = (image.height / image.width) * availableWidth;
-
-          return (
-            <TouchableOpacity
-              key={index}
-              className="relative"
-              activeOpacity={1}
-              onPress={() =>
-                onImagePress(
-                  images.map((img) => img.url),
-                  index
-                )
-              }>
-              <Image
-                source={{ uri: image.url }}
-                style={{ width: '100%', height }}
-                resizeMode="contain"
-              />
-              {index === 0 && caption && (
-                <View className="absolute bottom-2 left-2 px-0 py-2">
-                  <Text className="text-sm ">{caption}</Text>
-                </View>
-              )}
-            </TouchableOpacity>
-          );
-        })}
+            return (
+              <TouchableOpacity
+                key={index}
+                className="relative"
+                activeOpacity={1}
+                onPress={() =>
+                  onImagePress(
+                    images.map((img) => img.url),
+                    index
+                  )
+                }>
+                <Image
+                  source={{ uri: image.url }}
+                  style={{ width: availableWidth, height }}
+                  resizeMode="cover"
+                />
+                {index === 0 && caption && (
+                  <View className="absolute bottom-2 left-2 px-0 py-2">
+                    <Text className="text-sm ">{caption}</Text>
+                  </View>
+                )}
+              </TouchableOpacity>
+            );
+          })}
       </View>
 
       {/* Footer */}
