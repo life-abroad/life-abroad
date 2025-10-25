@@ -1,7 +1,7 @@
 import React from 'react';
 import { ImageBackground, View } from 'react-native';
-import { BlurView } from '@react-native-community/blur';
 import { LinearGradient } from 'expo-linear-gradient';
+import { BlurView } from 'expo-blur';
 
 function Blur({ topBar }: { topBar?: boolean }) {
   return (
@@ -9,10 +9,8 @@ function Blur({ topBar }: { topBar?: boolean }) {
       {/* Frosted glass blur */}
       <BlurView
         style={{ position: 'absolute', width: '100%', height: '100%' }}
-        blurType="dark"
-        blurAmount={32}
-        reducedTransparencyFallbackColor="black"
-        blurRadius={5}
+        tint="dark"
+        intensity={80}
       />
       {/* Background texture */}
       <ImageBackground

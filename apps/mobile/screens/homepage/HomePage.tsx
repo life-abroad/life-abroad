@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useCallback } from 'react';
-import { View, Image, Animated, FlatList, TouchableOpacity } from 'react-native';
+import { View, Image, Animated, FlatList, TouchableOpacity, Platform } from 'react-native';
 import { posts, stories } from './mockData';
 import { CameraIcon } from 'components/Icons';
 import { ImageViewer } from 'components/ImageViewer';
@@ -81,8 +81,7 @@ export const HomePage = ({ setHideNav }: { setHideNav: (hide: boolean) => void }
         <View className="relative py-3">
           <ScrollView
             horizontal
-            showsHorizontalScrollIndicator={false}
-            // onScroll={handleScroll}
+            showsHorizontalScrollIndicator={Platform.OS === 'web'}
             scrollEventThrottle={16}
             fadingEdgeLength={15}
             className="w-[82%]">
