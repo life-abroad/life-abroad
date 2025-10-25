@@ -39,9 +39,9 @@ export const FeedPost: React.FC<FeedPostProps> = ({
 }) => {
   return (
     <View
-      className={`mb-1 ${numColumns > 1 ? 'rounded-md' : 'rounded-sm'} bg-background-secondary web:lg:rounded-md`}>
+      className={`mb-1 ${numColumns > 1 ? 'rounded-md' : 'rounded-sm'} bg-background-secondary web:lg:rounded-md web:lg:border-[1px] web:lg:border-white/10  web:lg:bg-background`}>
       {/* Header */}
-      <View className="flex-row items-center justify-between px-1 py-2">
+      <View className="flex-row items-center justify-between px-2 py-2 web:lg:px-4">
         {displayPosterInfo ? (
           <>
             <View className="flex-row items-center gap-2">
@@ -134,9 +134,10 @@ export const FeedPost: React.FC<FeedPostProps> = ({
       </View>
 
       {/* Footer */}
-      <View className={`${numColumns > 1 ? 'gap-0' : 'gap-2'} flex-col items-center pb-4 pt-1`}>
+      <View
+        className={`${numColumns > 1 ? 'gap-0' : 'gap-2'} flex-col items-center pb-4 pt-1 web:lg:px-2`}>
         {/* Reaction controls + Reactions */}
-        <View className="mt-1 flex-row items-start justify-between self-stretch">
+        <View className="mt-1 flex-row items-start justify-between gap-2 self-stretch">
           {/* Reaction controls */}
           {displayReactionControls && (
             <View className="w-46 flex-row items-center gap-3 rounded-lg px-2 py-0.5">

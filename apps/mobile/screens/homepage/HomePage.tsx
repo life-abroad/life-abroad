@@ -17,6 +17,7 @@ import { useImageViewer } from '../../hooks/useImageViewer';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Text } from 'components/Text';
 import { useHeader } from '../../contexts/HeaderContext';
+import { StoryItem } from 'components/StoryItem';
 
 export const HomePage = ({
   hideNav,
@@ -101,26 +102,16 @@ export const HomePage = ({
             fadingEdgeLength={15}
             className="w-[82%]">
             <View className="flex-row items-center gap-2.5 pl-3">
-              {stories.map((story, index) => {
-                const isGray = story.seen ?? false;
-                return (
-                  <TouchableOpacity
-                    key={index}
-                    className="relative"
-                    onPress={() => handleStoryPress(index)}>
-                    <Image
-                      source={{ uri: story.user.userAvatar }}
-                      className={`h-[50] w-[50] rounded-full ${index < 2 ? 'border-2 border-white' : ''} ${isGray ? 'opacity-100' : ''}`}
-                    />
-                    {isGray && (
-                      <View
-                        pointerEvents="none"
-                        className="absolute inset-0 rounded-full bg-[rgba(0,0,0,0.4)]"
-                      />
-                    )}
-                  </TouchableOpacity>
-                );
-              })}
+              {stories.map((story, index) => (
+                <StoryItem
+                  key={index}
+                  story={story}
+                  index={index}
+                  onPress={handleStoryPress}
+                  size={50}
+                  showUsername={false}
+                />
+              ))}
             </View>
           </ScrollView>
           <View className="absolute bottom-5 right-4 items-center justify-center">
@@ -136,29 +127,16 @@ export const HomePage = ({
     setRightHeaderContent(
       <View className="py-4">
         <View className="flex-col gap-3">
-          {stories.map((story, index) => {
-            const isGray = story.seen ?? false;
-            return (
-              <TouchableOpacity
-                key={index}
-                className="relative flex-row items-center gap-3"
-                onPress={() => handleStoryPress(index)}>
-                <Image
-                  source={{ uri: story.user.userAvatar }}
-                  className={`h-[60] w-[60] rounded-full ${index < 2 ? 'border-2 border-white' : ''} ${isGray ? 'opacity-100' : ''}`}
-                />
-                {isGray && (
-                  <View
-                    pointerEvents="none"
-                    className="absolute inset-0 h-[60] w-[60] rounded-full bg-[rgba(0,0,0,0.4)]"
-                  />
-                )}
-                <View className="flex-1">
-                  <Text className="text-base font-semibold">{story.user.userName}</Text>
-                </View>
-              </TouchableOpacity>
-            );
-          })}
+          {stories.map((story, index) => (
+            <StoryItem
+              key={index}
+              story={story}
+              index={index}
+              onPress={handleStoryPress}
+              size={60}
+              showUsername={true}
+            />
+          ))}
         </View>
       </View>
     );
@@ -179,7 +157,8 @@ export const HomePage = ({
         posts={posts}
         scrollY={scrollY}
         onImagePress={handlePostImagePress}
-        paddingTop={isDesktop ? 5 : headerHeight}
+        paddingTop={isDesktop ? 2 : headerHeight}
+        paddingBottom={isDesktop ? 1 : 60}
       />
 
       <ImageViewer

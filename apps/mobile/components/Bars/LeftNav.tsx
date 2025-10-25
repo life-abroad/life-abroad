@@ -15,7 +15,7 @@ export default function LeftNav({
 }) {
   return (
     <View
-      className={`h-screen border-r-[1px] border-white/10 bg-background-secondary px-4 pt-4 ${className}`}>
+      className={`h-screen border-r-[1px] border-white/10 bg-background px-4 pt-4 ${className}`}>
       {/* <Blur topBar /> */}
       <View className="" pointerEvents="box-none">
         <CircleLogo size={80} />

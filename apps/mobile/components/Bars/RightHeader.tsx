@@ -9,11 +9,7 @@ interface RightHeaderProps {
 
 function RightHeader({ children, className }: RightHeaderProps) {
   return (
-    <View
-      className={`h-screen border-l-[1px] border-white/10 bg-background-secondary ${className}`}>
-      <View className="px-4 pt-4" pointerEvents="box-none">
-        <CircleLogo size={80} />
-      </View>
+    <View className={`h-screen border-l-[1px] border-white/10 bg-background ${className}`}>
       <ScrollView className="flex-1 px-4" showsVerticalScrollIndicator={false}>
         {children}
       </ScrollView>

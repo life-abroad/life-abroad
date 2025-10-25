@@ -109,43 +109,38 @@ function AppContent() {
             heavy: { fontFamily: 'System', fontWeight: '900' },
           },
         }}>
-        <View className="relative flex-1">
-          {/* Mobile/Tablet Header - Show when not desktop and nav not hidden */}
-          {!hideNav && !isDesktop && headerContent}
-
-          {/* Desktop Right Header - Show when desktop and nav not hidden */}
+        <View className="flex-1 flex-row">
+          {/* Left Nav - Desktop only, takes up fixed width */}
           {!hideNav && isDesktop && (
-            <View className="absolute right-0 top-0 z-30">
-              <RightHeader className="">{rightHeaderContent}</RightHeader>
+            <View className="hidden web:lg:block">
+              <LeftNav
+                selectedTab={currentRoute}
+                setSelectedTab={(tab) => {
+                  navigationRef.current?.navigate(tab);
+                }}
+                className="w-30"
+              />
             </View>
           )}
 
-          <Tab.Navigator
-            screenOptions={{
-              headerShown: false,
-              tabBarStyle: { display: 'none' },
-            }}
-            tabBar={(props) => (
-              <>
-                {/* Bottom Nav - Show on mobile/tablet, hide on desktop lg+ */}
-                <View
-                  className={`absolute bottom-0 left-0 right-0 z-30 web:lg:hidden ${hideNav ? 'hidden' : ''}`}>
-                  <BottomNav
-                    selectedTab={props.state.routes[props.state.index].name}
-                    setSelectedTab={(tab) => {
-                      const route = props.state.routes.find((r) => r.name === tab);
-                      if (route) {
-                        props.navigation.navigate(route.name);
-                      }
-                    }}
-                    className="native:h-20 web:h-16"
-                  />
-                </View>
-                {/* Left Nav - Hide on mobile/tablet, show on desktop lg+ */}
-                {!hideNav && isDesktop && (
+          {/* Main Content Area - takes remaining space */}
+          <View className="relative flex-1">
+            {/* Mobile/Tablet Header - Show when not desktop and nav not hidden */}
+            {!hideNav && !isDesktop && (
+              <View className="absolute left-0 right-0 top-0 z-30">{headerContent}</View>
+            )}
+
+            <Tab.Navigator
+              screenOptions={{
+                headerShown: false,
+                tabBarStyle: { display: 'none' },
+              }}
+              tabBar={(props) => (
+                <>
+                  {/* Bottom Nav - Show on mobile/tablet, hide on desktop lg+ */}
                   <View
-                    className={`absolute left-0 top-0 z-30 hidden web:lg:block ${hideNav ? 'hidden' : ''}`}>
-                    <LeftNav
+                    className={`absolute bottom-0 left-0 right-0 z-30 web:lg:hidden ${hideNav ? 'hidden' : ''}`}>
+                    <BottomNav
                       selectedTab={props.state.routes[props.state.index].name}
                       setSelectedTab={(tab) => {
                         const route = props.state.routes.find((r) => r.name === tab);
@@ -153,24 +148,34 @@ function AppContent() {
                           props.navigation.navigate(route.name);
                         }
                       }}
+                      className="native:h-20 web:h-16"
                     />
                   </View>
+                </>
+              )}>
+              <Tab.Screen name="home">
+                {() => (
+                  <HomePage
+                    hideNav={hideNav}
+                    setHideNav={setHideNav}
+                    className="native:w-full web:lg:mx-auto web:lg:w-2/3"
+                  />
                 )}
-              </>
-            )}>
-            <Tab.Screen name="home">
-              {() => (
-                <HomePage
-                  hideNav={hideNav}
-                  setHideNav={setHideNav}
-                  className="native:w-full web:lg:mx-auto web:lg:w-2/3"
-                />
-              )}
-            </Tab.Screen>
-            <Tab.Screen name="chat" component={ChatPage} />
-            <Tab.Screen name="profile">{() => <ProfilePage setHideNav={setHideNav} />}</Tab.Screen>
-          </Tab.Navigator>
-          <StatusBar style="light" translucent />
+              </Tab.Screen>
+              <Tab.Screen name="chat" component={ChatPage} />
+              <Tab.Screen name="profile">
+                {() => <ProfilePage setHideNav={setHideNav} />}
+              </Tab.Screen>
+            </Tab.Navigator>
+            <StatusBar style="light" translucent />
+          </View>
+
+          {/* Right Header - Desktop only, takes up fixed width */}
+          {!hideNav && isDesktop && (
+            <View className="hidden web:lg:block">
+              <RightHeader className="w-30">{rightHeaderContent}</RightHeader>
+            </View>
+          )}
         </View>
       </NavigationContainer>
     </GestureHandlerRootView>
