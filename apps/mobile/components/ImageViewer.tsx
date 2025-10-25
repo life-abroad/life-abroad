@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { use, useEffect } from 'react';
 import {
   View,
   Image,
@@ -18,6 +18,7 @@ import Gallery from './Gallery/Gallery';
 import { User } from 'types/user';
 import { Reaction } from 'types/post';
 import { ImageMeta } from '../hooks/useImageViewer';
+import { useResponsive } from 'contexts/ResponsiveContext';
 
 interface ImageViewerProps {
   images: string[];
@@ -54,6 +55,7 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
   const [shouldRender, setShouldRender] = React.useState(false);
   const fadeAnim = React.useRef(new Animated.Value(0)).current;
   const bottomBarFadeAnim = React.useRef(new Animated.Value(1)).current;
+  const { isWeb } = useResponsive();
 
   useEffect(() => {
     setHideBars(false);
@@ -208,7 +210,7 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
               position: 'absolute',
               left: 3,
               right: 0,
-              bottom: hideBottomBar ? 32 : 120,
+              bottom: isWeb ? 120 : 70,
             }}
             pointerEvents={hideBars ? 'none' : 'auto'}>
             <ScrollView

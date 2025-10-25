@@ -156,7 +156,7 @@ export const HomePage = ({
         posts={posts}
         scrollY={scrollY}
         onImagePress={handlePostImagePress}
-        paddingTop={isDesktop ? 2 : headerHeight}
+        paddingTop={isDesktop ? 2 : headerHeight - 6}
         paddingBottom={isDesktop ? 1 : 60}
       />
 
