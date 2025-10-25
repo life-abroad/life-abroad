@@ -2,7 +2,14 @@ import { HomePage } from 'screens/homepage/HomePage';
 import { ChatPage } from 'screens/chatList/ChatPage';
 import { StatusBar } from 'expo-status-bar';
 import './global.css';
-import { View, BackHandler, Alert, Platform, useWindowDimensions } from 'react-native';
+import {
+  View,
+  BackHandler,
+  Alert,
+  Platform,
+  useWindowDimensions,
+  ImageBackground,
+} from 'react-native';
 import React, { useEffect, useState, useRef } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
 import { useFonts } from 'expo-font';
@@ -96,7 +103,7 @@ function AppContent() {
           colors: {
             primary: 'rgb(255, 255, 255)',
             // background: '#191919',
-            background: 'black',
+            background: 'rgb(0, 0, 0, 0)',
             card: 'rgb(0, 0, 0)',
             text: 'rgb(255, 255, 255)',
             border: 'rgb(0, 0, 0)',
@@ -109,7 +116,17 @@ function AppContent() {
             heavy: { fontFamily: 'System', fontWeight: '900' },
           },
         }}>
-        <View className="flex-1 flex-row">
+        <View className="flex-1 flex-row bg-background">
+          {/* Background Image - Web only */}
+          <ImageBackground
+            source={require('./assets/textures/circle.png')}
+            resizeMode={`repeat`}
+            style={Platform.select({
+              web: { position: 'absolute', width: '100%', height: '100%', opacity: 0.06 },
+            })}
+            className={`absolute inset-0 `}
+          />
+
           {/* Left Nav - Desktop only, takes up fixed width */}
           {!hideNav && isDesktop && (
             <View className="hidden web:lg:block">

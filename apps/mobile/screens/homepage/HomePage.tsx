@@ -158,7 +158,7 @@ export const HomePage = ({
   }, []);
 
   return (
-    <View className={`relative flex-1 bg-black ${className}`}>
+    <View className={`relative flex-1 ${className}`}>
       <FeedList
         ref={flatListRef}
         posts={posts}
