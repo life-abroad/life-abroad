@@ -1,3 +1,4 @@
+import { useResponsive } from 'contexts/ResponsiveContext';
 import React, { useState } from 'react';
 import { Image, useWindowDimensions } from 'react-native';
 import { fitContainer } from 'react-native-zoom-toolkit';
@@ -8,6 +9,7 @@ type GalleryImageProps = {
 };
 
 const GalleryImage: React.FC<GalleryImageProps> = ({ uri, index }) => {
+  const { isDesktop } = useResponsive();
   const { width, height } = useWindowDimensions();
   const [resolution, setResolution] = useState<{
     width: number;
@@ -16,8 +18,7 @@ const GalleryImage: React.FC<GalleryImageProps> = ({ uri, index }) => {
     width: 1,
     height: 1,
   });
-
-  const size = fitContainer(resolution.width / resolution.height, { width, height });
+  const size = { width, height: isDesktop ? height - 25 : height }; // adding some padding on desktop
 
   return (
     <Image
