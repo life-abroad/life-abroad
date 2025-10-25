@@ -6,7 +6,7 @@ import { CameraIcon, ChatBubbleIcon, CircleLogo } from 'components/Icons';
 import { Text } from 'components/Text';
 import Blur from 'components/Blur';
 import ChatRow from 'components/ChatRow';
-import Header from 'components/Header';
+import Header from 'components/Bars/Header';
 import { ScrollView } from 'react-native-gesture-handler';
 import { LinearGradient } from 'expo-linear-gradient';
 

@@ -3,7 +3,7 @@ import { View, Image, Animated, FlatList, TouchableOpacity, Platform } from 'rea
 import { posts, stories } from './mockData';
 import { CameraIcon } from 'components/Icons';
 import { ImageViewer } from 'components/ImageViewer';
-import Header from 'components/Header';
+import Header from 'components/Bars/Header';
 import { FeedList } from 'components/FeedList';
 import { useImageViewer } from '../../hooks/useImageViewer';
 import { ScrollView } from 'react-native-gesture-handler';

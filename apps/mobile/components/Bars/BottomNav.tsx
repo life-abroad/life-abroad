@@ -1,9 +1,9 @@
 import React from 'react';
-import { ChatBubbleIcon, CircleIconNav, CircleLogo, UserIcon } from 'components/Icons';
+import { ChatBubbleIcon, CircleIconNav, UserIcon } from 'components/Icons';
 import { Platform, View } from 'react-native';
-import Blur from './Blur';
+import Blur from '../Blur';
 
-export default function LeftNav({
+export default function BottomNav({
   selectedTab,
   setSelectedTab,
   className,
@@ -13,13 +13,10 @@ export default function LeftNav({
   className?: string;
 }) {
   return (
-    <View className={`h-screen border-r-[1px] border-white ${className}`}>
-      {/* <Blur topBar /> */}
-      <View className="native:pt-14 px-4 web:pt-4" pointerEvents="box-none">
-        <CircleLogo size={80} />
-      </View>
-      <View className="h-full w-full flex-col items-center justify-center gap-44 py-8">
-        <View className="ml-1">
+    <View className={`${className}`}>
+      <Blur />
+      <View className="android:pb-5 h-full w-full flex-row items-center justify-center gap-12 px-2">
+        <View className="mt-1">
           <ChatBubbleIcon
             size={Platform.OS === 'web' ? 30 : 40}
             onPress={() => setSelectedTab('chat')}

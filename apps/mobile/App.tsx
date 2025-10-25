@@ -10,9 +10,9 @@ import { MadimiOne_400Regular } from '@expo-google-fonts/madimi-one';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import BottomNav from 'components/BottomNav';
+import BottomNav from 'components/Bars/BottomNav';
 import { ProfilePage } from 'screens/userProfile/ProfilePage';
-import LeftNav from 'components/LeftNav';
+import LeftNav from 'components/Bars/LeftNav';
 
 const Tab = createBottomTabNavigator();
 
@@ -137,7 +137,6 @@ export default function App() {
                         props.navigation.navigate(route.name);
                       }
                     }}
-                    className="h-screen w-20"
                   />
                 </View>
               </>

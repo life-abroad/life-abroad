@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { View, Animated, FlatList, Image, TouchableOpacity, ImageBackground } from 'react-native';
 import { posts } from '../homepage/mockData';
 import { ImageViewer } from 'components/ImageViewer';
-import Header from 'components/Header';
+import Header from 'components/Bars/Header';
 import { FeedList } from 'components/FeedList';
 import { useImageViewer } from '../../hooks/useImageViewer';
 import { user } from './mockData';
