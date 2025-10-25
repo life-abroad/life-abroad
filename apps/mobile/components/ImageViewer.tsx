@@ -227,7 +227,7 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
                     source={{ uri: reaction.userAvatar }}
                     className="absolute left-0 top-0 size-10 rounded-full border border-white"
                   />
-                  <Text className="text-md absolute left-5 top-3 z-10 items-center justify-center">
+                  <Text className="text-md absolute left-5 top-3 z-10 items-center justify-center web:text-xl">
                     {reaction.emoji}
                   </Text>
                 </View>
@@ -244,7 +244,7 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
               opacity: bottomBarFadeAnim,
               position: 'absolute',
               bottom: 0,
-              left: isDesktop ? 10 : 0,
+              left: isWeb ? 10 : 0,
               right: 0,
               gap: 10,
               paddingBottom: 20,

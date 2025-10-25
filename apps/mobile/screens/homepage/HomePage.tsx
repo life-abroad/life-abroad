@@ -25,7 +25,7 @@ export const HomePage = ({
   const scrollY = useRef(new Animated.Value(0)).current;
   const [headerHeight, setHeaderHeight] = useState<number>(136); // Default fallback
   const { setHeaderContent, setRightHeaderContent } = useHeader();
-  const { isDesktop } = useResponsive();
+  const { isDesktop, isWeb } = useResponsive();
 
   const {
     imageViewerVisible,
@@ -117,40 +117,42 @@ export const HomePage = ({
 
   return (
     <View className={`relative flex-1 ${className}`}>
-      <Header scrollY={scrollY} onHeightChange={handleHeaderHeightChange}>
-        {/* Stories row */}
-        <View className="relative py-3">
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={Platform.OS === 'web'}
-            scrollEventThrottle={16}
-            fadingEdgeLength={15}
-            className="w-[82%]">
-            <View className="flex-row items-center gap-2.5 pl-3">
-              {stories.map((story, index) => (
-                <StoryItem
-                  key={index}
-                  story={story}
-                  index={index}
-                  onPress={handleStoryPress}
-                  size={50}
-                  showUsername={false}
-                />
-              ))}
+      {!isDesktop && !hideNav && (
+        <Header scrollY={scrollY} onHeightChange={handleHeaderHeightChange}>
+          {/* Stories row */}
+          <View className="relative py-3">
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={Platform.OS === 'web'}
+              scrollEventThrottle={16}
+              fadingEdgeLength={15}
+              className="w-[82%]">
+              <View className="flex-row items-center gap-2.5 pl-3">
+                {stories.map((story, index) => (
+                  <StoryItem
+                    key={index}
+                    story={story}
+                    index={index}
+                    onPress={handleStoryPress}
+                    size={50}
+                    showUsername={false}
+                  />
+                ))}
+              </View>
+            </ScrollView>
+            <View className="absolute bottom-5 right-4 items-center justify-center">
+              <CameraIcon size={35} />
             </View>
-          </ScrollView>
-          <View className="absolute bottom-5 right-4 items-center justify-center">
-            <CameraIcon size={35} />
           </View>
-        </View>
-      </Header>
+        </Header>
+      )}
 
       <FeedList
         ref={flatListRef}
         posts={posts}
         scrollY={scrollY}
         onImagePress={handlePostImagePress}
-        paddingTop={isDesktop ? 2 : headerHeight - 6}
+        paddingTop={isDesktop ? 2 : headerHeight - (isWeb ? 0 : 6)}
         paddingBottom={isDesktop ? 1 : 60}
       />
 
