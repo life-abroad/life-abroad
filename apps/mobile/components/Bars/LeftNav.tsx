@@ -20,7 +20,7 @@ export default function LeftNav({
       <View className="" pointerEvents="box-none">
         <CircleLogo size={80} />
       </View>
-      <View className="h-full w-full flex-col gap-14 py-8">
+      <View className="h-full w-full flex-col gap-5 py-8">
         <View className="ml-1 flex-row items-center gap-3">
           <ChatBubbleIcon
             size={Platform.OS === 'web' ? 30 : 40}

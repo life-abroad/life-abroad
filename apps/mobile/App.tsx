@@ -118,7 +118,7 @@ function AppContent() {
                 setSelectedTab={(tab) => {
                   navigationRef.current?.navigate(tab);
                 }}
-                className="w-30"
+                className="w-52"
               />
             </View>
           )}
@@ -173,7 +173,7 @@ function AppContent() {
           {/* Right Header - Desktop only, takes up fixed width */}
           {!hideNav && isDesktop && (
             <View className="hidden web:lg:block">
-              <RightHeader className="w-30">{rightHeaderContent}</RightHeader>
+              <RightHeader className="w-52">{rightHeaderContent}</RightHeader>
             </View>
           )}
         </View>
