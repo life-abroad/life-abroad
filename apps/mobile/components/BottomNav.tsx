@@ -13,7 +13,7 @@ export default function BottomNav({
   return (
     <View className="h-20">
       <Blur />
-      <View className="h-full w-full flex-row items-center justify-center gap-12 px-2 pb-5">
+      <View className="android:pb-5 h-full w-full flex-row items-center justify-center gap-12 px-2">
         <View className="mt-1">
           <ChatBubbleIcon
             size={36}

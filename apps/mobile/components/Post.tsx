@@ -98,7 +98,7 @@ export const FeedPost: React.FC<FeedPostProps> = ({
       </View>
 
       {/* Images */}
-      <View className={`flex-col ${numColumns > 1 ? 'gap-[0]' : 'gap-[2]'}`}>
+      <View className={`flex-col bg-red-500 ${numColumns > 1 ? 'gap-[0]' : 'gap-[2]'}`}>
         {images.map((image, index) => {
           // Account for horizontal padding (0.5 * 2 = 1 in tailwind units, which is 4px)
           const paddingOffset = 2; // px-0.5 = 2px on each side (It should be 4, but I made it 2 because fuck you)
@@ -120,7 +120,6 @@ export const FeedPost: React.FC<FeedPostProps> = ({
               }>
               <Image
                 source={{ uri: image.url }}
-                className="w-full"
                 style={{ width: '100%', height }}
                 resizeMode="contain"
               />
