@@ -34,13 +34,13 @@ export const ChatPage = () => {
   // };
 
   return (
-    <View className="flex-1">
-      <ImageBackground
+    <View className="flex-1 bg-background-secondary">
+      {/* <ImageBackground
         source={require('../../assets/textures/wood-grain-white.png')}
         resizeMode={'repeat'}
-        className={`opacity-[0.07 ] absolute
-          inset-0`}
-      />
+        className={`absolute inset-0
+          opacity-[0.07]`}
+      /> */}
       {chats && chats.length > 0 ? (
         <FlatList
           data={chats}
