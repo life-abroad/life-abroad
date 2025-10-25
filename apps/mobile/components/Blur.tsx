@@ -17,7 +17,7 @@ function Blur({ topBar }: { topBar?: boolean }) {
         source={require('../assets/textures/wood-grain-white.png')}
         resizeMode={`${topBar ? 'cover' : 'repeat'}`}
         style={Platform.select({ web: { position: 'absolute', width: '100%', height: '100%' } })}
-        className={`absolute inset-0 ${topBar ? 'opacity-[0.08]' : 'opacity-0'}`}
+        className={`absolute inset-0 ${topBar ? 'opacity-[0.08]' : 'opacity-5'}`}
       />
       {/* Black frosted overlay */}
       <View className="absolute inset-0 bg-black/10" />
