@@ -1,9 +1,15 @@
-import React, { useRef, useMemo } from 'react';
-import { View, Animated } from 'react-native';
+import React, { useRef, useMemo, useState } from 'react';
+import { View, Animated, LayoutChangeEvent } from 'react-native';
 import { CircleLogo } from 'components/Icons';
 import Blur from 'components/Blur';
 
-function Header({ children, scrollY }: { children: React.ReactNode; scrollY: Animated.Value }) {
+interface HeaderProps {
+  children: React.ReactNode;
+  scrollY: Animated.Value;
+  onHeightChange?: (height: number) => void;
+}
+
+function Header({ children, scrollY, onHeightChange }: HeaderProps) {
   // Scroll animations - use useMemo to prevent recreating on every render
   const diffClampScrollY = useMemo(() => Animated.diffClamp(scrollY, 0, 300), [scrollY]);
 
@@ -28,11 +34,25 @@ function Header({ children, scrollY }: { children: React.ReactNode; scrollY: Ani
     [diffClampScrollY]
   );
 
+  const handleLayout = (event: LayoutChangeEvent) => {
+    const { height } = event.nativeEvent.layout;
+    if (onHeightChange) {
+      onHeightChange(height);
+    }
+  };
+
   return (
     <>
       <Animated.View
-        className="absolute left-0 right-0 top-0 z-20 py-0"
+        onLayout={handleLayout}
         style={{
+          position: 'absolute',
+          left: 0,
+          right: 0,
+          top: 0,
+          width: '100%',
+          zIndex: 20,
+          paddingVertical: 0,
           transform: [{ translateY: headerTranslateY }],
           opacity: headerOpacity,
         }}

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useCallback } from 'react';
+import React, { useEffect, useRef, useCallback, useState } from 'react';
 import { View, Image, Animated, FlatList, TouchableOpacity, Platform } from 'react-native';
 import { posts, stories } from './mockData';
 import { CameraIcon } from 'components/Icons';
@@ -11,6 +11,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 export const HomePage = ({ setHideNav }: { setHideNav: (hide: boolean) => void }) => {
   const flatListRef = useRef<FlatList>(null);
   const scrollY = useRef(new Animated.Value(0)).current;
+  const [headerHeight, setHeaderHeight] = useState<number>(136); // Default fallback
 
   const {
     imageViewerVisible,
@@ -69,7 +70,7 @@ export const HomePage = ({ setHideNav }: { setHideNav: (hide: boolean) => void }
   return (
     <View className="relative flex-1">
       {/* Stories - Floating Header */}
-      <Header scrollY={scrollY}>
+      <Header scrollY={scrollY} onHeightChange={setHeaderHeight}>
         {/* Stories row */}
         <View className="relative py-3">
           <ScrollView
@@ -112,6 +113,7 @@ export const HomePage = ({ setHideNav }: { setHideNav: (hide: boolean) => void }
         posts={posts}
         scrollY={scrollY}
         onImagePress={handlePostImagePress}
+        paddingTop={headerHeight}
       />
 
       <ImageViewer

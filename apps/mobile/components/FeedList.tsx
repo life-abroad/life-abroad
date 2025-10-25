@@ -35,7 +35,7 @@ export const FeedList = React.forwardRef<FeedListHandle, FeedListProps>(
       posts,
       scrollY,
       onImagePress,
-      paddingTop = 136,
+      paddingTop = 0,
       paddingBottom = 70,
       numColumns = 1,
       displayPosterInfo = true,
