@@ -89,7 +89,8 @@ export default function App() {
           dark: true,
           colors: {
             primary: 'rgb(255, 255, 255)',
-            background: '#191919',
+            // background: '#191919',
+            background: 'black',
             card: 'rgb(0, 0, 0)',
             text: 'rgb(255, 255, 255)',
             border: 'rgb(0, 0, 0)',
@@ -118,6 +119,7 @@ export default function App() {
                       props.navigation.navigate(route.name);
                     }
                   }}
+                  className="native:h-20 web:lg:mx-auto web:lg:h-12 web:lg:w-2/3 "
                 />
               </View>
             )}>
@@ -126,7 +128,7 @@ export default function App() {
                 <HomePage
                   hideNav={hideNav}
                   setHideNav={setHideNav}
-                  className="native:w-full web:mx-auto web:w-2/3"
+                  className="native:w-full web:lg:mx-auto web:lg:w-2/3"
                 />
               )}
             </Tab.Screen>

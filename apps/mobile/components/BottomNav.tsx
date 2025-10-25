@@ -6,12 +6,14 @@ import Blur from './Blur';
 export default function BottomNav({
   selectedTab,
   setSelectedTab,
+  className,
 }: {
   selectedTab: string;
   setSelectedTab: (tab: string) => void;
+  className?: string;
 }) {
   return (
-    <View className="native:h-20 web:h-12">
+    <View className={`${className}`}>
       <Blur />
       <View className="android:pb-5 h-full w-full flex-row items-center justify-center gap-12 px-2">
         <View className="mt-1">

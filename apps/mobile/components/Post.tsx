@@ -39,7 +39,7 @@ export const FeedPost: React.FC<FeedPostProps> = ({
 }) => {
   return (
     <View
-      className={`mb-1 ${numColumns > 1 ? 'rounded-md' : 'rounded-sm'} bg-background-secondary`}>
+      className={`mb-1 ${numColumns > 1 ? 'rounded-md' : 'rounded-sm'} bg-background-secondary web:lg:rounded-md`}>
       {/* Header */}
       <View className="flex-row items-center justify-between px-1 py-2">
         {displayPosterInfo ? (

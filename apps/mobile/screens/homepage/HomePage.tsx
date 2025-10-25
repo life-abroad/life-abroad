@@ -76,7 +76,7 @@ export const HomePage = ({
   );
 
   return (
-    <View className={`relative flex-1 ${className}`}>
+    <View className={`relative flex-1 bg-black ${className}`}>
       {/* Stories - Floating Header */}
       {!hideNav && (
         <Header scrollY={scrollY} onHeightChange={setHeaderHeight}>
