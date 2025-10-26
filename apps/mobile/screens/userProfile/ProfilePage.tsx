@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { View, Animated, FlatList, Image, TouchableOpacity, ImageBackground } from 'react-native';
 import { posts } from '../homepage/mockData';
 import { ImageViewer } from 'components/ImageViewer';
@@ -55,6 +55,12 @@ export const ProfilePage = ({
     }
   }, [activeTab, selectedCircle]);
 
+  const [headerHeight, setHeaderHeight] = useState<number>(133); // Default fallback
+  // Memoize header height callback to prevent re-renders
+  const handleHeaderHeightChange = useCallback((height: number) => {
+    setHeaderHeight(height);
+  }, []);
+
   return (
     <View className={`relative w-full flex-1 bg-background px-0.5 ${className}`}>
       <CircleBg />
@@ -66,7 +72,7 @@ export const ProfilePage = ({
           onImagePress={handlePostImagePress}
           numColumns={2}
           numImagesPerPost={1}
-          paddingTop={isWeb ? 133 : 160}
+          paddingTop={headerHeight + 4}
           displayPosterInfo={false}
           displayReactionControls={false}
         />
@@ -128,7 +134,7 @@ export const ProfilePage = ({
           <Text className="text-lg">No {activeTab} to display</Text>
         </View>
       )}
-      <Header scrollY={scrollY}>
+      <Header scrollY={scrollY} onHeightChange={handleHeaderHeightChange}>
         <View className="flex-row justify-between px-4 py-3">
           <View className="mt-3 flex-row items-center gap-3">
             <TouchableOpacity
@@ -153,7 +159,7 @@ export const ProfilePage = ({
               <Text className="text-md font-bold">Circles</Text>
             </TouchableOpacity>
           </View>
-          <View className="-mt-[25px] flex-col items-center gap-1">
+          <View className="-mt-[25px] flex-col items-center gap-1 web:lg:mt-0">
             <Image
               source={{ uri: user.userAvatar }}
               className={`size-[70] rounded-full border-2 border-white`}

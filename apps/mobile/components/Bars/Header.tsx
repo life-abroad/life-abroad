@@ -2,6 +2,7 @@ import React, { useRef, useMemo, useState } from 'react';
 import { View, Animated, LayoutChangeEvent } from 'react-native';
 import { CircleLogo } from 'components/Icons';
 import Blur from 'components/Blur';
+import { useResponsive } from 'contexts/ResponsiveContext';
 
 interface HeaderProps {
   children: React.ReactNode;
@@ -10,6 +11,8 @@ interface HeaderProps {
 }
 
 function Header({ children, scrollY, onHeightChange }: HeaderProps) {
+  const { isDesktop } = useResponsive();
+
   // Scroll animations - use useMemo to prevent recreating on every render
   const diffClampScrollY = useMemo(() => Animated.diffClamp(scrollY, 0, 300), [scrollY]);
 
@@ -56,13 +59,14 @@ function Header({ children, scrollY, onHeightChange }: HeaderProps) {
           transform: [{ translateY: headerTranslateY }],
           opacity: headerOpacity,
         }}
-        pointerEvents="box-none"
-        className="web:lg:hidden">
+        pointerEvents="box-none">
         <Blur topBar />
-        <View className="native:pt-14 px-4 web:pt-4" pointerEvents="box-none">
-          <CircleLogo size={80} />
+        <View className="web:lg:mx-auto web:lg:w-[90%]" pointerEvents="box-none">
+          <View className="native:pt-14 px-4 web:pt-4 web:lg:hidden" pointerEvents="box-none">
+            <CircleLogo size={80} />
+          </View>
+          {children}
         </View>
-        {children}
       </Animated.View>
     </>
   );

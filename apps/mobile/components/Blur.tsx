@@ -8,7 +8,9 @@ function Blur({ topBar = false }: { topBar?: boolean }) {
   const { isDesktop, isWeb } = useResponsive();
 
   return (
-    <View style={{ position: 'absolute', width: '100%', height: '100%', overflow: 'hidden' }}>
+    <View
+      style={{ position: 'absolute', width: '100%', height: '100%', overflow: 'hidden' }}
+      className="web:lg:rounded-b-md web:lg:border-b-[1px] web:lg:border-white/10">
       {/* Frosted glass blur */}
       <BlurView
         style={{ position: 'absolute', width: '100%', height: '100%' }}
@@ -27,7 +29,7 @@ function Blur({ topBar = false }: { topBar?: boolean }) {
         className={`absolute inset-0 ${topBar ? 'opacity-[0.05]' : isWeb ? 'opacity-10' : 'opacity-5'}`}
       />
       {/* Black frosted overlay */}
-      <View className="absolute inset-0 bg-black/10" />
+      <View className="absolute inset-0 bg-black/10 web:lg:bg-black" />
 
       {/* Bottom edge subtle glow */}
       {!topBar ? (
@@ -47,12 +49,14 @@ function Blur({ topBar = false }: { topBar?: boolean }) {
           />
         </>
       ) : (
-        <LinearGradient
-          colors={['rgba(255, 255, 255, 0.4)', 'rgba(255, 255, 255, 0)']}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 0, y: 0.3 }}
-          className="absolute bottom-[-3] left-0 right-0 h-1"
-        />
+        !isDesktop && (
+          <LinearGradient
+            colors={['rgba(255, 255, 255, 0.4)', 'rgba(255, 255, 255, 0)']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 0, y: 0.3 }}
+            className="absolute bottom-[-3] left-0 right-0 h-1"
+          />
+        )
       )}
       {/* Side Edges */}
       <LinearGradient

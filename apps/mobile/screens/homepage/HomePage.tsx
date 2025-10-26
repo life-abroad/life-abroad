@@ -19,6 +19,7 @@ import {
   LayoutGrid,
 } from 'lucide-react-native';
 import CircleBg from 'components/CircleBg';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export const HomePage = ({
   hideNav,
@@ -125,7 +126,7 @@ export const HomePage = ({
   }, []);
 
   return (
-    <View className={`relative w-full flex-1 bg-background ${className}`}>
+    <View className={`relative w-full flex-1 ${className}`}>
       <CircleBg />
       {!isDesktop && !hideNav && (
         <Header scrollY={scrollY} onHeightChange={handleHeaderHeightChange}>
