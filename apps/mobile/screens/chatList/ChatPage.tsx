@@ -10,37 +10,16 @@ import Header from 'components/Bars/Header';
 import { ScrollView } from 'react-native-gesture-handler';
 import { LinearGradient } from 'expo-linear-gradient';
 
-export const ChatPage = () => {
-  // Scroll animations
+export const ChatPage = ({ className }: { className?: string }) => {
   const scrollY = useRef(new Animated.Value(0)).current;
-  // const [showLeftGradient, setShowLeftGradient] = useState(false);
-  // const [showRightGradient, setShowRightGradient] = useState(true);
 
   const handleChatPress = (chatItem: (typeof chats)[0]) => {
     // Handle chat row press
     console.log('Chat pressed:', chatItem.user.userName);
   };
 
-  // const handleScroll = (event: any) => {
-  //   const { contentOffset, contentSize, layoutMeasurement } = event.nativeEvent;
-  //   const scrollX = contentOffset.x;
-  //   const maxScrollX = contentSize.width - layoutMeasurement.width;
-
-  //   // Show left gradient if scrolled right (not at the start)
-  //   setShowLeftGradient(scrollX > 5);
-
-  //   // Show right gradient if not at the end
-  //   setShowRightGradient(scrollX < maxScrollX - 5);
-  // };
-
   return (
-    <View className="flex-1 bg-background-secondary">
-      {/* <ImageBackground
-        source={require('../../assets/textures/wood-grain-white.png')}
-        resizeMode={'repeat'}
-        className={`absolute inset-0
-          opacity-[0.07]`}
-      /> */}
+    <View className={`flex-1 bg-background-secondary ${className}`}>
       {chats && chats.length > 0 ? (
         <FlatList
           data={chats}

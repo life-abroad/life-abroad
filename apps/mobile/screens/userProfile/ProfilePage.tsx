@@ -11,8 +11,15 @@ import { CircleIconNav, FriendsIcon, PostsIcon } from 'components/Icons';
 import FriendRow from 'components/FriendRow';
 import CircleRow from 'components/CircleRow';
 import Blur from 'components/Blur';
+import CircleBg from 'components/CircleBg';
 
-export const ProfilePage = ({ setHideNav }: { setHideNav: (hide: boolean) => void }) => {
+export const ProfilePage = ({
+  setHideNav,
+  className,
+}: {
+  setHideNav: (hide: boolean) => void;
+  className?: string;
+}) => {
   const flatListRef = useRef<FlatList>(null);
   const scrollY = useRef(new Animated.Value(0)).current;
   const {
@@ -47,7 +54,8 @@ export const ProfilePage = ({ setHideNav }: { setHideNav: (hide: boolean) => voi
   }, [activeTab, selectedCircle]);
 
   return (
-    <View className="flex-1 px-0.5">
+    <View className={`flex-1 px-0.5 ${className}`}>
+      <CircleBg />
       {activeTab === 'posts' ? (
         <FeedList
           ref={flatListRef}

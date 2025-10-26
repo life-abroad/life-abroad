@@ -16,6 +16,7 @@ import LeftNav from 'components/Bars/LeftNav';
 import RightHeader from 'components/Bars/RightHeader';
 import { HeaderProvider, useHeader } from './contexts/HeaderContext';
 import { ResponsiveProvider, useResponsive } from './contexts/ResponsiveContext';
+import CircleBg from 'components/CircleBg';
 
 const Tab = createBottomTabNavigator();
 
@@ -95,7 +96,6 @@ function AppContent() {
           dark: true,
           colors: {
             primary: 'rgb(255, 255, 255)',
-            // background: '#191919',
             background: 'rgb(0, 0, 0, 0)',
             card: 'rgb(0, 0, 0)',
             text: 'rgb(255, 255, 255)',
@@ -111,17 +111,7 @@ function AppContent() {
         }}>
         <View className="flex-1 flex-row bg-background">
           {/* Background Image - Web only */}
-          <ImageBackground
-            source={require('./assets/textures/circle.png')}
-            resizeMode={`repeat`}
-            style={{
-              position: 'absolute',
-              width: '100%',
-              height: '100%',
-              opacity: isDesktop ? 0.06 : 0.09,
-            }}
-            className={`absolute inset-0 `}
-          />
+          <CircleBg />
 
           {/* Left Nav - Desktop only, takes up fixed width */}
           {!hideNav && isDesktop && (
@@ -171,13 +161,22 @@ function AppContent() {
                   <HomePage
                     hideNav={hideNav}
                     setHideNav={setHideNav}
-                    className="native:w-full web:lg:mx-auto web:lg:w-2/3"
+                    className="native:w-full bg-background web:lg:mx-auto web:lg:w-2/3"
                   />
                 )}
               </Tab.Screen>
-              <Tab.Screen name="chat" component={ChatPage} />
+              <Tab.Screen name="chat">
+                {() => (
+                  <ChatPage className="native:w-full bg-background web:lg:mx-auto web:lg:w-2/3" />
+                )}
+              </Tab.Screen>
               <Tab.Screen name="profile">
-                {() => <ProfilePage setHideNav={setHideNav} />}
+                {() => (
+                  <ProfilePage
+                    setHideNav={setHideNav}
+                    className="native:w-full bg-background web:lg:mx-auto web:lg:w-2/3"
+                  />
+                )}
               </Tab.Screen>
             </Tab.Navigator>
             <StatusBar style="light" translucent />
