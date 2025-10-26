@@ -11,7 +11,15 @@ import {
 import { Text } from 'components/Text';
 import { ImageViewer } from './ImageViewer';
 import { ScrollView } from 'react-native-gesture-handler';
-import { Ellipsis, EllipsisVertical, NotebookPen, Pencil, PencilIcon } from 'lucide-react-native';
+import {
+  Ellipsis,
+  EllipsisVertical,
+  FileStack,
+  Images,
+  NotebookPen,
+  Pencil,
+  PencilIcon,
+} from 'lucide-react-native';
 import { Ellipse } from 'react-native-svg';
 import { useResponsive } from 'contexts/ResponsiveContext';
 const screenWidth = require('react-native').Dimensions.get('window').width;
@@ -140,6 +148,26 @@ export const FeedPost: React.FC<FeedPostProps> = ({
               </TouchableOpacity>
             );
           })}
+        {/* Multiple images counter */}
+        {numColumns > 1 && images.length > numColumns && (
+          <View className="absolute left-2 top-1 rounded-lg bg-black/50 px-3 py-1">
+            <Text className="text-md font-semibold text-white">+{images.length - 1}</Text>
+          </View>
+        )}
+        {/* Multiple images icon */}
+        {numColumns > 1 && images.length > 1 && (
+          <TouchableOpacity
+            className="absolute bottom-1 right-1 rounded-lg bg-black/50 p-2"
+            activeOpacity={0.8}
+            onPress={() =>
+              onImagePress(
+                images.map((img) => img.url),
+                0
+              )
+            }>
+            <FileStack className="" size={30} color="white" />
+          </TouchableOpacity>
+        )}
       </View>
 
       {/* Footer */}
