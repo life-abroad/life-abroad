@@ -28,7 +28,7 @@ export const ChatPage = ({ className }: { className?: string }) => {
   };
 
   return (
-    <View className={`flex-1 bg-background ${className}`}>
+    <View className={`flex-1 ${className}`}>
       <CircleBg />
 
       {chats && chats.length > 0 ? (
@@ -50,7 +50,7 @@ export const ChatPage = ({ className }: { className?: string }) => {
           scrollEventThrottle={16}
           className={`flex-1 bg-background ${isDesktop ? 'mx-auto w-[90%] border-x-[1px] border-white/10' : ''}`}
           contentContainerStyle={{
-            paddingTop: headerHeight - (isWeb ? 0 : 6),
+            paddingTop: headerHeight + (isWeb ? 6 : -6),
             paddingBottom: 70,
           }}
           showsVerticalScrollIndicator={false}

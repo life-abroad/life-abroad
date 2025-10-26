@@ -6,6 +6,7 @@ import { User } from 'types/user';
 import { Post, Reaction } from 'types/post';
 import { ImageMeta } from '../hooks/useImageViewer';
 import { useResponsive } from 'contexts/ResponsiveContext';
+import ResponsiveWrapper from './ResponsiveWrapper';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -170,7 +171,7 @@ export const FeedList = React.forwardRef<FeedListHandle, FeedListProps>(
           })}
           scrollEventThrottle={16}
           contentContainerStyle={{ paddingTop, paddingBottom }}
-          showsVerticalScrollIndicator={Platform.OS === 'web'}>
+          showsVerticalScrollIndicator={false}>
           <View className="flex-row" style={{ gap: 3 }}>
             {masonryColumns.map((column, columnIndex) => (
               <View key={columnIndex} className="flex-1" style={{ gap: 1 }}>
@@ -237,7 +238,7 @@ export const FeedList = React.forwardRef<FeedListHandle, FeedListProps>(
           })}
           scrollEventThrottle={16}
           contentContainerStyle={{ paddingTop, paddingBottom }}
-          showsVerticalScrollIndicator={Platform.OS === 'web'}
+          showsVerticalScrollIndicator={false}
         />
       );
     }, [
@@ -255,12 +256,9 @@ export const FeedList = React.forwardRef<FeedListHandle, FeedListProps>(
     ]);
 
     return (
-      <View
-        style={{ flex: 1 }}
-        onLayout={handleLayout}
-        className={` ${isDesktop && (numColumns === 1 ? 'mx-auto w-[70%]' : 'mx-auto w-[90%]')} ${className}`}>
+      <ResponsiveWrapper handleLayout={handleLayout} numColumns={numColumns}>
         {feedList}
-      </View>
+      </ResponsiveWrapper>
     );
   }
 );

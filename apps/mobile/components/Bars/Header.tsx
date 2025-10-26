@@ -52,16 +52,20 @@ function Header({ children, scrollY, onHeightChange }: HeaderProps) {
           position: 'absolute',
           left: 0,
           right: 0,
-          top: 0,
-          width: '100%',
+          top: isDesktop ? 5 : 0,
+          width: isDesktop ? '90%' : '100%',
+          borderWidth: isDesktop ? 1 : 0,
+          borderColor: 'rgba(255, 255, 255, 0.1)',
+          borderRadius: isDesktop ? '0.375rem' : 0,
           zIndex: 10,
           paddingVertical: 0,
           transform: [{ translateY: headerTranslateY }],
           opacity: headerOpacity,
+          marginHorizontal: 'auto',
         }}
         pointerEvents="box-none">
         <Blur topBar />
-        <View className="web:lg:mx-auto web:lg:w-[90%]" pointerEvents="box-none">
+        <View className="web:lg:px-2" pointerEvents="box-none">
           <View className="native:pt-14 px-4 web:pt-4 web:lg:hidden" pointerEvents="box-none">
             <CircleLogo size={80} />
           </View>

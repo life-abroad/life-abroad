@@ -14,6 +14,7 @@ import Blur from 'components/Blur';
 import CircleBg from 'components/CircleBg';
 import { useResponsive } from 'contexts/ResponsiveContext';
 import { LayoutDashboard } from 'lucide-react-native';
+import ResponsiveWrapper from 'components/ResponsiveWrapper';
 
 export const ProfilePage = ({
   setHideNav,
@@ -74,65 +75,77 @@ export const ProfilePage = ({
           onImagePress={handlePostImagePress}
           numColumns={numColumns}
           numImagesPerPost={numColumns > 1 ? 1 : -1}
-          paddingTop={headerHeight + 4}
+          paddingTop={headerHeight + 10}
           paddingBottom={isDesktop ? 0 : 70}
           displayPosterInfo={false}
           displayReactionControls={false}
         />
       ) : activeTab === 'friends' ? (
-        <FlatList
-          ref={flatListRef}
-          data={user.friends}
-          keyExtractor={(_, index) => index.toString()}
-          renderItem={({ item }) => <FriendRow {...item} className={''} />}
-          contentContainerStyle={{
-            paddingTop: headerHeight + 4,
-          }}
-          showsVerticalScrollIndicator={false}
-          className="bg-background-secondary pt-2"
-        />
-      ) : activeTab === 'circles' ? (
-        selectedCircle ? (
-          <View className="mt-2 flex-1 bg-background-secondary">
-            {/* Back button and circle name header */}
-            <View className="absolute left-0 right-0 top-[155] z-10 border-b border-gray-200/10 bg-background-secondary px-4 py-3">
-              <TouchableOpacity
-                onPress={() => setSelectedCircle(null)}
-                className="flex-row items-center gap-2">
-                <Text className="text-xl text-foreground-secondary">‹</Text>
-                <Text className="text-lg font-semibold text-foreground">{selectedCircle.name}</Text>
-              </TouchableOpacity>
-            </View>
-
-            {/* Circle members list */}
-            <FlatList
-              ref={flatListRef}
-              data={selectedCircle.users}
-              keyExtractor={(_, index) => index.toString()}
-              renderItem={({ item }) => <FriendRow {...item} className={''} />}
-              contentContainerStyle={{ paddingTop: 200, paddingBottom: 70 }}
-              showsVerticalScrollIndicator={false}
-              ListEmptyComponent={
-                <View className="flex-1 items-center justify-center p-8">
-                  <Text className="text-center text-foreground-secondary">
-                    No friends in this circle yet
-                  </Text>
-                </View>
-              }
-            />
-          </View>
-        ) : (
+        <ResponsiveWrapper className="">
           <FlatList
             ref={flatListRef}
-            data={user.circles}
+            data={user.friends}
             keyExtractor={(_, index) => index.toString()}
-            renderItem={({ item }) => (
-              <CircleRow circle={item} onPress={() => setSelectedCircle(item)} />
-            )}
-            contentContainerStyle={{ paddingTop: 155, paddingBottom: 70 }}
+            renderItem={({ item }) => <FriendRow {...item} className={''} />}
+            contentContainerStyle={{
+              paddingTop: headerHeight + 4,
+            }}
             showsVerticalScrollIndicator={false}
-            className="mt-2 bg-background-secondary"
+            className="bg-background-secondary pt-2"
           />
+        </ResponsiveWrapper>
+      ) : activeTab === 'circles' ? (
+        selectedCircle ? (
+          <ResponsiveWrapper className="">
+            <View className="mt-2 flex-1 bg-background-secondary">
+              {/* Back button and circle name header */}
+              <View className="absolute left-0 right-0 top-[155] z-10 border-b border-gray-200/10 bg-background-secondary px-4 py-3">
+                <TouchableOpacity
+                  onPress={() => setSelectedCircle(null)}
+                  className="flex-row items-center gap-2">
+                  <Text className="text-xl text-foreground-secondary">‹</Text>
+                  <Text className="text-lg font-semibold text-foreground">
+                    {selectedCircle.name}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+
+              {/* Circle members list */}
+              <FlatList
+                ref={flatListRef}
+                data={selectedCircle.users}
+                keyExtractor={(_, index) => index.toString()}
+                renderItem={({ item }) => <FriendRow {...item} className={''} />}
+                contentContainerStyle={{
+                  paddingTop: headerHeight + 4,
+                }}
+                showsVerticalScrollIndicator={false}
+                ListEmptyComponent={
+                  <View className="flex-1 items-center justify-center p-8">
+                    <Text className="text-center text-foreground-secondary">
+                      No friends in this circle yet
+                    </Text>
+                  </View>
+                }
+              />
+            </View>
+          </ResponsiveWrapper>
+        ) : (
+          <ResponsiveWrapper>
+            <FlatList
+              ref={flatListRef}
+              data={user.circles}
+              keyExtractor={(_, index) => index.toString()}
+              renderItem={({ item }) => (
+                <CircleRow circle={item} onPress={() => setSelectedCircle(item)} />
+              )}
+              contentContainerStyle={{
+                paddingTop: headerHeight + 4,
+              }}
+              showsVerticalScrollIndicator={false}
+              className="mt-2 bg-background-secondary"
+            />
+          </ResponsiveWrapper>
         )
       ) : (
         <View className="flex-1 items-center justify-center">
