@@ -160,13 +160,13 @@ export const FeedPost: React.FC<FeedPostProps> = ({
             horizontal
             showsHorizontalScrollIndicator={false}
             scrollEventThrottle={16}
-            fadingEdgeLength={15}
-            className={`${displayReactionControls ? 'pl-3' : 'pl-0.5'} flex-1`}
+            fadingEdgeLength={0}
+            className={`${displayReactionControls ? 'pl-3' : 'pl-0'} flex-1`}
             contentContainerStyle={{
               flexDirection: 'row',
               gap: numColumns > 1 ? 0 : 8,
               paddingRight: displayReactionControls ? 12 : 4,
-              paddingLeft: displayReactionControls ? 0 : 4,
+              paddingLeft: displayReactionControls ? 0 : 0,
               alignItems: 'center',
             }}>
             {reactions.map((reaction, index) => (
