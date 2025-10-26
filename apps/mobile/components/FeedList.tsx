@@ -5,6 +5,7 @@ import { Text } from '../components/Text';
 import { User } from 'types/user';
 import { Post, Reaction } from 'types/post';
 import { ImageMeta } from '../hooks/useImageViewer';
+import { useResponsive } from 'contexts/ResponsiveContext';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -53,6 +54,7 @@ export const FeedList = React.forwardRef<FeedListHandle, FeedListProps>(
       {}
     );
     const [containerWidth, setContainerWidth] = useState<number>(screenWidth);
+    const { isDesktop } = useResponsive();
 
     // Expose scrollToTop method through ref
     useImperativeHandle(ref, () => ({
@@ -255,7 +257,7 @@ export const FeedList = React.forwardRef<FeedListHandle, FeedListProps>(
       <View
         style={{ flex: 1 }}
         onLayout={handleLayout}
-        className={` ${numColumns === 1 ? 'mx-auto w-[70%]' : 'mx-auto w-[90%]'} ${className}`}>
+        className={` ${isDesktop && (numColumns === 1 ? 'mx-auto w-[70%]' : 'mx-auto w-[90%]')} ${className}`}>
         {feedList}
       </View>
     );

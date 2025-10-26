@@ -159,18 +159,9 @@ function AppContent() {
               <Tab.Screen name="home">
                 {() => <HomePage hideNav={hideNav} setHideNav={setHideNav} className="" />}
               </Tab.Screen>
-              <Tab.Screen name="chat">
-                {() => (
-                  <ChatPage className="native:w-full bg-background web:lg:mx-auto web:lg:w-2/3" />
-                )}
-              </Tab.Screen>
+              <Tab.Screen name="chat">{() => <ChatPage className="" />}</Tab.Screen>
               <Tab.Screen name="profile">
-                {() => (
-                  <ProfilePage
-                    setHideNav={setHideNav}
-                    className="native:w-full bg-background web:lg:mx-auto web:lg:w-2/3"
-                  />
-                )}
+                {() => <ProfilePage setHideNav={setHideNav} className="" />}
               </Tab.Screen>
             </Tab.Navigator>
             <StatusBar style="light" translucent />

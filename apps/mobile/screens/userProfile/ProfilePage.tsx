@@ -56,7 +56,7 @@ export const ProfilePage = ({
   }, [activeTab, selectedCircle]);
 
   return (
-    <View className={`flex-1 px-0.5 ${className}`}>
+    <View className={`relative w-full flex-1 bg-background px-0.5 ${className}`}>
       <CircleBg />
       {activeTab === 'posts' ? (
         <FeedList
