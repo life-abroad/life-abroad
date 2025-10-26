@@ -139,7 +139,7 @@ export const FeedPost: React.FC<FeedPostProps> = ({
 
       {/* Footer */}
       <View
-        className={`${numColumns > 1 ? 'gap-0' : 'gap-2'} flex-col items-center pb-4 pt-1 web:lg:px-2`}>
+        className={`${numColumns > 1 ? 'gap-0' : 'gap-2'} flex-col items-center px-2 pb-4 pt-1`}>
         {/* Reaction controls + Reactions */}
         <View className="mt-1 flex-row items-start justify-between gap-2 self-stretch">
           {/* Reaction controls */}
@@ -179,7 +179,7 @@ export const FeedPost: React.FC<FeedPostProps> = ({
           </ScrollView>
         </View>
         {/* Comments */}
-        <View className={`${numColumns > 1 ? 'pl-3 pr-2' : 'px-2'} w-full`}>
+        <View className={`w-full`}>
           <Text className={`${numColumns > 1 ? 'text-xs' : 'text-sm'}`}>
             <Text className="font-semibold">{user.userName}: </Text>
             {comment}

@@ -26,7 +26,7 @@ export default function CircleRow({ circle, onPress, className }: CircleRowProps
   return (
     <TouchableOpacity
       onPress={onPress}
-      className={`flex-row items-center justify-between bg-background-secondary px-4 py-4 ${className}`}
+      className={`flex-row items-center justify-between px-4 py-4 ${className}`}
       activeOpacity={0.8}>
       {/* Circle indicator with member grid */}
       <View className="flex-row items-center gap-3">

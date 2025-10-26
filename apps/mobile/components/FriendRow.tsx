@@ -19,7 +19,7 @@ export default function FriendRow({
   return (
     <TouchableOpacity
       onPress={onPress}
-      className={`flex-row items-center bg-background-secondary px-4 py-3 ${className}`}
+      className={`flex-row items-center px-4 py-3 ${className}`}
       activeOpacity={0.8}>
       {/* Avatar */}
       <Image source={{ uri: userAvatar }} className="h-14 w-14 rounded-full" />

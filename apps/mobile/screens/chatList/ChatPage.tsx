@@ -11,6 +11,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { LinearGradient } from 'expo-linear-gradient';
 import CircleBg from 'components/CircleBg';
 import { useResponsive } from 'contexts/ResponsiveContext';
+import ResponsiveWrapper, { ResponsiveFullFlatListWrapper } from 'components/ResponsiveWrapper';
 
 export const ChatPage = ({ className }: { className?: string }) => {
   const [headerHeight, setHeaderHeight] = useState<number>(190); // Default fallback
@@ -32,7 +33,7 @@ export const ChatPage = ({ className }: { className?: string }) => {
       <CircleBg />
 
       {chats && chats.length > 0 ? (
-        <FlatList
+        <ResponsiveFullFlatListWrapper
           data={chats}
           keyExtractor={(_, index) => index.toString()}
           renderItem={({ item }) => (
@@ -44,16 +45,8 @@ export const ChatPage = ({ className }: { className?: string }) => {
               onPress={() => handleChatPress(item)}
             />
           )}
-          onScroll={(event) => {
-            scrollY.setValue(event.nativeEvent.contentOffset.y);
-          }}
-          scrollEventThrottle={16}
-          className={`flex-1 bg-background ${isDesktop ? 'mx-auto w-[90%] border-x-[1px] border-white/10' : ''}`}
-          contentContainerStyle={{
-            paddingTop: headerHeight + (isWeb ? 6 : -6),
-            paddingBottom: 70,
-          }}
-          showsVerticalScrollIndicator={false}
+          scrollY={scrollY}
+          headerHeight={headerHeight}
         />
       ) : (
         <View className="flex-1 items-center justify-center bg-background">
