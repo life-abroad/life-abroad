@@ -96,7 +96,7 @@ function AppContent() {
           dark: true,
           colors: {
             primary: 'rgb(255, 255, 255)',
-            background: 'rgb(0, 0, 0, 0)',
+            background: 'rgb(0, 0, 0)',
             card: 'rgb(0, 0, 0)',
             text: 'rgb(255, 255, 255)',
             border: 'rgb(0, 0, 0)',
@@ -157,13 +157,7 @@ function AppContent() {
                 </>
               )}>
               <Tab.Screen name="home">
-                {() => (
-                  <HomePage
-                    hideNav={hideNav}
-                    setHideNav={setHideNav}
-                    className="native:w-full bg-background web:lg:mx-auto web:lg:w-2/3"
-                  />
-                )}
+                {() => <HomePage hideNav={hideNav} setHideNav={setHideNav} className="" />}
               </Tab.Screen>
               <Tab.Screen name="chat">
                 {() => (

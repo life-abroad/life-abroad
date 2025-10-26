@@ -91,11 +91,10 @@ const posts: Post[] = [
       },
       {
         url: 'https://dianathemama.com/wp-content/uploads/2018/02/fuji-proposal.jpg',
-        width: 1200,
-        height: 800,
+        width: 1600,
+        height: 1064,
       },
     ],
-    // caption: 'View from Tokyo Tower',
     comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     reactions: [
       {

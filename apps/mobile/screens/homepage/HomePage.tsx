@@ -18,6 +18,7 @@ import {
   LayoutDashboard,
   LayoutGrid,
 } from 'lucide-react-native';
+import CircleBg from 'components/CircleBg';
 
 export const HomePage = ({
   hideNav,
@@ -124,7 +125,8 @@ export const HomePage = ({
   }, []);
 
   return (
-    <View className={`relative flex-1 ${className}`}>
+    <View className={`relative w-full flex-1 bg-background ${className}`}>
+      <CircleBg />
       {!isDesktop && !hideNav && (
         <Header scrollY={scrollY} onHeightChange={handleHeaderHeightChange}>
           {/* Stories row */}

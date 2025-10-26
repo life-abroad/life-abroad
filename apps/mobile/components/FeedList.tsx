@@ -24,6 +24,7 @@ interface FeedListProps {
   displayPosterInfo?: boolean;
   displayReactionControls?: boolean;
   numImagesPerPost?: number;
+  className?: string;
 }
 
 interface FeedListHandle {
@@ -42,6 +43,7 @@ export const FeedList = React.forwardRef<FeedListHandle, FeedListProps>(
       displayPosterInfo = true,
       displayReactionControls = true,
       numImagesPerPost = -1,
+      className = '',
     },
     ref
   ) => {
@@ -165,7 +167,7 @@ export const FeedList = React.forwardRef<FeedListHandle, FeedListProps>(
           })}
           scrollEventThrottle={16}
           contentContainerStyle={{ paddingTop, paddingBottom }}
-          showsVerticalScrollIndicator={false}>
+          showsVerticalScrollIndicator={Platform.OS === 'web'}>
           <View className="flex-row" style={{ gap: 3 }}>
             {masonryColumns.map((column, columnIndex) => (
               <View key={columnIndex} className="flex-1" style={{ gap: 1 }}>
@@ -250,7 +252,10 @@ export const FeedList = React.forwardRef<FeedListHandle, FeedListProps>(
     ]);
 
     return (
-      <View style={{ flex: 1 }} onLayout={handleLayout}>
+      <View
+        style={{ flex: 1 }}
+        onLayout={handleLayout}
+        className={` ${numColumns === 1 ? 'mx-auto w-[70%]' : 'mx-auto w-[90%]'} ${className}`}>
         {feedList}
       </View>
     );
