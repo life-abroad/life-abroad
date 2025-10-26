@@ -181,7 +181,7 @@ export const FeedPost: React.FC<FeedPostProps> = ({
         <View className="mt-1 flex-row items-start justify-between gap-2 self-stretch">
           {/* Reaction controls */}
           {displayReactionControls && (
-            <View className="w-46 flex-row items-center gap-3 rounded-lg px-2 py-0.5">
+            <View className="w-46 flex-row items-center gap-3 rounded-lg py-0.5">
               <HeartIcon size={30} active={false} />
               <ChatBubbleIcon size={27} onPress={() => {}} />
               <ShareIcon size={25} />
