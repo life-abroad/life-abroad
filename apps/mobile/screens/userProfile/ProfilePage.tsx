@@ -63,6 +63,7 @@ export const ProfilePage = ({
           scrollY={scrollY}
           onImagePress={handlePostImagePress}
           numColumns={2}
+          numImagesPerPost={1}
           paddingTop={160}
           displayPosterInfo={false}
           displayReactionControls={false}

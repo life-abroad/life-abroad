@@ -23,6 +23,7 @@ interface FeedListProps {
   numColumns?: number;
   displayPosterInfo?: boolean;
   displayReactionControls?: boolean;
+  numImagesPerPost?: number;
 }
 
 interface FeedListHandle {
@@ -40,6 +41,7 @@ export const FeedList = React.forwardRef<FeedListHandle, FeedListProps>(
       numColumns = 1,
       displayPosterInfo = true,
       displayReactionControls = true,
+      numImagesPerPost = -1,
     },
     ref
   ) => {
@@ -73,14 +75,17 @@ export const FeedList = React.forwardRef<FeedListHandle, FeedListProps>(
           const sizes: Record<string, { width: number; height: number }> = {};
 
           for (const post of posts) {
-            for (const image of post.images) {
+            for (const image of post.images.slice(
+              0,
+              numImagesPerPost > 0 ? numImagesPerPost : post.images.length
+            )) {
               if (!sizes[image.url]) {
                 // Use dimensions from the Image interface directly
                 sizes[image.url] = { width: image.width, height: image.height };
               }
             }
           }
-
+          console.log('Loaded image sizes for masonry layout:', sizes);
           setImageSizes(sizes);
         };
 
@@ -97,17 +102,19 @@ export const FeedList = React.forwardRef<FeedListHandle, FeedListProps>(
 
       // Images height
       const columnWidth = screenWidth / numColumns;
-      post.images.forEach((image) => {
-        const size = imageSizes[image.url];
-        if (size) {
-          const imageHeight = (size.height / size.width) * columnWidth;
-          totalHeight += imageHeight + 2; // 2px gap between images
-        } else {
-          // Fallback using image dimensions directly
-          const imageHeight = (image.height / image.width) * columnWidth;
-          totalHeight += imageHeight + 2;
-        }
-      });
+      post.images
+        .slice(0, numImagesPerPost > 0 ? numImagesPerPost : post.images.length)
+        .forEach((image) => {
+          const size = imageSizes[image.url];
+          if (size) {
+            const imageHeight = (size.height / size.width) * columnWidth;
+            totalHeight += imageHeight + 2; // 2px gap between images
+          } else {
+            // Fallback using image dimensions directly
+            const imageHeight = (image.height / image.width) * columnWidth;
+            totalHeight += imageHeight + 2;
+          }
+        });
 
       // Footer height (approximate)
       totalHeight += displayReactionControls ? 100 : 80;

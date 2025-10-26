@@ -81,8 +81,8 @@ const posts: Post[] = [
     images: [
       {
         url: 'https://www.gotokyo.org/en/destinations/southern-tokyo/roppongi/images/81_0154_1.jpg',
-        width: 1280,
-        height: 853,
+        width: 1920,
+        height: 1080,
       },
       {
         url: 'https://yotsuya.hotelkeihan.co.jp/wp-content/uploads/sites/394/2019/02/Tokyo-Tower.jpg',
@@ -159,8 +159,8 @@ const posts: Post[] = [
     images: [
       {
         url: 'https://routinelynomadic.com/wp-content/uploads/2024/09/IMG_9755.jpg',
-        width: 1200,
-        height: 1600,
+        width: 577,
+        height: 768,
       },
     ],
     comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
