@@ -42,7 +42,7 @@ export const FeedPost: React.FC<FeedPostProps> = ({
     <View
       className={`mb-1 ${numColumns > 1 ? 'rounded-md' : 'rounded-sm'} bg-background-secondary web:lg:rounded-md web:lg:border-[1px] web:lg:border-white/10  web:lg:bg-background web:lg:px-1`}>
       {/* Header */}
-      <View className="flex-row items-center justify-between px-2 py-2 web:lg:px-4">
+      <View className="flex-row items-center justify-between px-2 py-2">
         {displayPosterInfo ? (
           <>
             <View className="flex-row items-center gap-2">
@@ -71,7 +71,7 @@ export const FeedPost: React.FC<FeedPostProps> = ({
             </TouchableOpacity>
           </>
         ) : (
-          <View className="flex-row items-center pl-1">
+          <View className="w-full flex-row items-center justify-between pl-1">
             <View className="flex-1 flex-row items-center">
               {/* <LocationIcon size={10} /> */}
               <TouchableOpacity

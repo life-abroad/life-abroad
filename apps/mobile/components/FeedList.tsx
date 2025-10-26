@@ -48,13 +48,14 @@ export const FeedList = React.forwardRef<FeedListHandle, FeedListProps>(
     },
     ref
   ) => {
+    const { isDesktop } = useResponsive();
+    paddingBottom = isDesktop ? 0 : 70;
     const scrollViewRef = useRef<ScrollView | null>(null);
     const flatListRef = useRef<FlatList | null>(null);
     const [imageSizes, setImageSizes] = useState<Record<string, { width: number; height: number }>>(
       {}
     );
     const [containerWidth, setContainerWidth] = useState<number>(screenWidth);
-    const { isDesktop } = useResponsive();
 
     // Expose scrollToTop method through ref
     useImperativeHandle(ref, () => ({

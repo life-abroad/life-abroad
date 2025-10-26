@@ -13,6 +13,7 @@ import CircleRow from 'components/CircleRow';
 import Blur from 'components/Blur';
 import CircleBg from 'components/CircleBg';
 import { useResponsive } from 'contexts/ResponsiveContext';
+import { LayoutDashboard } from 'lucide-react-native';
 
 export const ProfilePage = ({
   setHideNav,
@@ -21,7 +22,8 @@ export const ProfilePage = ({
   setHideNav: (hide: boolean) => void;
   className?: string;
 }) => {
-  const { isWeb } = useResponsive();
+  const { isWeb, isDesktop } = useResponsive();
+  const [numColumns, setNumColumns] = useState<number>(2);
   const flatListRef = useRef<FlatList>(null);
   const scrollY = useRef(new Animated.Value(0)).current;
   const {
@@ -70,9 +72,10 @@ export const ProfilePage = ({
           posts={posts}
           scrollY={scrollY}
           onImagePress={handlePostImagePress}
-          numColumns={2}
-          numImagesPerPost={1}
+          numColumns={numColumns}
+          numImagesPerPost={numColumns > 1 ? 1 : -1}
           paddingTop={headerHeight + 4}
+          paddingBottom={isDesktop ? 0 : 70}
           displayPosterInfo={false}
           displayReactionControls={false}
         />
@@ -82,7 +85,9 @@ export const ProfilePage = ({
           data={user.friends}
           keyExtractor={(_, index) => index.toString()}
           renderItem={({ item }) => <FriendRow {...item} className={''} />}
-          contentContainerStyle={{ paddingTop: 155, paddingBottom: 70 }}
+          contentContainerStyle={{
+            paddingTop: headerHeight + 4,
+          }}
           showsVerticalScrollIndicator={false}
           className="bg-background-secondary pt-2"
         />
@@ -141,21 +146,33 @@ export const ProfilePage = ({
               className="flex-col gap-2"
               onPress={() => setActiveTab('posts')}
               activeOpacity={0.9}>
-              <PostsIcon active={activeTab === 'posts'} size={24} onPress={() => {}} />
+              <PostsIcon
+                active={activeTab === 'posts'}
+                size={24}
+                onPress={() => setActiveTab('posts')}
+              />
               <Text className="text-md font-bold">Posts</Text>
             </TouchableOpacity>
             <TouchableOpacity
               className="flex-col gap-2"
               onPress={() => setActiveTab('friends')}
               activeOpacity={0.9}>
-              <FriendsIcon active={activeTab === 'friends'} size={24} onPress={() => {}} />
+              <FriendsIcon
+                active={activeTab === 'friends'}
+                size={24}
+                onPress={() => setActiveTab('friends')}
+              />
               <Text className="text-md font-bold">Friends</Text>
             </TouchableOpacity>
             <TouchableOpacity
               className="flex-col gap-2"
               onPress={() => setActiveTab('circles')}
               activeOpacity={0.9}>
-              <CircleIconNav active={activeTab === 'circles'} size={28} onPress={() => {}} />
+              <CircleIconNav
+                active={activeTab === 'circles'}
+                size={28}
+                onPress={() => setActiveTab('circles')}
+              />
               <Text className="text-md font-bold">Circles</Text>
             </TouchableOpacity>
           </View>
@@ -185,6 +202,12 @@ export const ProfilePage = ({
         hideBottomBar={true}
         reactions={reactions}
       />
+      {/* <TouchableOpacity
+        className="absolute bottom-24 right-2 size-16 items-center justify-center rounded-2xl bg-primary web:lg:bottom-2"
+        onPress={setNumColumns.bind(null, numColumns === 1 ? 2 : 1)}
+        activeOpacity={0.8}>
+        <LayoutDashboard size={33} className="text-foreground" />
+      </TouchableOpacity> */}
     </View>
   );
 };
