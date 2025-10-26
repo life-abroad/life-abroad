@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { View, Image, Animated, FlatList, TouchableOpacity, ImageBackground } from 'react-native';
 import { FeedPost } from '../../components/Post';
 import { chats, bulletins } from './mockData';
@@ -9,9 +9,18 @@ import ChatRow from 'components/ChatRow';
 import Header from 'components/Bars/Header';
 import { ScrollView } from 'react-native-gesture-handler';
 import { LinearGradient } from 'expo-linear-gradient';
+import CircleBg from 'components/CircleBg';
+import { useResponsive } from 'contexts/ResponsiveContext';
 
 export const ChatPage = ({ className }: { className?: string }) => {
+  const [headerHeight, setHeaderHeight] = useState<number>(190); // Default fallback
+  // Memoize header height callback to prevent re-renders
+  const handleHeaderHeightChange = useCallback((height: number) => {
+    setHeaderHeight(height);
+  }, []);
+
   const scrollY = useRef(new Animated.Value(0)).current;
+  const { isDesktop, isWeb } = useResponsive();
 
   const handleChatPress = (chatItem: (typeof chats)[0]) => {
     // Handle chat row press
@@ -19,7 +28,9 @@ export const ChatPage = ({ className }: { className?: string }) => {
   };
 
   return (
-    <View className={`flex-1 bg-background-secondary ${className}`}>
+    <View className={`flex-1 bg-background ${className}`}>
+      <CircleBg />
+
       {chats && chats.length > 0 ? (
         <FlatList
           data={chats}
@@ -37,18 +48,21 @@ export const ChatPage = ({ className }: { className?: string }) => {
             scrollY.setValue(event.nativeEvent.contentOffset.y);
           }}
           scrollEventThrottle={16}
-          className="flex-1"
-          contentContainerStyle={{ paddingTop: 190, paddingBottom: 70 }}
+          className={`flex-1 bg-background ${isDesktop ? 'mx-auto w-[90%] border-x-[1px] border-white/10' : ''}`}
+          contentContainerStyle={{
+            paddingTop: headerHeight - (isWeb ? 0 : 6),
+            paddingBottom: 70,
+          }}
           showsVerticalScrollIndicator={false}
         />
       ) : (
-        <View className="flex-1 items-center justify-center">
+        <View className="flex-1 items-center justify-center bg-background">
           <Text>No posts available</Text>
         </View>
       )}
 
       {/* bulletins - Floating Header */}
-      <Header scrollY={scrollY}>
+      <Header scrollY={scrollY} onHeightChange={handleHeaderHeightChange}>
         {/* bulletins row */}
         <View className="relative py-3">
           <ScrollView
@@ -85,9 +99,11 @@ export const ChatPage = ({ className }: { className?: string }) => {
           </ScrollView>
         </View>
       </Header>
-      <View className="absolute bottom-24 right-2 size-16 items-center justify-center rounded-2xl bg-primary">
+      <TouchableOpacity
+        className="absolute bottom-24 right-2 size-16 items-center justify-center rounded-2xl bg-primary web:lg:bottom-2"
+        activeOpacity={0.8}>
         <ChatBubbleIcon plus size={33} onPress={() => {}} />
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };

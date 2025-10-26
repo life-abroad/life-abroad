@@ -31,7 +31,6 @@ export const HomePage = ({
 }) => {
   const flatListRef = useRef<FlatList>(null);
   const scrollY = useRef(new Animated.Value(0)).current;
-  const [headerHeight, setHeaderHeight] = useState<number>(136); // Default fallback
   const { setHeaderContent, setRightHeaderContent } = useHeader();
   const { isDesktop, isWeb } = useResponsive();
   const [numColumns, setNumColumns] = useState<number>(isDesktop ? 2 : 1);
@@ -90,11 +89,6 @@ export const HomePage = ({
     [allStoryImages, allStoryUsers, allStoryMeta, allStoryReactions, openImageViewer]
   );
 
-  // Memoize header height callback to prevent re-renders
-  const handleHeaderHeightChange = useCallback((height: number) => {
-    setHeaderHeight(height);
-  }, []);
-
   // Set desktop right header content
   useEffect(() => {
     setRightHeaderContent(
@@ -122,6 +116,12 @@ export const HomePage = ({
       setHeaderContent(null);
       setRightHeaderContent(null);
     };
+  }, []);
+
+  const [headerHeight, setHeaderHeight] = useState<number>(136); // Default fallback
+  // Memoize header height callback to prevent re-renders
+  const handleHeaderHeightChange = useCallback((height: number) => {
+    setHeaderHeight(height);
   }, []);
 
   return (
