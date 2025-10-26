@@ -64,7 +64,7 @@ export const ProfilePage = ({
     setHeaderHeight(height);
   }, []);
 
-  const iconSize = isDesktop ? 30 : 24;
+  const iconSize = 30;
 
   return (
     <View className={`relative w-full flex-1 bg-background ${className}`}>
