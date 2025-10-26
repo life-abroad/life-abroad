@@ -67,7 +67,7 @@ export const ProfilePage = ({
   const iconSize = isDesktop ? 30 : 24;
 
   return (
-    <View className={`relative w-full flex-1 bg-background px-0.5 ${className}`}>
+    <View className={`relative w-full flex-1 bg-background ${className}`}>
       <CircleBg />
       {activeTab === 'posts' ? (
         <FeedList
@@ -80,6 +80,7 @@ export const ProfilePage = ({
           paddingTop={headerHeight + (isDesktop ? 10 : 5)}
           displayPosterInfo={false}
           displayReactionControls={false}
+          style={{ paddingHorizontal: '0.125rem' }}
         />
       ) : activeTab === 'friends' ? (
         <ResponsiveFullFlatListWrapper

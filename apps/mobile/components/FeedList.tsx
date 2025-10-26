@@ -27,6 +27,7 @@ interface FeedListProps {
   displayReactionControls?: boolean;
   numImagesPerPost?: number;
   className?: string;
+  style?: object;
 }
 
 interface FeedListHandle {
@@ -46,6 +47,7 @@ export const FeedList = React.forwardRef<FeedListHandle, FeedListProps>(
       displayReactionControls = true,
       numImagesPerPost = -1,
       className = '',
+      style,
     },
     ref
   ) => {
@@ -256,7 +258,11 @@ export const FeedList = React.forwardRef<FeedListHandle, FeedListProps>(
     ]);
 
     return (
-      <ResponsiveWrapper handleLayout={handleLayout} numColumns={numColumns}>
+      <ResponsiveWrapper
+        handleLayout={handleLayout}
+        numColumns={numColumns}
+        style={style}
+        className={className}>
         {feedList}
       </ResponsiveWrapper>
     );

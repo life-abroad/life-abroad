@@ -109,7 +109,7 @@ export const FeedPost: React.FC<FeedPostProps> = ({
             const aspectRatio = image.width / image.height;
             const height = availableWidth / aspectRatio;
             const { isDesktop } = useResponsive();
-            const padding = isDesktop ? 10 : 0;
+            const padding = 10;
 
             return (
               <TouchableOpacity
@@ -124,7 +124,12 @@ export const FeedPost: React.FC<FeedPostProps> = ({
                 }>
                 <Image
                   source={{ uri: image.url }}
-                  style={{ width: availableWidth - padding - numColumns, height }}
+                  style={{
+                    width: availableWidth - padding - numColumns,
+                    height,
+                    marginHorizontal: 'auto',
+                    // borderRadius: 1.5,
+                  }}
                   resizeMode="cover"
                 />
                 {index === 0 && caption && (
