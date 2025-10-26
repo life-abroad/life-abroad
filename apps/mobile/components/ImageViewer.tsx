@@ -260,7 +260,7 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
               ) : (
                 <View className="h-12 w-12 rounded-full border-2 border-white bg-gray-500" />
               )}
-              <View className="ml-3">
+              <View className="ml-3 rounded-lg bg-black/50 px-4">
                 {users && users[imageIndex] ? (
                   <Text className="font-madimi text-lg text-white">
                     {users[imageIndex].userName}
@@ -272,7 +272,7 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
             </View>
 
             {/* Actions */}
-            <View className="flex-row items-center pl-2">
+            <View className="flex-row items-center pl-2 ">
               <TouchableOpacity className="mr-5">
                 <HeartIcon size={30} active={false} />
               </TouchableOpacity>

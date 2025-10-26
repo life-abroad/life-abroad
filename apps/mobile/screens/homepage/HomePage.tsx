@@ -184,7 +184,7 @@ export const HomePage = ({
         reactions={reactions}
       />
 
-      {isDesktop && (
+      {isDesktop && !hideNav && (
         <TouchableOpacity
           className="absolute bottom-24 right-2 size-16 items-center justify-center rounded-2xl bg-primary web:lg:bottom-2"
           onPress={setNumColumns.bind(null, numColumns === 1 ? 2 : 1)}

@@ -123,7 +123,10 @@ export const ProfilePage = ({
           <Text className="text-lg">No {activeTab} to display</Text>
         </View>
       )}
-      <Header scrollY={scrollY} onHeightChange={handleHeaderHeightChange}>
+      <Header
+        scrollY={scrollY}
+        onHeightChange={handleHeaderHeightChange}
+        hideNav={imageViewerVisible}>
         <View className="flex-row justify-between px-4 py-3">
           <View className="mt-3 flex-row items-center gap-3">
             <TouchableOpacity

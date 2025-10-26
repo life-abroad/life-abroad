@@ -8,9 +8,10 @@ interface HeaderProps {
   children: React.ReactNode;
   scrollY: Animated.Value;
   onHeightChange?: (height: number) => void;
+  hideNav?: boolean;
 }
 
-function Header({ children, scrollY, onHeightChange }: HeaderProps) {
+function Header({ children, scrollY, onHeightChange, hideNav }: HeaderProps) {
   const { isDesktop } = useResponsive();
 
   // Scroll animations - use useMemo to prevent recreating on every render
@@ -46,32 +47,34 @@ function Header({ children, scrollY, onHeightChange }: HeaderProps) {
 
   return (
     <>
-      <Animated.View
-        onLayout={handleLayout}
-        style={{
-          position: 'absolute',
-          left: 0,
-          right: 0,
-          top: isDesktop ? 5 : 0,
-          width: isDesktop ? '90%' : '100%',
-          borderWidth: isDesktop ? 1 : 0,
-          borderColor: 'rgba(255, 255, 255, 0.1)',
-          borderRadius: isDesktop ? '0.375rem' : 0,
-          zIndex: 10,
-          paddingVertical: 0,
-          transform: [{ translateY: headerTranslateY }],
-          opacity: headerOpacity,
-          marginHorizontal: 'auto',
-        }}
-        pointerEvents="box-none">
-        <Blur topBar />
-        <View className="web:lg:px-2" pointerEvents="box-none">
-          <View className="native:pt-14 px-4 web:pt-4 web:lg:hidden" pointerEvents="box-none">
-            <CircleLogo size={80} />
+      {!hideNav && (
+        <Animated.View
+          onLayout={handleLayout}
+          style={{
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            top: isDesktop ? 5 : 0,
+            width: isDesktop ? '90%' : '100%',
+            borderWidth: isDesktop ? 1 : 0,
+            borderColor: 'rgba(255, 255, 255, 0.1)',
+            borderRadius: isDesktop ? '0.375rem' : 0,
+            zIndex: 10,
+            paddingVertical: 0,
+            transform: [{ translateY: headerTranslateY }],
+            opacity: headerOpacity,
+            marginHorizontal: 'auto',
+          }}
+          pointerEvents="box-none">
+          <Blur topBar />
+          <View className="web:lg:px-2" pointerEvents="box-none">
+            <View className="native:pt-14 px-4 web:pt-4 web:lg:hidden" pointerEvents="box-none">
+              <CircleLogo size={80} />
+            </View>
+            {children}
           </View>
-          {children}
-        </View>
-      </Animated.View>
+        </Animated.View>
+      )}
     </>
   );
 }
