@@ -86,8 +86,8 @@ const posts: Post[] = [
       },
       {
         url: 'https://yotsuya.hotelkeihan.co.jp/wp-content/uploads/sites/394/2019/02/Tokyo-Tower.jpg',
-        width: 1200,
-        height: 900,
+        width: 800,
+        height: 1200,
       },
       {
         url: 'https://dianathemama.com/wp-content/uploads/2018/02/fuji-proposal.jpg',

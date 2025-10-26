@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useCallback, useState } from 'react';
 import { View, Image, Animated, FlatList, TouchableOpacity, Platform } from 'react-native';
 import { posts, stories } from './mockData';
-import { CameraIcon } from 'components/Icons';
+import { CameraIcon, ChatBubbleIcon } from 'components/Icons';
 import { ImageViewer } from 'components/ImageViewer';
 import Header from 'components/Bars/Header';
 import { FeedList } from 'components/FeedList';
@@ -11,6 +11,13 @@ import { Text } from 'components/Text';
 import { useHeader } from '../../contexts/HeaderContext';
 import { StoryItem } from 'components/StoryItem';
 import { useResponsive } from '../../contexts/ResponsiveContext';
+import {
+  Ellipsis,
+  EllipsisVertical,
+  Layout,
+  LayoutDashboard,
+  LayoutGrid,
+} from 'lucide-react-native';
 
 export const HomePage = ({
   hideNav,
@@ -26,6 +33,7 @@ export const HomePage = ({
   const [headerHeight, setHeaderHeight] = useState<number>(136); // Default fallback
   const { setHeaderContent, setRightHeaderContent } = useHeader();
   const { isDesktop, isWeb } = useResponsive();
+  const [numColumns, setNumColumns] = useState<number>(isDesktop ? 2 : 1);
 
   const {
     imageViewerVisible,
@@ -154,6 +162,8 @@ export const HomePage = ({
         onImagePress={handlePostImagePress}
         paddingTop={isDesktop ? 2 : headerHeight - (isWeb ? 0 : 6)}
         paddingBottom={isDesktop ? 1 : 60}
+        numColumns={numColumns}
+        numImagesPerPost={numColumns > 1 ? 1 : -1}
       />
 
       <ImageViewer
@@ -170,6 +180,13 @@ export const HomePage = ({
         imageMeta={imageMeta}
         reactions={reactions}
       />
+
+      <TouchableOpacity
+        className="absolute bottom-24 right-2 size-16 items-center justify-center rounded-2xl bg-primary web:lg:bottom-2"
+        onPress={setNumColumns.bind(null, numColumns === 1 ? 2 : 1)}
+        activeOpacity={0.8}>
+        <LayoutDashboard size={33} className="text-foreground" />
+      </TouchableOpacity>
     </View>
   );
 };

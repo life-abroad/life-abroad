@@ -12,6 +12,7 @@ import FriendRow from 'components/FriendRow';
 import CircleRow from 'components/CircleRow';
 import Blur from 'components/Blur';
 import CircleBg from 'components/CircleBg';
+import { useResponsive } from 'contexts/ResponsiveContext';
 
 export const ProfilePage = ({
   setHideNav,
@@ -20,6 +21,7 @@ export const ProfilePage = ({
   setHideNav: (hide: boolean) => void;
   className?: string;
 }) => {
+  const { isWeb } = useResponsive();
   const flatListRef = useRef<FlatList>(null);
   const scrollY = useRef(new Animated.Value(0)).current;
   const {
@@ -64,7 +66,7 @@ export const ProfilePage = ({
           onImagePress={handlePostImagePress}
           numColumns={2}
           numImagesPerPost={1}
-          paddingTop={160}
+          paddingTop={isWeb ? 133 : 160}
           displayPosterInfo={false}
           displayReactionControls={false}
         />
