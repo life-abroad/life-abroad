@@ -64,6 +64,8 @@ export const ProfilePage = ({
     setHeaderHeight(height);
   }, []);
 
+  const iconSize = isDesktop ? 30 : 24;
+
   return (
     <View className={`relative w-full flex-1 bg-background px-0.5 ${className}`}>
       <CircleBg />
@@ -129,7 +131,7 @@ export const ProfilePage = ({
               activeOpacity={0.9}>
               <PostsIcon
                 active={activeTab === 'posts'}
-                size={24}
+                size={iconSize}
                 onPress={() => setActiveTab('posts')}
               />
               <Text className="text-md font-bold">Posts</Text>
@@ -140,7 +142,7 @@ export const ProfilePage = ({
               activeOpacity={0.9}>
               <FriendsIcon
                 active={activeTab === 'friends'}
-                size={24}
+                size={iconSize}
                 onPress={() => setActiveTab('friends')}
               />
               <Text className="text-md font-bold">Friends</Text>
@@ -151,7 +153,7 @@ export const ProfilePage = ({
               activeOpacity={0.9}>
               <CircleIconNav
                 active={activeTab === 'circles'}
-                size={28}
+                size={iconSize}
                 onPress={() => setActiveTab('circles')}
               />
               <Text className="text-md font-bold">Circles</Text>
