@@ -46,6 +46,8 @@ export const FeedPost: React.FC<FeedPostProps> = ({
   displayReactionControls = true,
   containerWidth = 0,
 }) => {
+  const { isDesktop } = useResponsive();
+
   return (
     <View
       className={`mb-1 ${numColumns > 1 ? 'rounded-md' : 'rounded-sm'} bg-background-secondary web:lg:rounded-md web:lg:border-[1px] web:lg:border-white/10  web:lg:bg-background web:lg:px-1`}>
@@ -151,7 +153,9 @@ export const FeedPost: React.FC<FeedPostProps> = ({
         {/* Multiple images counter */}
         {numColumns > 1 && images.length > numColumns && (
           <View className="absolute left-2 top-1 rounded-lg bg-black/50 px-3 py-1">
-            <Text className="text-md font-semibold text-white">+{images.length - 1}</Text>
+            <Text className="web:lg:text-md text-xs font-semibold text-white">
+              +{images.length - 1}
+            </Text>
           </View>
         )}
         {/* Multiple images icon */}
@@ -165,7 +169,7 @@ export const FeedPost: React.FC<FeedPostProps> = ({
                 0
               )
             }>
-            <FileStack className="" size={30} color="white" />
+            <FileStack className="" size={isDesktop ? 30 : 18} color="white" />
           </TouchableOpacity>
         )}
       </View>

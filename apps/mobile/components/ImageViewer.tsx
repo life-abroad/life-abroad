@@ -260,7 +260,7 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
               ) : (
                 <View className="h-12 w-12 rounded-full border-2 border-white bg-gray-500" />
               )}
-              <View className="ml-3 rounded-lg bg-black/50 px-4">
+              <View className="ml-3 rounded-lg web:bg-black/50 web:px-4">
                 {users && users[imageIndex] ? (
                   <Text className="font-madimi text-lg text-white">
                     {users[imageIndex].userName}
