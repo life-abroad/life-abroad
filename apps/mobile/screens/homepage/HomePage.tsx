@@ -184,12 +184,14 @@ export const HomePage = ({
         reactions={reactions}
       />
 
-      <TouchableOpacity
-        className="absolute bottom-24 right-2 size-16 items-center justify-center rounded-2xl bg-primary web:lg:bottom-2"
-        onPress={setNumColumns.bind(null, numColumns === 1 ? 2 : 1)}
-        activeOpacity={0.8}>
-        <LayoutDashboard size={33} className="text-foreground" />
-      </TouchableOpacity>
+      {isDesktop && (
+        <TouchableOpacity
+          className="absolute bottom-24 right-2 size-16 items-center justify-center rounded-2xl bg-primary web:lg:bottom-2"
+          onPress={setNumColumns.bind(null, numColumns === 1 ? 2 : 1)}
+          activeOpacity={0.8}>
+          <LayoutDashboard size={33} className="text-foreground" />
+        </TouchableOpacity>
+      )}
     </View>
   );
 };

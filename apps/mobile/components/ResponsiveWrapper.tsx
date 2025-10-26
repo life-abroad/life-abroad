@@ -56,7 +56,7 @@ export function ResponsiveFullFlatListWrapper({
       }}>
       <View
         pointerEvents="box-none"
-        className="flex-1 bg-background px-1 pt-2 web:lg:rounded-md web:lg:border-[1px] web:lg:border-white/10">
+        className="flex-1 bg-background pt-2 web:lg:rounded-md web:lg:border-[1px] web:lg:border-white/10 web:lg:px-1">
         {children}
         <FlatList
           data={data}

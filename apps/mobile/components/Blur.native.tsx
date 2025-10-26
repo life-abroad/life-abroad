@@ -17,7 +17,7 @@ function Blur({ topBar }: { topBar?: boolean }) {
       <ImageBackground
         source={require('../assets/textures/wood-grain-white.png')}
         resizeMode={`${topBar ? 'cover' : 'repeat'}`}
-        className={`absolute inset-0 ${topBar ? 'opacity-[0.08]' : 'opacity-0'}`}
+        className={`absolute inset-0 ${topBar ? 'opacity-[0.06]' : 'opacity-0'}`}
       />
       {/* Black frosted overlay */}
       <View className="absolute inset-0 bg-black/10" />
